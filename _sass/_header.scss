@@ -2,92 +2,92 @@
 //-------------------------------
 
 header {
-    overflow: hidden;
-    margin-bottom: 5rem;
+  overflow: hidden;
+  margin-bottom: 4rem;
 }
 
 .logo {
-    font-size: 3.5rem;
-    font-weight: $base-font-weight-bold;
-    color: var(--link-color);
+  font-size: 3.5rem;
+  font-weight: $base-font-weight-bold;
+  color: var(--link-color);
 
-    .logosvg {
-    	  height: 2.7rem;
-        -webkit-filter: var(--invert-logo-color);
-    }
+  .logosvg {
+    height: 2.7rem;
+    -webkit-filter: var(--invert-logo-color);
+  }
 }
 
 .menu {
-    float: left;
+  float: left;
 
-	  ul {
-	    list-style-type: none;
-	    margin-bottom: 0rem;
-	    padding: 0rem;
-	  }
-	  li {
-	    display: inline-block;
-	    margin-right: 1rem;
-	      &:last-child {
-	        margin-right: 0px;
-	      }
-        a {
-          color: var(--text-color-light);
-    	    font-size: $base-font-size;
-    	    font-weight: $base-font-weight;
-    	    display: block;
-          height: 2rem; // reset
-          .smaller {
-            font-size: 0.85em;
-          }
-        }
-	  }
+  ul {
+    list-style-type: none;
+    margin-bottom: 0rem;
+    padding: 0rem;
+  }
+  li {
+    display: inline-block;
+    margin-right: 1rem;
+    &:last-child {
+      margin-right: 0px;
+    }
+    a {
+      color: var(--text-color-light);
+      font-size: $base-font-size;
+      font-weight: $base-font-weight;
+      display: block;
+      height: 2rem; // reset
+      .smaller {
+        font-size: 0.85em;
+      }
+    }
+  }
 }
 
 // Social icons
 .social {
-    float: right;
-    margin-top: 1.75rem;
-    ul {
-      list-style-type: none;
-      margin: 0;
-      padding: 0;
-    }
-    li {
-      display: inline-block;
-    }
-    li a {
-      display: block;
-      color: var(--text-color-light);
-      text-align: center;
-      font-size: 1.5rem;
-      width: 2.5rem;
+  float: right;
+  margin-top: 1.75rem;
+  ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+  li {
+    display: inline-block;
+  }
+  li a {
+    display: block;
+    color: var(--text-color-light);
+    text-align: center;
+    font-size: 1.5rem;
+    width: 2.5rem;
 
-      // ugly fix needed for theme switcher icon
-    	&:focus {
-    	  border: none;
-        &:focus:hover {
-          border-bottom: 0.15em solid;
-        }
-  	  }
+    // ugly fix needed for theme switcher icon
+    &:focus {
+      border: none;
+      &:focus:hover {
+        border-bottom: 0.15em solid;
+      }
+    }
   }
 }
 
 @media (max-width: 48rem) {
-    header {
-        margin-bottom: 2rem;
+  header {
+    margin-bottom: 2rem;
+  }
+  .menu,
+  .social {
+    @include centered-block();
+  }
+  // fake it till you make it
+  .logo {
+    margin-top: 5rem;
+    .logosvg {
+      display: block;
+      margin: -9rem auto 5rem auto;
+      height: 3rem;
     }
-    .menu,
-    .social {
-        @include centered-block();
-    }
-    // fake it till you make it
-    .logo {
-      margin-top: 5rem;
-      .logosvg {
-        display: block;
-        margin: -9rem auto 5rem auto;
-        height: 3rem;
-      }
-    }
+  }
 }

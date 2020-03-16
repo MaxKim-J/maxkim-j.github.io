@@ -6,15 +6,15 @@ url:
   # `http://<username>.github.io` - for GitHub
 
 blog:
-  title: Max, the Developer
+  title: 🧑🏻‍💻Max Dev
   description: max의 개발 블로그
 
   # Layout configuration
-  logo_path: "assets/img/dactl.svg" # path to logo file
+  logo_path: "" # path to logo file
   search_path:
     "maxkim-j.github.io"
     # needed for searchbox in archive page
-  hero_layout: true # turn on hero layout for blog and posts
+  hero_layout: false # turn on hero layout for blog and posts
   hero_placeholder: "assets/img/generic_hero.jpg" # placeholder for hero image
   excerpts: true # show excerpts instead of full post content on blog page
   inline_footnotes: true # enable/disable barefoot inline footnotes
@@ -26,13 +26,13 @@ blog:
 
 # Author info
 author:
-  fullname: Your Name
+  fullname: Max Jonghyuk Kim
   rss: true # generate RSS feed and show it's icon in header
-  mail: your@email.com # change to your e-mail address
-  twitter: twitter-user-name
-  github: github-user-name
-  youtube: youtube-user-name
-  stackoverflow: stackoverflow-user-name
+  mail: hwaseen@email.com # change to your e-mail address
+  twitter: false
+  github: MaxKim-J
+  youtube: false
+  stackoverflow: false
   disqus: dactl # your disqus site name
   google_analytics: # 'UA-XXXXXXXX-X'
   photo: "uploads/me2.png"

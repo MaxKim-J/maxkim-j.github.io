@@ -10,10 +10,8 @@ sitemap:
 <div class="page">
 
 {% capture page_subtitle %}
-  {% include page/searchbox.html %}
+{% include page/searchbox.html %}
 {% endcapture %}
-
-{% include page/title.html title=page.title subtitle=page_subtitle %}
 
     {% for post in site.posts %}
 
@@ -23,15 +21,16 @@ sitemap:
         {% capture category_content %}<a class="label" href="{{ category.url }}">{{ category.name }}</a>{% endcapture %}
       {% endif %}
 
-  	{% capture month %}{{ post.date | date: '%m%Y' }}{% endcapture %}
-  	{% capture nmonth %}{{ post.next.date | date: '%m%Y' }}{% endcapture %}
-  		{% if month != nmonth %}
-  			{% if forloop.index != 1 %}
-  			</ul>
-  			{% endif %}
-  			<h1>{% include utils/date_custom_short.html date = post.date %}</h1>
-  			<ul class="related-posts">
-  		{% endif %}
+{% capture month %}{{ post.date | date: '%m%Y' }}{% endcapture %}
+{% capture nmonth %}{{ post.next.date | date: '%m%Y' }}{% endcapture %}
+{% if month != nmonth %}
+{% if forloop.index != 1 %}
+
+</ul>
+{% endif %}
+<h1>{% include utils/date_custom_short.html date = post.date %}</h1>
+<ul class="related-posts">
+{% endif %}
 
       {% include page/post-list-item.html %}
 
@@ -40,12 +39,11 @@ sitemap:
       {% endcomment %}
 
      {% endfor %}
+
   	 </ul>
 
-
-  {% comment %}
-    {% include utils/tag-box.html %}
-  {% endcomment %}
-
+{% comment %}
+{% include utils/tag-box.html %}
+{% endcomment %}
 
 </div>
