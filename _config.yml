@@ -7,12 +7,12 @@ url:
 
 blog:
   title: Max, the Developer
-  description: >
-    max의 개발 블로그
+  description: max의 개발 블로그
 
   # Layout configuration
   logo_path: "assets/img/dactl.svg" # path to logo file
-  search_path:# "yourgitusername.github.io"
+  search_path:
+    "maxkim-j.github.io"
     # needed for searchbox in archive page
   hero_layout: true # turn on hero layout for blog and posts
   hero_placeholder: "assets/img/generic_hero.jpg" # placeholder for hero image
