@@ -25,21 +25,27 @@
 .pagination-item {
   display: inline-block;
   width: auto;
-
   &-prev {
     margin-bottom: 0;
     float: left;
+    background-color: black;
+    display: inline-block;
+    padding: 0 1rem;
+
     a {
-      color: var(--link-color);
+      color: white;
       @include border-slide(right);
     }
   }
   &-next {
+    background-color: black;
     margin-left: -1px;
     text-align: right;
     float: right;
+    padding: 0 1rem;
+
     a {
-      color: var(--link-color);
+      color: white;
       @include border-slide(left);
     }
   }

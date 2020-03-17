@@ -1,6 +1,19 @@
 // Articles / posts
 //-------------------------------
 
+.whole-post {
+  display: flex;
+  justify-content: center;
+  div {
+    margin-bottom: 3rem;
+    font-size: 1rem;
+    background-color: black;
+    color: #ffffff;
+    display: inline-block;
+    padding: 0px 20px;
+  }
+}
+
 article {
   &.blog {
     margin-bottom: 1em;
@@ -53,5 +66,9 @@ article {
   .oversize {
     margin: inherit;
     max-width: 100%;
+  }
+  .whole-post {
+    text-align: center;
+    display: block;
   }
 }

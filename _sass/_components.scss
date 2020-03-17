@@ -1,7 +1,6 @@
 // Various components used on pages
 //-------------------------------
 
-
 // Post list (and related on post page) container
 .related {
   padding-top: 2rem;
@@ -20,14 +19,13 @@
   li {
     margin-top: 1rem;
     small {
-      font-size: .75em;
+      font-size: 0.75em;
       color: var(--text-color-light);
     }
   }
-  li+li {
-	margin-top: 0rem;
-	}
-
+  li + li {
+    margin-top: 0rem;
+  }
 }
 
 // Tag list boxes
@@ -42,17 +40,17 @@
     text-align: center;
     color: var(--text-color-light);
     list-style-type: none;
-    margin: .5em 0 1.5em 0;
+    margin: 0.5em 0 1.5em 0;
     padding: 0px;
 
     li {
       display: inline-block;
       font-weight: $base-font-weight-bold;
       font-size: $mobile-font-size;
-      margin: 0 .5rem;
+      margin: 0 0.5rem;
 
       a {
-        color: var (--text-color)
+        color: var (--text-color);
       }
     }
   }
@@ -65,59 +63,57 @@
 
 // Searchbox in Archive
 .searchbox {
-	position: relative;
-	overflow: hidden;
-  margin-top: .3rem;
-  text-align: center;
-
-	input {
-		outline: none;
-	}
-	input[type=search] {
-		-webkit-appearance: textfield;
-		-webkit-box-sizing: content-box;
-	}
-	input::-webkit-search-decoration,
-	input::-webkit-search-cancel-button {
-		  display: none;
-	}
-	span.icon-search {
-	    color: inherit;
-	    position: absolute;
-	    margin-left: 0.6em;
-	    margin-top: 0.6em;
-	    z-index: 1;
-	}
-	input[type=search] {
+  position: relative;
+  overflow: hidden;
+  margin-top: 0.3rem;
+  input {
+    outline: none;
+  }
+  input[type="search"] {
+    -webkit-appearance: textfield;
+    -webkit-box-sizing: content-box;
+  }
+  input::-webkit-search-decoration,
+  input::-webkit-search-cancel-button {
+    display: none;
+  }
+  span.icon-search {
+    color: inherit;
+    position: absolute;
+    margin-left: 0.6em;
+    margin-top: 0.6em;
+    z-index: 1;
+  }
+  input[type="search"] {
     width: 50%;
-		color: var(--text-color-light);
+    color: var(--text-color-light);
     background: var(--code-bg-color);
-		box-shadow: 0 1px 2px var(--shadow-color);
-		padding: 9px 10px 9px 38px;
-		font-size: $base-font-size;
-		-webkit-transition: all .5s;
-		-moz-transition: all .5s;
-		transition: all .5s;
-    opacity: .5;
-	}
-	input[type=search]:focus {
-		color: var(--text-color);
+    box-shadow: 0 1px 2px var(--shadow-color);
+    padding: 9px 10px 9px 38px;
+    font-size: $base-font-size;
+    -webkit-transition: all 0.5s;
+    -moz-transition: all 0.5s;
+    transition: all 0.5s;
+    opacity: 0.5;
+  }
+  input[type="search"]:focus {
+    color: var(--text-color);
     background: var(--code-bg-color);
     box-shadow: 0 1px 2px var(--shadow-color);
     width: 70%;
     opacity: 1;
-	}
-	input:-moz-placeholder {
-		color: var(--text-color-light);
-	}
-	input::-webkit-input-placeholder {
-		color: var(--text-color-light);
-	}
+  }
+  input:-moz-placeholder {
+    color: var(--text-color-light);
+  }
+  input::-webkit-input-placeholder {
+    color: var(--text-color-light);
+  }
   @media (max-width: 48rem) {
-    input[type=search] {
+    input[type="search"] {
       width: 70%;
     }
-    input[type=search]:focus {
+    input[type="search"]:focus {
       width: 80%;
     }
   }
@@ -136,7 +132,6 @@
   }
 }
 
-
 // Read more link on blog page with gradient overlay
 .readmore {
   position: relative;
@@ -154,11 +149,23 @@
     top: -125px;
     width: 100%;
     height: 125px;
-    content: '';
+    content: "";
     display: block;
-    background: -moz-linear-gradient(bottom, var(--bg-color) 0%, rgba(255,255,255,0) 100%); /* FF3.6-15 */
-    background: -webkit-linear-gradient(bottom, var(--bg-color) 0%,rgba(255,255,255,0) 100%); /* Chrome10-25,Safari5.1-6 */
-    background: linear-gradient(to top, var(--bg-color) 0%,rgba(255,255,255,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-    z-index: 10 // it needs to cover everything, footnote buttons included
-    }
+    background: -moz-linear-gradient(
+      bottom,
+      var(--bg-color) 0%,
+      rgba(255, 255, 255, 0) 100%
+    ); /* FF3.6-15 */
+    background: -webkit-linear-gradient(
+      bottom,
+      var(--bg-color) 0%,
+      rgba(255, 255, 255, 0) 100%
+    ); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(
+      to top,
+      var(--bg-color) 0%,
+      rgba(255, 255, 255, 0) 100%
+    ); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    z-index: 10; // it needs to cover everything, footnote buttons included
+  }
 }

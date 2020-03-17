@@ -3,10 +3,10 @@ layout: default
 title: "Blog"
 ---
 
-{% for post in paginator.posts %}
-
-{% include blog.html %}
-
-{% endfor %}
-
-{% include post/pagination.html %}
+<div class="whole-post">
+  <div>
+    전체 포스트 {{site.posts | size}}개
+  </div>
+</div>
+{% for post in paginator.posts %} {% include blog.html %} {% endfor %} {%
+include post/pagination.html %}
