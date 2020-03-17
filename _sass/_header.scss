@@ -54,7 +54,6 @@ header {
 
 // Social icons
 .social {
-  float: right;
   margin-top: 1.75rem;
   ul {
     list-style-type: none;
@@ -70,12 +69,11 @@ header {
     text-align: center;
     font-size: 1.5rem;
     width: 2.5rem;
-
-    // ugly fix needed for theme switcher icon
+    height: 2.5rem;
     &:focus {
       border: none;
       &:focus:hover {
-        border-bottom: 0.15em solid;
+        border-bottom: 0.1em solid;
       }
     }
   }

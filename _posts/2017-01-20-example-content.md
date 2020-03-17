@@ -12,7 +12,7 @@ overlay: green
 published: true
 ---
 
-Cum sociis natoque penatibus et magnis <a href="#">dis parturient montes</a>, nascetur ridiculus mus. *Aenean eu leo quam.* Pellentesque ornare sem lacinia quam venenatis vestibulum. Sed posuere consectetur est at lobortis. Cras mattis consectetur purus sit amet fermentum.
+Cum sociis natoque penatibus et magnis <a href="#">dis parturient montes</a>, nascetur ridiculus mus. _Aenean eu leo quam._ Pellentesque ornare sem lacinia quam venenatis vestibulum. Sed posuere consectetur est at lobortis. Cras mattis consectetur purus sit amet fermentum.
 {: .lead}
 
 Etiam porta **sem malesuada magna** mollis euismod. Cras mattis consectetur purus sit amet fermentum. Aenean lacinia bibendum nulla sed consectetur.
@@ -28,7 +28,7 @@ Etiam porta **sem malesuada magna** mollis euismod. Cras mattis consectetur puru
 HTML defines a long list of available inline tags, a complete list of which can be found on the [Mozilla Developer Network](https://developer.mozilla.org/en-US/docs/Web/HTML/Element).
 
 - **To bold text**, use `**To bold text**`.
-- *To italicize text*, use `*To italicize text*`.
+- _To italicize text_, use `*To italicize text*`.
 - Abbreviations, like HTML should be defined like this `*[HTML]: HyperText Markup Language`.
 - Citations, like <cite>&mdash; Mark otto</cite>, should use `<cite>`.
 - ~~Deleted~~ text should use `~~deleted~~` and <ins>inserted</ins> text should use `<ins>`.
@@ -44,7 +44,7 @@ Vivamus sagittis lacus vel augue rutrum faucibus dolor auctor. Duis mollis, est 
 
 Cum sociis natoque penatibus et magnis dis `code element` montes, nascetur ridiculus mus.
 
-~~~js
+```javascript
 // Example can be run directly in your JavaScript console
 
 // Create a function that takes two arguments and returns the sum of those
@@ -54,15 +54,15 @@ var adder = new Function("a", "b", "return a + b");
 // Call the function
 adder(2, 6);
 // > 8
-~~~
+```
 
 ## Lists
 
 Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aenean lacinia bibendum nulla sed consectetur. Etiam porta sem malesuada magna mollis euismod. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.
 
-* Praesent commodo cursus magna, vel scelerisque nisl consectetur et.
-* Donec id elit non mi porta gravida at eget metus.
-* Nulla vitae elit libero, a pharetra augue.
+- Praesent commodo cursus magna, vel scelerisque nisl consectetur et.
+- Donec id elit non mi porta gravida at eget metus.
+- Nulla vitae elit libero, a pharetra augue.
 
 Donec ullamcorper nulla non metus auctor fringilla. Nulla vitae elit libero, a pharetra augue.
 
@@ -99,25 +99,22 @@ Quisque consequat sapien eget quam rhoncus, sit amet laoreet diam tempus. Aliqua
 
 Aenean lacinia bibendum nulla sed consectetur. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 
-| Name     | Upvotes   | Downvotes |
-|----------|-----------|-----------|
-| Alice    |        10 |        11 |
-| Bob      |         4 |         3 |
-| Charlie  |         7 |         9 |
-|Totals    |        21 |        23 |
+| Name    | Upvotes | Downvotes |
+| ------- | ------- | --------- |
+| Alice   | 10      | 11        |
+| Bob     | 4       | 3         |
+| Charlie | 7       | 9         |
+| Totals  | 21      | 23        |
 
 Nullam id dolor id nibh ultricies vehicula ut id elit. Sed posuere consectetur est at lobortis. Nullam quis risus eget urna mollis ornare vel eu leo.
 
 ## Math
 
-
 Nullam id dolor id nibh ultricies vehicula ut id elit. Sed posuere consectetur est at lobortis. Nullam quis risus eget urna mollis ornare vel eu leo.
 Nullam id [^2] dolor id nibh ultricies vehicula ut id elit. Sed posuere consectetur est at lobortis. Nullam quis risus eget urna mollis ornare vel eu leo.
 
 [^1]: You can insert footnote marks using `[^1]`, `[^2]`, etc and write the footnote text at the bottom of your file like this: `[^1]: You can also insert footnote marks...`
-
 [^2]: Nullam id dolor id nibh ultricies vehicula ut id elit. Sed posuere consectetur est at lobortis. Nullam quis risus eget urna mollis ornare vel eu leo. Nullam id dolor id nibh ultricies vehicula ut id elit. Sed posuere consectetur est at lobortis. Nullam quis risus eget urna mollis ornare vel eu leo.
 
-*[HTML]: HyperText Markup Language
-*[CSS]: Cascading Style Sheets
-*[JS]: JavaScript
+_[HTML]: HyperText Markup Language
+_[CSS]: Cascading Style Sheets \*[JS]: JavaScript
