@@ -3,7 +3,7 @@
 
 header {
   overflow: hidden;
-  margin-bottom: 4rem;
+  margin-bottom: 5rem;
 }
 
 .logo {
@@ -21,6 +21,7 @@ header {
   float: left;
 
   ul {
+    width: inherit;
     list-style-type: none;
     margin-bottom: 0rem;
     padding: 0rem;
@@ -75,7 +76,7 @@ header {
 
 @media (max-width: 48rem) {
   header {
-    margin-bottom: 2rem;
+    margin-bottom: 5rem;
   }
   .menu,
   .social {
@@ -83,7 +84,6 @@ header {
   }
   // fake it till you make it
   .logo {
-    margin-top: 5rem;
     .logosvg {
       display: block;
       margin: -9rem auto 5rem auto;

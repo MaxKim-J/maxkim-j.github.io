@@ -6,8 +6,8 @@ url:
   # `http://<username>.github.io` - for GitHub
 
 blog:
-  title: 🧑🏻‍💻Max Dev
-  description: max의 개발 블로그
+  title: Max Dev
+  description: max의 개발 블로그 Powered By Jekyll/dactl,
 
   # Layout configuration
   logo_path: "" # path to logo file
@@ -27,7 +27,7 @@ blog:
 # Author info
 author:
   fullname: Max Jonghyuk Kim
-  rss: true # generate RSS feed and show it's icon in header
+  rss: false # generate RSS feed and show it's icon in header
   mail: hwaseen@email.com # change to your e-mail address
   twitter: false
   github: MaxKim-J

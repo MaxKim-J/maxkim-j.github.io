@@ -2,10 +2,9 @@
 //-------------------------------
 // Super lightweight (HTML-wise) blog pagination. `span`s are provided for when there are no more previous or next posts to show.
 
-
 .pagination {
   overflow: hidden;
-  max-width: 30%;
+  width: 100%;
   margin: 0 auto 4rem auto;
   color: var(--text-color-light);
 
@@ -24,24 +23,24 @@
 
 // Pagination items can be `span`s or `a`s
 .pagination-item {
-      display: inline-block;
-      width: auto;
+  display: inline-block;
+  width: auto;
 
-    &-prev {
-      margin-bottom: 0;
-      float: left;
-      a {
-        color: var(--link-color);
-        @include border-slide(right);
-      }
+  &-prev {
+    margin-bottom: 0;
+    float: left;
+    a {
+      color: var(--link-color);
+      @include border-slide(right);
     }
-    &-next {
-      margin-left: -1px;
-      text-align: right;
-      float: right;
-      a {
-        color: var(--link-color);
-        @include border-slide(left);
-      }
+  }
+  &-next {
+    margin-left: -1px;
+    text-align: right;
+    float: right;
+    a {
+      color: var(--link-color);
+      @include border-slide(left);
     }
+  }
 }

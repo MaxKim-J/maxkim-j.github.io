@@ -12,55 +12,61 @@
 }
 
 body {
-    font-size: $base-font-size;
-    line-height: $base-line-height;
-    color: var(--text-color);
-    background-color: var(--bg-color);
+  font-size: $base-font-size;
+  line-height: $base-line-height;
+  color: var(--text-color);
+  background-color: var(--bg-color);
 }
 
 .page {
-      margin-bottom: 8em;
-      }
+  margin-bottom: 8em;
+}
 .wrapper {
-    max-width: 48rem;
-    margin: 4rem auto 4rem auto;
+  max-width: 48rem;
+  margin: 4rem auto 1rem auto;
 }
 
-
 @media (max-width: 48rem) {
-    body {
-      font-size: $mobile-font-size;
-    }
-    .wrapper {
-      width: 90%;
-      margin: 3rem auto 2rem auto;
-    }
+  body {
+    font-size: $mobile-font-size;
+  }
+  .wrapper {
+    width: 90%;
+    margin: 3rem auto 2rem auto;
+  }
 }
 
 // Links and paragraphs
 //-------------------------------
 
-a, .a {
+a,
+.a {
   color: var(--link-color);
   text-decoration: none;
   position: relative;
   border-bottom: 0.18rem solid transparent;
   transition: border 0.15s;
 
-    &:hover, &:focus {
-      text-decoration: none;
-      border-bottom: 0.15em solid;
-    }
-    strong {
-      color: inherit;
-    }
+  &:hover,
+  &:focus {
+    text-decoration: none;
+    border-bottom: 0.15em solid;
+  }
+  strong {
+    color: inherit;
+  }
 }
 
 // Headings
 //-------------------------------
 
-h1, h2, h3, h4, h5, h6 {
-  margin-bottom: .5rem;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin-bottom: 0.5rem;
   font-weight: $base-font-weight-bold;
   line-height: 1.1;
   color: var(--text-color);
@@ -68,7 +74,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 h1 {
-  font-size: 2rem;
+  font-size: 1.2rem;
 }
 
 h2 {
@@ -81,7 +87,9 @@ h3 {
   font-size: 1.25rem;
 }
 
-h4, h5, h6 {
+h4,
+h5,
+h6 {
   margin-top: 1rem;
   font-size: 1rem;
 }
@@ -96,7 +104,7 @@ dt {
 }
 
 dd {
-  margin-bottom: .5rem;
+  margin-bottom: 0.5rem;
 }
 
 abbr {
@@ -112,13 +120,15 @@ abbr {
 }
 
 strong {
-    color: var(--text-color);
+  color: var(--text-color);
 }
 
 // Lists, blockquotes
 //-------------------------------
 
-ul, ol, dl {
+ul,
+ol,
+dl {
   margin-top: 0;
   margin-bottom: 1.5rem;
 }
@@ -133,7 +143,7 @@ hr {
 }
 
 img {
-    margin: 2.5rem auto;
-    display: block;
-    max-width: 100%;
+  margin: 2.5rem auto;
+  display: block;
+  max-width: 100%;
 }

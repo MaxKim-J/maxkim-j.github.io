@@ -13,6 +13,8 @@ sitemap:
 {% include page/searchbox.html %}
 {% endcapture %}
 
+{% include page/title.html title=page.title subtitle=page_subtitle %}
+
     {% for post in site.posts %}
 
     {% assign category = site.my_categories | where: "slug", post.category %}
