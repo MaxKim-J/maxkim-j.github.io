@@ -6,7 +6,7 @@ url:
   # `http://<username>.github.io` - for GitHub
 
 blog:
-  title: maX🧑🏻‍💻Dev
+  title: max🧑🏻‍💻dev
   description: max의 개발 블로그 Powered By Jekyll/dactl,
 
   # Layout configuration
@@ -23,7 +23,6 @@ blog:
   # Fonts
   font: '"Rubik", -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif'
   load_google_fonts: "Rubik:400,400italic,700,700italic"
-
 # Author info
 author:
   fullname: Max Jonghyuk Kim
@@ -33,7 +32,7 @@ author:
   github: MaxKim-J
   youtube: false
   stackoverflow: false
-  disqus: dactl # your disqus site name
+  disqus: https://maxkim-j.github.io/ # your disqus site name
   google_analytics: # 'UA-XXXXXXXX-X'
   photo: "uploads/me2.png"
   photo2x: "uploads/me.png"
