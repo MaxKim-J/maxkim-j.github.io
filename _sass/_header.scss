@@ -3,7 +3,7 @@
 
 header {
   overflow: hidden;
-  margin-bottom: 5rem;
+  margin-bottom: 3rem;
   display: flex;
   flex-direction: column;
 }
@@ -12,13 +12,13 @@ header {
   font-size: 3.5rem;
   font-weight: $base-font-weight-bold;
   color: var(--link-color);
-
   .logosvg {
     height: 2.7rem;
     -webkit-filter: var(--invert-logo-color);
   }
 }
 
+.logo,
 .menu,
 .social {
   @include centered-block();
@@ -81,7 +81,7 @@ header {
 
 @media (max-width: 48rem) {
   header {
-    margin-bottom: 3rem;
+    margin-bottom: 1rem;
   }
   .menu,
   .social {
@@ -90,9 +90,9 @@ header {
   // fake it till you make it
   .logo {
     .logosvg {
-      display: block;
-      margin: -9rem auto 5rem auto;
-      height: 3rem;
+      // display: block;
+      // margin: -9rem auto 5rem auto;
+      // height: 3rem;
     }
   }
 }

@@ -8,7 +8,7 @@ layout: default
   {% capture desc %}{{ page.description }}{% endcapture %}
   {{ desc | markdownify }}
 {% else %}
-Articles tagged with <strong>‘#{{ page.name }}’</strong>
+<strong>{{ page.name }}</strong> 관련 게시물 모아보기
 {% endif %}
 {% endcapture %}
 
@@ -30,7 +30,7 @@ Articles tagged with <strong>‘#{{ page.name }}’</strong>
           <li>
             <a href="{{ post.url | prepend: site.baseurl }}">
             <span>{{ post.title }}</span>
-            <small>{{ post.date | date: "%d/%m" }}</small>
+            <small>{{ post.date | date: "%m/%d" }}</small>
             </a>
           </li>
 
@@ -41,7 +41,7 @@ Articles tagged with <strong>‘#{{ page.name }}’</strong>
        {% endfor %}
 
      {% else %}
-   <p>There are no posts in this tag.</p>
+   <p>태그에 해당하는 포스트가 없습니다.</p>
 {% endif %}
 
   {% include utils/tag-box.html %}

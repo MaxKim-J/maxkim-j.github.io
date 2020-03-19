@@ -1,18 +1,15 @@
 <div class="tag-box">
-<hr/>
-<span>Check out other tags:</span>
-<ul>
-   {% assign tags = site.tags | sort %}
-   {% for tag in tags %}
-   <li>
-     <a href="/tag/{{ tag | first | slugify }}/">#{{ tag[0] }}</a>
-   </li>
-   {% endfor %}
-</ul>
-<hr/>
+  <hr />
+  <span>다른 태그 보기 :</span>
+  <ul>
+    {% assign tags = site.tags | sort %} {% for tag in tags %}
+    <li>
+      <a href="/tag/{{ tag | first | slugify }}/">#{{ tag[0] }}</a>
+    </li>
+    {% endfor %}
+  </ul>
+  <hr />
 </div>
 
-
-{% comment %}
-{{ tag[0] | replace:'-', ' ' }} ({{ tag | last | size }})
-{% endcomment %}
+{% comment %} {{ tag[0] | replace:'-', ' ' }} ({{ tag | last | size }}) {%
+endcomment %}

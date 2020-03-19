@@ -6,8 +6,10 @@ url:
   # `http://<username>.github.io` - for GitHub
 
 blog:
-  title: max🧑🏻‍💻dev
-  description: max의 개발 블로그 Powered By Jekyll/dactl,
+  title: 맥스킴 개발블로그
+  after_title: MAX
+  before_title: DEV
+  description: max의 개발 블로그 Powered By Jekyll,
 
   # Layout configuration
   logo_path: "" # path to logo file
@@ -32,10 +34,10 @@ author:
   github: MaxKim-J
   youtube: false
   stackoverflow: false
-  disqus: https://maxkim-j.github.io/ # your disqus site name
+  disqus: https-maxkim-j-github-io # your disqus site name
   google_analytics: # 'UA-XXXXXXXX-X'
   photo: "uploads/me2.png"
-  photo2x: "uploads/me.png"
+  photo2x: "uploads/about.jpeg"
 
 ## !!
 ## Advanced blog settings
@@ -53,7 +55,7 @@ permalink: posts/:slug
 excerpt_separator: <!–-break-–>
 
 # Pagination
-paginate: 5
+paginate: 7
 paginate_path: "/page-:num/"
 
 # Tags

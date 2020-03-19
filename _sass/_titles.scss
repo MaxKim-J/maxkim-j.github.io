@@ -88,11 +88,11 @@
 // Hero layout off - blog post titles
 //-------------------------------
 .post-title-container-nohero {
-  margin-bottom: 1.5rem;
+  margin-bottom: 0.7rem;
 
   h1 {
     margin: 0;
-    font-size: $blog-title-size;
+    font-size: 2rem !important;
   }
 }
 
