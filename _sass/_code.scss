@@ -8,6 +8,11 @@ pre {
   font-family: $serif;
 }
 
+
+figure {
+  box-shadow: 0px 0px 0px 1.5px rgba(214,214,214,1);
+}
+
 // small code thingies
 code {
   padding: 0.25em 0.5em;
@@ -20,7 +25,7 @@ code {
 }
 
 code.highlighter-rouge {
-  box-shadow: 0 1px 1px var(--shadow-color);
+  box-shadow: 10px 11px 17px -5px rgba(0,0,0,0.18);
 }
 
 pre code {
@@ -65,7 +70,7 @@ figure,
   // @include figure2();
 
   backface-visibility: hidden;
-  box-shadow: 0 1px 2px var(--shadow-color);
+  // box-shadow: 0 1px 2px var(--shadow-color);
   position: relative;
 
   &:before {
