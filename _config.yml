@@ -49,7 +49,7 @@ plugins:
   - jekyll-sitemap
 
 # Permalinks
-permalink: posts/:slug/
+permalink: posts/:slug
 
 # Posts
 excerpt_separator: <!–-break-–>
