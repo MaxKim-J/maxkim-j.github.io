@@ -9,7 +9,7 @@ blog:
   title: 맥스킴 개발블로그
   after_title: MAX
   before_title: DEV
-  description: max의 개발 블로그 Powered By Jekyll,
+  description: 맥스킴 개발 블로그 powered By Jekyll,
 
   # Layout configuration
   logo_path: "" # path to logo file

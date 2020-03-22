@@ -51,11 +51,11 @@
           title="{{ post.title }}"
           title="{{ post.title }}"
           target="_blank"
-          >{{ post.title }}</a
+          >{{ post.emoji }} {{ post.title }}</a
         >
         &rarr; {% else %}
         <a href="{{ post.url | relative_url }}" title="{{ post.title }}"
-          >{{ post.title }}</a
+          >{{ post.emoji }} {{ post.title }}</a
         >
         {% endif %}
       </h1>

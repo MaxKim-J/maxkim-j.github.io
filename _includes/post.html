@@ -22,7 +22,7 @@
       <h1>
         {% if post.link != nil %}
         <a href="{{ post.link }}" title="{{ post.title }}" target="_blank">
-          {% endif %} {{ post.title }} {% if post.link != nil %} &rarr;
+          {% endif %} {{post.emoji}} {{ post.title }} {% if post.link != nil %} &rarr;
         </a>
         {% endif %}
       </h1>
