@@ -14,7 +14,7 @@ code {
   font-size: 0.85rem !important;
   // Could be mistaken for a link if the user choses a similar link-color, so better no colored inline code.
   // color: $code-color;
-  // background-color: var(--code-bg-color);
+  background-color: var(--code-bg-color);
   // No border radius to prevent repaint on code scroll
   // border-radius: 3px;
 }
