@@ -78,6 +78,7 @@ exclude: ["README.md", "README.html"]
 markdown: kramdown
 # !github-pages! mandatory › https://help.github.com/articles/using-jekyll-with-pages/#configuration-settings-you-cannot-change
 # Since Jekyll 3 the default highlighter is Rouge (replaced Pygments.rb in v44)
+
 highlighter: rouge
 
 # More › http://kramdown.gettalong.org/quickref.html
