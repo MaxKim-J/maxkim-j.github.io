@@ -1,4 +1,4 @@
 ---
 slug: etc
-name: 잡설
+name: etc
 ---
