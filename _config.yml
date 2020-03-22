@@ -62,7 +62,7 @@ paginate_path: "/page-:num/"
 collections:
   my_tags:
     output: true
-    permalink: /tag/:slug/
+    permalink: /tag/:slug
 defaults:
   - scope:
       path: ""
