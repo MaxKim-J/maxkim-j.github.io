@@ -1,9 +1,3 @@
----
-layout: null
-sitemap:
-  exclude: 'yes'
----
 User-agent: *
-Disallow:
-
-Sitemap: {{ site.url }}/sitemap.xml
+Allow: /
+Sitemap: https://maxkim-j.github.io/sitemap.xml
