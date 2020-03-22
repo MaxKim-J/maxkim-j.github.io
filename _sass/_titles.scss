@@ -71,6 +71,12 @@
 }
 
 @media (max-width: 48rem) {
+
+  .post-title-container h1 {
+    font-size: 1.8rem !important;
+    margin-top:40px;
+  }
+
   .page-title,
   .post-title {
     height: 10rem;
