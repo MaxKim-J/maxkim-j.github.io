@@ -2,7 +2,7 @@
 baseurl: "" # the subpath of your site,                         # e.g. /blog/
 # set to '' in case of hosting on GitHub
 url:
-  "https://maxkim-j.github.io/" # the base hostname & protocol for your site
+  "https://maxkim-j.github.io" # the base hostname & protocol for your site
   # `http://<username>.github.io` - for GitHub
 
 blog:
