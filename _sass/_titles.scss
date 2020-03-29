@@ -10,8 +10,10 @@
 
   h1 {
     font-weight: $base-font-weight-bold;
-    font-size: $post-title-size;
+    font-size: 2.8rem;
     border: 0; // reset
+    line-height: 3.2rem;
+
     a {
       display: block; // slide border needs to cover the whole heading
       @include border-slide(left);
@@ -71,10 +73,9 @@
 }
 
 @media (max-width: 48rem) {
-
   .post-title-container h1 {
     font-size: 1.8rem !important;
-    margin-top:40px;
+    margin-top: 40px;
   }
 
   .page-title,
@@ -126,5 +127,10 @@
 @media (max-width: 48rem) {
   .post-title-container-nohero h1 {
     font-size: 2rem;
+    line-height: 2.5rem;
+  }
+
+  .post-title-container h1 {
+    line-height: 2.4rem;
   }
 }
