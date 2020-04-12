@@ -1,4 +1,4 @@
 ---
-slug: React
+slug: react
 name: React.js
 ---
