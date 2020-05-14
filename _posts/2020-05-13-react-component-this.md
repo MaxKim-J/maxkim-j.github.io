@@ -1,4 +1,5 @@
 ---
+num: 5
 layout: post
 title: React 컴포넌트와 this
 description: 그때그때 변하는 this, 리액트에서는?

@@ -1,4 +1,5 @@
 ---
+num: 2
 layout: post
 title: 외대 종강시계 크롬 익스텐션 개발 후기
 emoji: ⏰

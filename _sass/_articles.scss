@@ -57,6 +57,28 @@ article {
   }
 }
 
+.post-pagination {
+  margin-top: 3rem;
+  font-size: 1.2rem;
+  display: flex;
+  justify-content: space-between;
+  .post-pagination-block {
+    background-color: black;
+    color: white;
+    padding: 0.2rem 1rem;
+    font-size: 0.8rem;
+    display: inline;
+  }
+
+  .next {
+    text-align: right;
+  }
+
+  .prev {
+    text-align: left;
+  }
+}
+
 // Bleed image class
 .oversize {
   margin: 2.5rem 0 2.5rem -15%;
@@ -70,5 +92,13 @@ article {
   .whole-post {
     text-align: center;
     display: block;
+  }
+  .post-pagination {
+    flex-direction: column;
+    font-size: 0.8rem;
+  }
+
+  .post-pagination-content {
+    margin-bottom: 1rem;
   }
 }
