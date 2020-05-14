@@ -1,6 +1,7 @@
 # MaxKim Dev Blog
 ![라스트 커밋](https://img.shields.io/github/last-commit/MaxKim-J/maxkim-j.github.io?style=flat-square)
-[맥스킴 개발 블로그](https://maxkim-j.github.io/)
+
+[맥스킴 개발 블로그](https://maxkim-j.github.io/)  
 2020.01~
 
 ## 📝 Commit Rules
