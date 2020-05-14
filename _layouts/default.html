@@ -5,7 +5,8 @@ layout: compress
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    {% include main/head.html %} {% seo %}
+    {%include externals/google_analytics.html %} {% include main/head.html %} {%
+    seo %}
     <link rel="shortcut icon" href="../assets/img/favicon.ico" />
   </head>
 
@@ -13,7 +14,6 @@ layout: compress
     <div class="wrapper" id="blep">
       {% include main/header.html %} {{ content }}
     </div>
-    {% include main/footer.html %} {% include externals/scripting.html %} {%
-    include externals/google_analytics.html %}
+    {% include main/footer.html %} {% include externals/scripting.html %}
   </body>
 </html>
