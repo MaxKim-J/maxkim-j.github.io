@@ -4,9 +4,37 @@
 footer {
   font-size: 0.6em;
   color: var(--text-color-light);
-  text-align: center;
   line-height: $base-line-height;
-  margin: 2rem 0;
+  border-top: 1.3px solid #cecece;
+  position: absolute;
+  left: 0;
+  width: 100%;
+  background-color: #e2e2e2;
+  .footer-wrapper {
+    margin: 2rem auto;
+  }
+  .footer-title {
+    font-size: 2rem;
+    font-weight: 700;
+    width: 100%;
+    color: #545454;
+  }
+
+  .footer-content-copyright {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 2rem;
+    font-size: 0.4rem;
+    a {
+      display: inline;
+    }
+  }
+}
+
+@media (max-width: 48rem) {
+  .footer-content-copyright {
+    flex-direction: column;
+  }
 }
 
 #disqus_thread {

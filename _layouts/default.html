@@ -12,8 +12,9 @@ layout: compress
 
   <body>
     <div class="wrapper" id="blep">
-      {% include main/header.html %} {{ content }}
+      {% include main/header.html %} {{ content }} {% include main/footer.html
+      %}
     </div>
-    {% include main/footer.html %} {% include externals/scripting.html %}
+    {% include externals/scripting.html %}
   </body>
 </html>
