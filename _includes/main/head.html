@@ -5,20 +5,10 @@
   content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no"
 />
 <title>
-  {% if page.title == "Blog" %}
-  {{ site.blog.title }}
-  {% else %}
-  {{ site.blog.title }} |
-  {% endif %}
-    {% if page.title == "Blog" %}
-    {{ site.tagline }}
-    {% else %}
-      {% if page.tag %}
-      {{ site.data.tags[page.tag].name }}
-      {% else %}
-      {{ page.title }}
-    {% endif %}
-  {% endif %}
+  {% if page.title == "Blog" %} {{ site.blog.title }} {% else %} {{
+  site.blog.title }} | {% endif %} {% if page.title == "Blog" %} {{ site.tagline
+  }} {% else %} {% if page.tag %} {{ site.data.tags[page.tag].name }} {% else %}
+  {{ page.title }} {% endif %} {% endif %}
 </title>
 <!--{% if page.description %}
 {% capture desc %}{{ page.description }}{:.message}{% endcapture %}
@@ -77,6 +67,7 @@ relative_url }}"> {% if site.blog.load_google_fonts %}
   rel="stylesheet"
   href="https://fonts.googleapis.com/css?family={{ site.blog.load_google_fonts }}"
 />
+
 <style>
   html {
     font-family: {{ site.blog.font }};

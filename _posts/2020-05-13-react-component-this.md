@@ -25,7 +25,7 @@ published: true
 
 ## 생명주기 메서드
 먼저 생명주기 메서드의 `this`가 어디에 바인딩되는지 알아보겠습니다.
-{% highlight javascript %}
+{% highlight js %}
 import React from "react";
 
 class App extends React.Component {
@@ -47,12 +47,12 @@ class App extends React.Component {
 }
 
 export default App;
-{% endhighlight %}
+{%endhighlight%}
 
 이렇게 클래스 컴포넌트를 만들고 실행해보면, 콘솔에 이렇게 찍히는 것을 알 수 있습니다([codesandbox](https://codesandbox.io/s/new)를 사용했습니다.)
 ![깃신](../uploads/react-this/lifecycle-this.png)
 생명주기 메서드의 this는 메서드를 호출한 **해당 컴포넌트**를 가리킵니다. `this`가 컴포넌트를 가리키고 있으니 컴포넌트 안에 선언한 다른 메서드도 생명주기 메서드 안에서 `this`를 사용하면 잘 불립니다. 
-{% highlight javascript %}
+{% highlight js %}
 import React from "react";
 
 class App extends React.Component {
@@ -79,6 +79,8 @@ class App extends React.Component {
 
 export default App;
 {% endhighlight %}
+
+
 ![깃신](../uploads/react-this/method-this.png)
 
 이렇게 컴포넌트에서 선언한 메서드 역시 해당 컴포넌트가 `this`로 바인딩되어 있는 것으로 보입니다. 

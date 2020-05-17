@@ -3,6 +3,8 @@
 // Inline and block-level code snippets. Includes tweaks to syntax highlighted
 // snippets from Rouge and Gist embeds.
 
+@import "../assets/css/syntax2";
+
 code,
 pre {
   font-family: $serif;
@@ -78,6 +80,11 @@ figure,
   backface-visibility: hidden;
   // box-shadow: 0 1px 2px var(--shadow-color);
   position: relative;
+  background: $color00;
+  border-radius: 5px;
+  line-height: 20px;
+  padding: 20px;
+  margin: 1.4rem 0;
 
   &:before {
     position: absolute;
@@ -93,16 +100,20 @@ figure,
     box-shadow: 0 1px 2px var(--shadow-color);
   }
 
-  pre {
-    line-height: 1.6;
-    margin-bottom: 0;
-    overflow-x: auto;
+  pre code {
+    padding: 0;
+    background: none;
+    font-size: 13px;
+    white-space: pre;
+    white-space: pre-wrap;
+    word-break: break-all;
+    word-wrap: break-word;
   }
 
   .lineno {
     display: inline-block; // Ensures the null space also isn't selectable
     padding-right: 0.25rem;
-    color: var(--metadata-color);
+    color: var($color00);
     // Make sure numbers aren't selectable
     -webkit-user-select: none;
     -moz-user-select: none;
@@ -127,7 +138,7 @@ figure,
     }
 
     td.gutter {
-      background: var(--code-border);
+      background: var($color00);
       box-shadow: 0 1px 2px var(--shadow-color);
       width: 6%;
     }
@@ -144,25 +155,3 @@ figure,
     display: none;
   }
 }
-
-// Gist via GitHub Pages
-// .gist .gist-file {
-//   font-family: Menlo, Monaco, "Courier New", monospace !important;
-// }
-// .gist .markdown-body {
-//   padding: 15px;
-// }
-// .gist pre {
-//   padding: 0;
-//   background-color: transparent;
-// }
-// .gist .gist-file .gist-data {
-//   font-size: .8rem !important;
-//   line-height: 1.4;
-// }
-// .gist code {
-//   padding: 0;
-//   color: inherit;
-//   background-color: transparent;
-//   border-radius: 0;
-// }
