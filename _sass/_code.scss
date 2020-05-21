@@ -73,7 +73,7 @@ figure,
   margin-bottom: 1.5rem;
   font-size: 0.75em;
   // /* Prevent code linebreaks and allow side-scrolling (much better readability on mobile) */
-  overflow-x: auto;
+  overflow-x: scroll;
   -webkit-overflow-scrolling: touch;
   // /* Make code same width as regular text, and scroll the full page width on mobile */
   // @include figure2();
@@ -90,14 +90,13 @@ figure,
   &:before {
     position: absolute;
     top: 0;
-    right: 0;
+    left: 0;
     padding: 0.5em;
     // background-color: var(--code-border);
     content: "\e86f";
     font-family: "icomoon" !important;
     line-height: 1;
     text-transform: none;
-    speak: none;
     box-shadow: 0 1px 2px var(--shadow-color);
   }
 
@@ -105,8 +104,6 @@ figure,
     padding: 0;
     background: none;
     font-size: 13px;
-    white-space: pre;
-    white-space: pre-wrap;
     word-break: break-all;
     word-wrap: break-word;
   }
