@@ -80,6 +80,7 @@ figure,
 
   backface-visibility: hidden;
   // box-shadow: 0 1px 2px var(--shadow-color);
+
   position: relative;
   background: $color00;
   border-radius: 5px;
@@ -106,6 +107,7 @@ figure,
     font-size: 13px;
     word-break: break-all;
     word-wrap: break-word;
+    white-space: pre;
   }
 
   .lineno {
