@@ -90,8 +90,7 @@ export default App;
 
 ![깃신](../uploads/react-this/reactApp.png)
 
-
-{% highlight javascript %}
+{% highlight js %}
 import React from "react";
 
 class App extends React.Component {
