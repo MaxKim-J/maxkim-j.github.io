@@ -14,7 +14,6 @@ pre {
 figure {
   // background-color: #eaeaea;
   background-color: var(--code-bg-color);
-  border: 1px solid var(--code-border);
 }
 
 // small code thingies
@@ -73,14 +72,16 @@ figure,
   margin-bottom: 1.5rem;
   font-size: 0.75em;
   // /* Prevent code linebreaks and allow side-scrolling (much better readability on mobile) */
-  overflow-x: scroll;
+  // overflow-x: scroll;
   -webkit-overflow-scrolling: touch;
   // /* Make code same width as regular text, and scroll the full page width on mobile */
   // @include figure2();
 
-  backface-visibility: hidden;
+  // backface-visibility: hidden;
   // box-shadow: 0 1px 2px var(--shadow-color);
-
+  -webkit-box-shadow: 4px 3px 5px -2px rgba(0, 0, 0, 0.57);
+  -moz-box-shadow: 4px 3px 5px -2px rgba(0, 0, 0, 0.57);
+  box-shadow: 4px 3px 5px -2px rgba(0, 0, 0, 0.57);
   position: relative;
   background: $color00;
   border-radius: 5px;
@@ -98,7 +99,7 @@ figure,
     font-family: "icomoon" !important;
     line-height: 1;
     text-transform: none;
-    box-shadow: 0 1px 2px var(--shadow-color);
+    // box-shadow: 0 1px 2px var(--shadow-color);
   }
 
   pre code {
