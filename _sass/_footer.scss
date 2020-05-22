@@ -4,12 +4,13 @@
 footer {
   font-size: 0.6em;
   color: var(--text-color);
+  background-color: var(--footer-bg-color);
+
   line-height: $base-line-height;
   border-top: 1.3px solid #cecece;
   position: absolute;
   left: 0;
   width: 100%;
-  background-color: var(--footer-bg-color);
   .footer-wrapper {
     margin: 2rem auto;
   }
