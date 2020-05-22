@@ -2,14 +2,16 @@
 // https://www.fdp.io/blog/2016/11/08/theming-via-css-properties/
 
 // Polyfilling Object.entries for Safari :/
-Object.entries = object => Object.keys(object).map(key => [key, object[key]]);
+Object.entries = (object) =>
+  Object.keys(object).map((key) => [key, object[key]]);
 
-const isObject = obj => obj === Object(obj);
+const isObject = (obj) => obj === Object(obj);
 
 const LightTheme = {
-  "--bg-color": "#eee",
-  "--text-color": "#484848",
+  "--bg-color": "#FFFFFF",
+  "--text-color": "#000",
   "--text-color-light": "#828282",
+  "--footer-bg-color": "#f2f2f2",
   "--link-color": "#000",
   "--metadata-color": "#999",
   "--post-title": "#313131",
@@ -19,13 +21,14 @@ const LightTheme = {
   "--table-header-color": "#fefefe",
   "--shadow-color": "rgba(0, 0, 0, 0.1)",
   "--invert-logo-color": "invert(0)",
-  themeName: "LightTheme"
+  themeName: "LightTheme",
 };
 
 const NightTheme = {
   "--bg-color": "#1c1c1c",
   "--text-color": "#c4c4c4",
   "--text-color-light": "#777",
+  "--footer-bg-color": "#353535",
   "--link-color": "#f1f1f1",
   "--metadata-color": "#666",
   "--post-title": "#fff",
@@ -35,13 +38,13 @@ const NightTheme = {
   "--table-header-color": "#505050",
   "--shadow-color": "rgba(255, 255, 255, 0.1)",
   "--invert-logo-color": "invert(1)",
-  themeName: "NightTheme"
+  themeName: "NightTheme",
 };
 
 const setCSSVariable = (key, value) =>
   document.body.style.setProperty(key, value);
 
-const saveTheme = theme => {
+const saveTheme = (theme) => {
   if (window.localStorage) {
     localStorage["theme"] = JSON.stringify(theme);
     localStorage["currentTheme"] = theme.themeName;
@@ -57,7 +60,7 @@ const loadSavedTheme = () => {
   return null;
 };
 
-const updateTheme = theme => {
+const updateTheme = (theme) => {
   if (!isObject(theme)) return;
 
   Object.entries(theme).forEach(([key, value]) => setCSSVariable(key, value));
@@ -84,7 +87,7 @@ const switchTheme = () => {
   }
 };
 
-const iconForTheme = themeName => {
+const iconForTheme = (themeName) => {
   if (themeName === NightTheme.themeName) {
     return "icon-invert_colors";
   } else {

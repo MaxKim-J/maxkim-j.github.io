@@ -3,13 +3,13 @@
 
 footer {
   font-size: 0.6em;
-  color: var(--text-color-light);
+  color: var(--text-color);
   line-height: $base-line-height;
   border-top: 1.3px solid #cecece;
   position: absolute;
   left: 0;
   width: 100%;
-  background-color: #e2e2e2;
+  background-color: var(--footer-bg-color);
   .footer-wrapper {
     margin: 2rem auto;
   }
@@ -17,7 +17,6 @@ footer {
     font-size: 2rem;
     font-weight: 700;
     width: 100%;
-    color: #545454;
   }
 
   .footer-content-copyright {
