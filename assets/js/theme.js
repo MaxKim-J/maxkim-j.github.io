@@ -61,16 +61,17 @@ const loadSavedTheme = () => {
 };
 
 const updateTheme = (theme) => {
-  if (!isObject(theme)) return;
-
   Object.entries(theme).forEach(([key, value]) => setCSSVariable(key, value));
-
   saveTheme(theme);
 };
 
 const checkForSavedTheme = () => {
   const theme = loadSavedTheme();
-  if (theme) updateTheme(theme);
+  if (theme) {
+    updateTheme(theme);
+  } else {
+    updateTheme(LightTheme);
+  }
 };
 
 const switchTheme = () => {
