@@ -11,10 +11,10 @@ layout: compress
   </head>
 
   <body>
+    {% include externals/scripting.html %}
     <div class="wrapper" id="blep">
       {% include main/header.html %} {{ content }} {% include main/footer.html
       %}
     </div>
-    {% include externals/scripting.html %}
   </body>
 </html>
