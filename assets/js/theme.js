@@ -103,7 +103,6 @@ const el = document.getElementById("theme-switcher");
 
 if (window.localStorage && localStorage["currentTheme"]) {
   var iconClasses = iconForTheme(localStorage["currentTheme"]);
-  el.className = iconClasses;
 } else {
   el.className = iconForTheme();
 }
