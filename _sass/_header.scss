@@ -89,6 +89,9 @@ header {
   }
   // fake it till you make it
   .logo {
+    a {
+      font-size: 3rem;
+    }
     .logosvg {
       // display: block;
       // margin: -9rem auto 5rem auto;
