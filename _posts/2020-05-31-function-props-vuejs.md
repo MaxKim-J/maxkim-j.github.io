@@ -10,7 +10,7 @@ tags:
 published: true
 ---
 
-React에서 상위 컴포넌트의 state를 하위 컴포넌트에서 수정하기 위해서는 해당 state를 수정하는 함수를 상위 컴포넌트에서 함께 props로 넘겨야 합니다. **이 방식이 Vue에서도 가능할지 궁금했습니다.** Vue에서는 하위 컴포넌트에서 event를  발생(emit)시키고 상위 컴포넌트에서 이를 감지해 특정 로직을 수행하는 방법을 사용하죠. <!–-break-–>이 포스팅에서는 React.js의 function props와 Vue.js의 event emit이라는 두 상위 컴포넌트 데이터 업데이트 방식을 비교해볼까 합니다.
+React에서 상위 컴포넌트의 state를 하위 컴포넌트에서 업데이트하기 위해서는 해당 state를 갱신하는 함수를 상위 컴포넌트에서 함께 props로 넘겨야 합니다. **이 방식이 Vue에서도 가능할지 궁금했습니다.** Vue에서는 하위 컴포넌트에서 event를  발생(emit)시키고 상위 컴포넌트에서 이를 감지해 특정 로직을 수행하는 방법을 사용하죠. <!–-break-–>이 포스팅에서는 React.js의 function props와 Vue.js의 event emit이라는 두 상위 컴포넌트 데이터 업데이트 방식을 비교해볼까 합니다.
 {: .lead}
 ![뷰](../uploads/vue-props/meta.png)
 
