@@ -1,16 +1,16 @@
 ---
 layout: post
-title: Vue.js에서 함수를 props로 넘길 수 있을까?(event emit vs function props)
+title: function props는 Vue의 안티패턴일까?
 description: React와 Vue의 상위 컴포넌트 데이터 업데이트 방식 비교
 image: /uploads/vue-props/meta.png
-emoji: 📩
+emoji: 🤨
 tags:
   - vue
-  - react
+  - javascript
 published: true
 ---
 
-React에서 상위 컴포넌트의 state를 하위 컴포넌트에서 수정하기 위해서는 해당 state를 수정하는 함수를 상위 컴포넌트에서 함께 props로 넘겨야 합니다. 이 방식이 Vue에서도 가능할지 궁금했습니다.<!–-break-–>Vue에서는 일반적으로 하위 컴포넌트에서 event를  발생(emit)시키고 상위 컴포넌트에서 이를 감지해 특정 로직을 수행하는 방법을 사용하죠. 이 포스팅에서는 React.js의 function props와 Vue.js의 event emit이라는 두 상위 컴포넌트 데이터 업데이트 방식을 비교해볼까 합니다. 
+React에서 상위 컴포넌트의 state를 하위 컴포넌트에서 수정하기 위해서는 해당 state를 수정하는 함수를 상위 컴포넌트에서 함께 props로 넘겨야 합니다. **이 방식이 Vue에서도 가능할지 궁금했습니다.** Vue에서는 하위 컴포넌트에서 event를  발생(emit)시키고 상위 컴포넌트에서 이를 감지해 특정 로직을 수행하는 방법을 사용하죠. <!–-break-–>이 포스팅에서는 React.js의 function props와 Vue.js의 event emit이라는 두 상위 컴포넌트 데이터 업데이트 방식을 비교해볼까 합니다.
 {: .lead}
 ![뷰](../uploads/vue-props/meta.png)
 
@@ -84,7 +84,7 @@ export default {
 <template>
 <!-- 하위 컴포넌트 showCount.vue -->
   <div>
-    <div>{{count}}</div>
+    <div>{% raw %}{{ count }}{% endraw %}</div>
     <button @click="increaseEventEmit">누르면 증가</button>
   </div>
 </template>
@@ -125,7 +125,7 @@ Vue에서도 리액트에서처럼 함수를 props으로 넘겨 상위 컴포넌
 {%highlight html%}
 <template>
   <div>
-    <div>{{count}}</div>
+    <div>{% raw %}{{ count }}{% endraw %}</div>
     <button @click="increaseCount">누르면 증가</button>
   </div>
 </template>
@@ -143,7 +143,7 @@ export default {
 
 어떤가요? 아까 event emit을 사용했던 코드와 똑같이 잘 작동합니다. Vue에서도 function props는 잘 작동하네요!
 
-## function props는 Vue의 안티패턴인가?
+## 쓰면 안 될까?
 
 Vue에서 function props가 잘 작동한다는 것을 알게 되었습니다. 그렇다면 이게 Vue의 안티패턴일까요? 그렇게 말할 수 있는 충분한 근거를 찾지는 못했습니다. 다만 아래와 같은 의견이 존재하기는 합니다.
 
@@ -151,7 +151,7 @@ Vue에서 function props가 잘 작동한다는 것을 알게 되었습니다. �
 
 2. 한 컴포넌트 여러번 재사용하는 경우, 그 컴포넌트에 일일히 함수를 prop으로 넘기는 것 보다 event emit을 이용하는게 더 깔끔하다는 의견 [(관련 포스팅)](https://medium.com/js-dojo/using-react-style-callback-props-with-vue-pros-and-cons-e0ee7455695b)
 
- 저는 둘 다 잘 모르겠습니다. 첫 번째 의견은 일리가 있지만 function props를 Vue에서 쓰지 말자는 충분한 근거가 되지 못합니다. 두 번째 의견은 props로 함수를 넘겨주는 것과 해당 컴포넌트에 이벤트를 바인딩 해주는 것 사이에 유의미한 코드 수나 가독성 차이가 생기지 않는 것 같아서 잘 모르겠습니다. 물론 두 방식을 섞어쓰는 것 보다는 하나만 쓰는게 낫겠지만요. 판단은 유보하고, 두 방식의 확실한 차이점을 알아보며 포스팅을 마무리하려 합니다. 
+ 저는 둘 다 잘 모르겠습니다. 첫 번째 의견은 일리가 있지만 function props를 쓰지 말자는 충분한 근거가 되지 못합니다. 두 번째 의견은 props로 함수를 넘겨주는 것과 해당 컴포넌트에 이벤트를 바인딩 해주는 것 사이에 유의미한 코드 수나 가독성 차이가 생기지 않는 것 같아서 잘 모르겠습니다. 물론 두 방식을 섞어쓰는 것 보다는 하나만 쓰는게 낫겠지만요. 판단은 유보하고, 두 방식의 확실한 차이점을 알아보며 포스팅을 마무리하려 합니다. 
 
 ### React와 Vue 컴포넌트간 통신 방식 차이
 
