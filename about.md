@@ -51,6 +51,6 @@ TS, express.js, Java, CS(특히 Algorithm)
 - 병목현상
 - 아는 척
 
-자세한 이력과 레주메는 [깃헙 프로필](https://github.com/MaxKim-J)을 참고해주세요!
+자세한 이력은 [깃헙 레주메](https://github.com/MaxKim-J/RESUME)을 참고해주세요!
 
 </div>
