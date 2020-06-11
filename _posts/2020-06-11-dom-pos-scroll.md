@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 스크롤에 따른 DOM 요소 위치(좌표) 얻는 법
-description: React와 Vue의 상위 컴포넌트 데이터 업데이트 방식 비교
+description: DOM 요소의 좌표를 구하는 방법을 알아봅시다.
 image: /uploads/default.png
 emoji: 📍
 tags:
