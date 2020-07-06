@@ -18,7 +18,7 @@ published: true
 **본명** : 김종혁  
 **학력** : 한국외대 영미문학문화학과, 융복합 소프트웨어 연계전공 3학년 재학 중  
 **개발 시작** : 2019년 6월  
-**거주지** : 서울
+**거주지** : 서울  
 **깃헙** : [github.com/MaxKim-J](https://github.com/MaxKim-J)
 
 >**👋🏻 반갑습니다. 맥스킴입니다 !**  
@@ -27,14 +27,14 @@ published: true
 ## 할 수 있는 것/경험이 있는 것
 
 **markup** : HTML, css(sass)  
-**JS** : ES6+, React.js(Next.js, redux), Vue.js(Vuex)  
+**JS** : ES6+, React.js(Next.js, redux), Vue.js(Vuex), Typescript  
 **Python** : Django  
-**crawling** : cheerio, puppeteer
+**crawling** : cheerio, puppeteer  
 **infrastructure** : firebase functions/store, AWS Elastic Beanstalk/S3
 
 ## 배우고 있는 것
 
-TypeScript, express.js, Java, CS(특히 Algorithm)
+AWS, express.js, Java, CS(특히 Algorithm)
 
 ## 관심사
 
