@@ -1,4 +1,4 @@
 ---
-slug: Vue
+slug: vue
 name: Vue.js
 ---
