@@ -14,7 +14,7 @@ published: true
 
 ## MainClock.vue
 
-![mainclock](../uploads/vue-comp-test/mainclock.png)
+![mainclock](../uploads/vue-comp-test/mainClock.png)
 
 일단 MainClock.vue 컴포넌트는 앱에서의 저 시계 부분입니다. 현재서부터 종강까지의 시간을 표시한다는 점에서 종강시계 앱의 가장 핵심적인 부분이죠. 컴포넌트의 코드를 하나하나 설명하기보다는, 주요한 동작 방식과 테스트에 쓰일 변수들을 간략히 설명해보겠습니다.
 
