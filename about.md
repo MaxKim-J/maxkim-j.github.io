@@ -12,44 +12,53 @@ published: true
 
 {% include page/title.html title=page.title subtitle=page.subtitle %}
 
-## 프로필
+## Profile
+
 <img src="/uploads/about.jpeg" width="300" height="360" style="margin:0">
 
-**본명** : 김종혁  
-**학력** : 한국외대 영미문학문화학과, 융복합 소프트웨어 연계전공 3학년 재학 중  
-**개발 시작** : 2019년 6월  
-**거주지** : 서울  
-**깃헙** : [github.com/MaxKim-J](https://github.com/MaxKim-J)
+**Name** : 김종혁  
+**Education** : 한국외대 영미문학문화학과, 융복합 소프트웨어 연계전공 3학년 재학 중  
+**Start Development** : 2019년 6월  
+**Residence** : 서울  
+**Github** : [github.com/MaxKim-J](https://github.com/MaxKim-J)
 
 >**👋🏻 반갑습니다. 맥스킴입니다 !**  
 
 이것저것 보고 배우고 만듭니다. 개발을 시작하고 지금까지는 자바스크립트를 사용한 웹 클라이언트 개발을 주로 해왔지만, 어떤 분야의 개발자가 되고 싶은지는 아직 미정입니다.  
 
-## 할 수 있는 것/경험이 있는 것
+## Skills
 
-**Main Lang** : Javascript, Python
+### Web Dev
 
-**Client** : HTML, CSS(SASS), ES6+, React.js(Next.js, Redux), Vue.js(Vuex), TypeScript  
-**Server** : Express.js, Django  
-**DataBase** :  
-**Crawling** : cheerio, puppeteer  
-**Infrastructure** : firebase functions/store, AWS Elastic Beanstalk/S3  
+- **Main Lang** : Javascript, Python
+- **Client** : HTML, CSS(SASS), ES6+, TypeScript,React.js(Next.js, Redux), Vue.js(Vuex)
+- **Server** : Express.js, Django  
+- **Crawling** : cheerio, puppeteer  
+- **Infrastructure** : firebase functions/store, AWS Elastic Beanstalk/S3  
 
-## 배우고 있는 것
+### Design Tools
 
-AWS, express.js, Java, CS(특히 Algorithm)
+- Photoshop CC, CS5+
+- Illustrator CC, CS5+
+- Sketch
 
-## 관심사
+### Currently Learning
 
-- 유저 경험
-- 문서화
-- README 꾸미기
-- 예쁜 코드
-- 프론트엔드
+- AWS, DataBase, Java, Algorithm  
 
-## 구직 관련
+## Interest
 
-- [깃헙 레주메](https://github.com/MaxKim-J/RESUME)
-- [로켓펀치 프로필](https://www.rocketpunch.com/@hwaseen)
+- User Experience
+- Documentation
+- Edit README
+- Clean Code
+- Front-end
+
+## More Info
+
+- [RESUME - 한국어](https://github.com/MaxKim-J/RESUME)
+- [RESUME - Eng](https://www.notion.so/projectmaxkim/RESUME-Max-Jonghyuk-Kim-fac8c0b9eb274fcfbc4d591bdb288b34)
+- [Portfolio](https://www.notion.so/projectmaxkim/527e6946f5d947d2a1c7a1c232244504)
+- [Rocketpunch Profile](https://www.rocketpunch.com/@hwaseen)
 
 </div>
