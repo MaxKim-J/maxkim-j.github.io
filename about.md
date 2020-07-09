@@ -12,17 +12,19 @@ published: true
 
 {% include page/title.html title=page.title subtitle=page.subtitle %}
 
-## Profile
+<div style="display:flex;justify-content:center">
 
-<img src="/uploads/about.jpeg" width="300" height="360" style="margin:0">
-
-**Name** : 김종혁  
-**Education** : 한국외대 영미문학문화학과, 융복합 소프트웨어 연계전공 3학년 재학 중  
-**Start Development** : 2019년 6월  
-**Residence** : 서울  
-**Github** : [github.com/MaxKim-J](https://github.com/MaxKim-J)
+<div>
+<img src="/uploads/about.jpeg" width="300" height="360" style="margin:0"/>
+<div><strong>Name</strong> : 김종혁, Max Jonghyuk Kim </div>
+<div><strong>Start Development</strong> : 2019년 6월  </div>
+<div><strong>Residence</strong> : 서울   </div>
+<div><strong>Contact</strong> : <a href="mailto:hwaseen@gmail.com">이메일(클릭)</a> </div>
+</div>
+</div>
 
 >**👋🏻 반갑습니다. 맥스킴입니다 !**  
+---
 이것저것 보고 배우고 만듭니다. 개발을 시작하고 지금까지는 자바스크립트를 사용한 웹 클라이언트 개발을 주로 해왔지만, 어떤 분야의 개발자가 되고 싶은지는 아직 미정입니다.  
 
 ## Skills
@@ -53,11 +55,11 @@ published: true
 - Clean Code
 - Front-end
 
-## More Info
+## More Details
 
 - [RESUME - 한국어](https://github.com/MaxKim-J/RESUME)
 - [RESUME - Eng](https://www.notion.so/projectmaxkim/RESUME-Max-Jonghyuk-Kim-fac8c0b9eb274fcfbc4d591bdb288b34)
 - [Portfolio](https://www.notion.so/projectmaxkim/527e6946f5d947d2a1c7a1c232244504)
-- [Rocketpunch Profile](https://www.rocketpunch.com/@hwaseen)
+- [RocketPunch Profile](https://www.rocketpunch.com/@hwaseen)
 
 </div>
