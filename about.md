@@ -22,15 +22,18 @@ published: true
 **깃헙** : [github.com/MaxKim-J](https://github.com/MaxKim-J)
 
 >**👋🏻 반갑습니다. 맥스킴입니다 !**  
+
 이것저것 보고 배우고 만듭니다. 개발을 시작하고 지금까지는 자바스크립트를 사용한 웹 클라이언트 개발을 주로 해왔지만, 어떤 분야의 개발자가 되고 싶은지는 아직 미정입니다.  
 
 ## 할 수 있는 것/경험이 있는 것
 
-**markup** : HTML, css(sass)  
-**JS** : ES6+, React.js(Next.js, redux), Vue.js(Vuex), Typescript  
-**Python** : Django  
-**crawling** : cheerio, puppeteer  
-**infrastructure** : firebase functions/store, AWS Elastic Beanstalk/S3
+**Main Lang** : Javascript, Python
+
+**Client** : HTML, CSS(SASS), ES6+, React.js(Next.js, Redux), Vue.js(Vuex), TypeScript  
+**Server** : Express.js, Django  
+**DataBase** :  
+**Crawling** : cheerio, puppeteer  
+**Infrastructure** : firebase functions/store, AWS Elastic Beanstalk/S3  
 
 ## 배우고 있는 것
 
@@ -45,6 +48,7 @@ AWS, express.js, Java, CS(특히 Algorithm)
 - 프론트엔드
 
 ## 구직 관련
+
 - [깃헙 레주메](https://github.com/MaxKim-J/RESUME)
 - [로켓펀치 프로필](https://www.rocketpunch.com/@hwaseen)
 
