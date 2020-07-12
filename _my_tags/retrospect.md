@@ -1,4 +1,4 @@
 ---
-slug: Retrospect
+slug: retrospect
 name: Retrospect
 ---

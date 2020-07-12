@@ -5,7 +5,7 @@ description: 유지보수중인 개인 프로젝트에 테스트 코드를 붙�
 image: /uploads/vue-comp-test/vuetest.png
 emoji: 🧪
 tags:
-  - Vue
+  - vue
   - TDD
 published: true
 ---
