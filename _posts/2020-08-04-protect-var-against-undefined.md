@@ -1,6 +1,6 @@
 ---
 layout: post
-title: undefined로 부터 소중한 변수를 지키는 방법
+title: undefined로부터 소중한 변수를 지키는 방법
 description: JS 변수에 예기치 않은 undefined 할당을 방지하는 문법들
 image: /uploads/default.png
 emoji: 🚧
