@@ -15,8 +15,8 @@ published: true
 
 {% highlight javascript %}
 const zooObj = {
-	cat: {age:4, color:'orange'},
-	dog: {age:7, color:'black'},
+  cat: {age:4, color:'orange'},
+  dog: {age:7, color:'black'},
 }
 
 console.log(animalsObj.elephant)  //undefined - 에러가 나지 않는다 
@@ -26,7 +26,7 @@ console.log(animalsObj.elephant)  //undefined - 에러가 나지 않는다
 console.log(animalsObj.elephant.age) 
 
 function getElephantAge() {
-	return zooObj.elephant.age
+  return zooObj.elephant.age
 }
 {% endhighlight %}
 
@@ -38,13 +38,13 @@ function getElephantAge() {
 
 {% highlight javascript %}
 const defaultZooObj = {
-    cat:{age:4, color:"red"},
-    dog:{age:5, color:"black"},
-    elephant:{age:34, color:"green"},
+  cat:{age:4, color:"red"},
+  dog:{age:5, color:"black"},
+  elephant:{age:34, color:"green"},
 }
 
 function getElephantAge(zooObj = defaultZooObj) {
-    return zooObj.elephant.age
+  return zooObj.elephant.age
 }
 
 const elphantAge = getElephantAge(undefined) //34
@@ -56,7 +56,7 @@ const elphantAge = getElephantAge(undefined) //34
 
 {% highlight javascript %}
 function addAge(elephantAge=34, myAge=25){
-	return elephantAge + myAge
+  return elephantAge + myAge
 }
 
 addAge(undefined, 20) // 54
@@ -89,9 +89,9 @@ const elephantAge = zooObj.elephant ?? 0
 
 // 얼추 위와 같습니다
 if(zooObj.elephant) {
-	return true
+  return true
 } else {
-	return false
+  return false
 }
 
 // optinal chaining과 궁합이 좋습니다.
