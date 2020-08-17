@@ -16,7 +16,7 @@ title: "Blog"
   </div>
 </div>
 
-<div class="dev-post" style="display: block;">
+<div class="dev-post active">
   {% for post in paginator.posts %} 
   {% unless post.tags contains "weekly" %}
   {% include blog.html %} 
@@ -24,7 +24,7 @@ title: "Blog"
   {% endfor %} 
 </div>
 
-<div class="weekly-post" style="display: none;">
+<div class="weekly-post hidden">
   {% for post in site.tags.weekly %} 
   {% include blog.html %} 
   {% endfor %}   
@@ -38,20 +38,20 @@ var dev = document.querySelector('.dev')
 var weekly = document.querySelector('.weekly')
 var devPost = document.querySelector('.dev-post')
 var weeklyPost = document.querySelector('.weekly-post')
-console.log(dev)
-console.log(weekly)
 
 
 dev.addEventListener('click', function() {
-  console.log('devclick')
-  weeklyPost.style.display = 'none'
-  devPost.style.display = 'block'
+  weeklyPost.classList.remove('active')
+  devPost.classList.remove('hidden')
+  weeklyPost.classList.add('hidden')
+  devPost.classList.add('active')
 })
 
 weekly.addEventListener('click', function() {
-  console.log('week click')
-  devPost.style.display = 'none'
-  weeklyPost.style.display = 'block'
+  devPost.classList.remove('active')
+  weeklyPost.classList.remove('hidden')
+  devPost.classList.add('hidden')
+  weeklyPost.classList.add('active')
 })
 
 </script>

@@ -5,6 +5,7 @@
   display: flex;
   justify-content: center;
   div {
+    cursor: pointer;
     margin-bottom: 3rem;
     font-size: 1rem;
     background-color: black;
@@ -12,8 +13,36 @@
     display: inline-block;
     padding: 0px 20px;
     margin-right:1rem;
+    transition: background-color 0.5s;
+  }
+  div:hover {
+    background-color: #ffffff;
+    color: black;
+    text-decoration: underline;
   }
 }
+
+.active {
+  display: block;
+  animation: appear .3s ease-out;
+}
+
+.hidden {
+  display: none;
+  animation: disappear .3s ease-out;
+}
+
+@keyframes appear {
+  0% { opacity: 0; }   
+  100% { opacity: 1; }
+}
+
+@keyframes disappear {
+  0% { opacity: 1; }   
+  100% { opacity: 0;}
+}
+
+
 
 article {
   &.blog {
