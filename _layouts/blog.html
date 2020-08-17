@@ -3,7 +3,7 @@ layout: default
 title: "Blog"
 ---
 
-{% assign weekly_size = site.tags.weekly | size %}
+{% assign short_size = site.tags.short | size %}
 {% assign dev_size = site.posts | size %}
 
 
@@ -12,20 +12,20 @@ title: "Blog"
     개발 포스트 {{dev_size | minus:weekly_size}}개
   </div>
   <div class="weekly">
-    주간 회고 {{weekly_size}}개
+    짧은 포스트 {{short_size}}개
   </div>
 </div>
 
 <div class="dev-post active">
   {% for post in paginator.posts %} 
-  {% unless post.tags contains "weekly" %}
+  {% unless post.tags contains "short" %}
   {% include blog.html %} 
   {% endunless %}
   {% endfor %} 
 </div>
 
 <div class="weekly-post hidden">
-  {% for post in site.tags.weekly %} 
+  {% for post in site.tags.short %} 
   {% include blog.html %} 
   {% endfor %}   
 </div>
