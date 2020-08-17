@@ -3,10 +3,55 @@ layout: default
 title: "Blog"
 ---
 
+{% assign weekly_size = site.tags.weekly | size %}
+{% assign dev_size = site.posts | size %}
+
+
 <div class="whole-post">
-  <div>
-    전체 포스트 {{site.posts | size}}개
+  <div class="dev">
+    개발 포스트 {{dev_size | minus:weekly_size}}개
+  </div>
+  <div class="weekly">
+    주간 회고 {{weekly_size}}개
   </div>
 </div>
-{% for post in paginator.posts %} {% include blog.html %} {% endfor %} {%
-include post/pagination.html %}
+
+<div class="dev-post" style="display: block;">
+  {% for post in paginator.posts %} 
+  {% unless post.tags contains "weekly" %}
+  {% include blog.html %} 
+  {% endunless %}
+  {% endfor %} 
+</div>
+
+<div class="weekly-post" style="display: none;">
+  {% for post in site.tags.weekly %} 
+  {% include blog.html %} 
+  {% endfor %}   
+</div>
+
+
+{% include post/pagination.html %}
+
+<script>
+var dev = document.querySelector('.dev')
+var weekly = document.querySelector('.weekly')
+var devPost = document.querySelector('.dev-post')
+var weeklyPost = document.querySelector('.weekly-post')
+console.log(dev)
+console.log(weekly)
+
+
+dev.addEventListener('click', function() {
+  console.log('devclick')
+  weeklyPost.style.display = 'none'
+  devPost.style.display = 'block'
+})
+
+weekly.addEventListener('click', function() {
+  console.log('week click')
+  devPost.style.display = 'none'
+  weeklyPost.style.display = 'block'
+})
+
+</script>

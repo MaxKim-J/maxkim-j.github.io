@@ -56,7 +56,7 @@ permalink: posts/:slug
 excerpt_separator: <!–-break-–>
 
 # Pagination
-paginate: 7
+paginate: 10
 paginate_path: "/page-:num/"
 
 # Tags
