@@ -1,43 +1,33 @@
+{% assign first_tag = post.tags | first %}
+{% assign tag_posts = site.tags[first_tag] | slice:0,5 %}
+
 <aside class="related">
   <div
     style="background-color: #dbdbdb; width:100%; height: 0.1rem;margin-top:30px; margin-bottom: 30px;"
   ></div>
-<h2>관련된 포스트</h2>
+
+  {% if first_tag != 'weekly' %}
+    <h2>다른 {{ first_tag }} 포스트</h2>
+  {% else %}
+    <h2>최근 주간회고</h2>
+  {% endif %}
 <ul class="related-posts">
-
-{% assign maxRelated = 4 %}
-{% assign minCommonTags =  2 %}
-{% assign maxRelatedCounter = 0 %}
-
-  {% for post in site.posts %}
-
-    {% assign sameTagCount = 0 %}
-    {% assign commonTags = '' %}
-
-    {% for tag in post.tags %}
-      {% if post.url != page.url %}
-        {% if page.tags contains tag %}
-          {% assign sameTagCount = sameTagCount | plus: 1 %}
-          {% capture tagmarkup %}
-          <span class="label label-default">#{{ tag }}</span>
-          {% endcapture %}
-          {% assign commonTags = commonTags | append: tagmarkup %}
-        {% endif %}
-      {% endif %}
-    {% endfor %}
-
-    {% if sameTagCount >= minCommonTags %}
-
-    {% include page/post-list-item.html %}
-
-      {% assign maxRelatedCounter = maxRelatedCounter | plus: 1 %}
-      {% if maxRelatedCounter >= maxRelated %}
-        {% break %}
-      {% endif %}
+  {% if tag_posts %}
+    {% for post in tag_posts %}
+      <li style="margin-left:1rem">
+        <span>-</span>
+        <a href="{{ post.url | prepend: site.baseurl }}">
+          <span>{{ post.title }}</span>
+          <small>{{ post.date | date: "%m/%d" }}</small>
+        </a>
+      </li>
+    {% if forloop.last %}
+    </ul>
     {% endif %}
-
-  {% endfor %}
-
+    {% endfor %}
+  {% else %}
+    <p>태그에 해당하는 포스트가 없습니다.</p>
+  {% endif %}
 </aside>
 
 {% comment %}
