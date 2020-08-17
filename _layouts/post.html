@@ -2,5 +2,10 @@
 layout: default
 ---
 
-{% include post.html post=page %} {% include post/related.html %} {% if
-site.author.disqus %} {% include externals/disqus.html %} {% endif %}
+{% include post.html post=page %} 
+{% include post/related.html %} 
+{% if site.author.disqus %} 
+<div style="margin-bottom: 1rem">
+  {% include externals/disqus.html %} 
+</div>
+{% endif %}
