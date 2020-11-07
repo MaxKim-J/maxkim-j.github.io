@@ -2,7 +2,7 @@
 layout: post
 title: 학교 관련 서비스로 개인 개발 프로젝트 시작하기
 description: 같은 학교를 다니는 유저들을 대상으로 한 개인 프로젝트 경험을 공유합니다.
-image: /uploads/default.png
+image: /uploads/meta-image.png
 emoji: 🏫
 tags:
   - retrospect
