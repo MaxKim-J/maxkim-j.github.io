@@ -2,7 +2,7 @@
 layout: post
 title: 판례요지 트윗봇 개발 후기
 description: 판례요지를 크롤링해 트윗하는 봇을 만든 후기를 공유합니다.
-image: /precedent-bot/court.jpg
+image: /precedent-bot/jopanam.jpg
 emoji: 👩🏻‍⚖️
 tags:
   - retrospect
