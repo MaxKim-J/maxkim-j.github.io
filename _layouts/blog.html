@@ -3,24 +3,16 @@ layout: default
 title: "Blog"
 ---
 
-{% assign retrospect_size = site.tags.retrospect | size %}
-{% assign dev_size = site.posts | size %}
-
 
 <div class="whole-post">
   <div class="dev">
-    개발 포스트 {{dev_size | minus:retrospect_size}}개
-  </div>
-  <div class="weekly">
-    회고 포스트 {{retrospect_size}}개
+    전체 포스팅 {{site.posts | size}}개
   </div>
 </div>
 
 <div class="dev-post active">
   {% for post in paginator.posts %} 
-  {% unless post.tags contains "retrospect" %}
   {% include blog.html %} 
-  {% endunless %}
   {% endfor %} 
 </div>
 
