@@ -5,6 +5,7 @@ description: DOM 요소의 좌표를 구하는 방법을 알아봅시다.
 image: /uploads/default.png
 emoji: 📍
 tags:
+  - dom
   - javascript
 published: true
 ---
