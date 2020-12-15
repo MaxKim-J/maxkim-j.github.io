@@ -1,7 +1,7 @@
 ---
 layout: post
 title: input 요소 관련 키보드 이벤트 총정리
-description: 판례요지를 크롤링해 트윗하는 봇을 만든 후기를 공유합니다.
+description: 웹 입력창에 키보드를 치면 생기는 거의 모든 일을 정리합니다.
 image: /uploads/default.png
 emoji: ⌨️
 tags:
