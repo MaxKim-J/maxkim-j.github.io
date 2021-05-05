@@ -23,9 +23,9 @@ published: true
 먼저 github actions를 통해 레포지토리에서 일어나는 여러 이벤트(특정 branch에 push한다던가, release를 만든다거나, PR을 올린다거나)에 대해 특정 로직을 실행하도록 할 수 있습니다. yaml 파일을 통해 레포지토리에서 발생하는 이벤트에 대한 특정 로직들을 지정할 수 있는데요.
 
 yaml 파일의 구조는 다음과 같습니다. 해당 action은 [제가 만든 npm 라이브러리](https://github.com/MaxKim-J/functional-flattener)에서 쓰고 있는, 레포지토리에서 릴리즈를 만들 때 npm에 자동으로 배포할 수 있게 하는 action입니다. 자세한 API는 [Docs](https://docs.github.com/en/actions)를 참고하시면 좋을 것 같습니다!
-{% raw %}
 
-```yaml
+{% highlight yaml %}
+
 name: Publish # action의 이름
 
 # on 단락에서 지정해준 이벤트가 레포지토리에서 일어나면 job을 실행합니다.
@@ -53,22 +53,21 @@ jobs:
         # 실행시키는 명령어에 환경변수를 넣어줄 수도 있습니다.
         # secrets는 레포지토리에 지정한 secret값을 참조할 수 있는 변수입니다.
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-```
+          NODE_AUTH_TOKEN: {% raw %}${{ secrets.NPM_TOKEN }} {% endraw %}
 
-{% endraw %}
+{% endhighlight %}
 
 ## github action에서 하는 cron job
 
 이제 일일 Github Actions에서는 crontab을 사용해 일정한 주기를 가지고 작업을 실행할 수 있게 하는 job 스케쥴링을 지원합니다. yaml의 `on:` 단락을 다음과 같이 작성하고, cron job을 추가하면 됩니다. 여기서 cron job 시간의 기준은 UTC 시간이라서, 한국 시간으로 변환하려면 9시간을 빼줘야 합니다.
 
-```yaml
+{% highlight yaml %}
 name: algo_daily_alarm
 
 on:
   schedule:
     - cron: "00 11 * * *" # 한국시간 기준 오후 8시(20시)에 해당 Action 실행
-```
+{% endhighlight %}
 
 ## Slack Incoming WebHooks 연동
 
@@ -85,7 +84,8 @@ Slack의 추가 앱인 `Incoming WebHooks`를 사용해 슬랙 채널로 메시�
 
 Github Actions에서 쉘 스크립트를 실행시키는 것은 어렵지 않습니다. 액션 자체가 리눅스 가상머신에서 돌아가기 때문에, `run`문에 쉘 스크립트를 바로 작성하면 됩니다. 이때 shell의 종류를 `bash`로 지정합니다. 대략의 구조는 다음과 같습니다.
 
-```yaml
+{% highlight yaml %}
+
 name: algo_daily_alarm
 
 on:
@@ -103,26 +103,23 @@ jobs:
         shell: bash
         run: |
           ...쉘 스크립트 내용...
-```
+{% endhighlight %}
 
 ## 레포지토리 secret 지정해주기
 
 요청을 보내는 slack 채널 URL을 알면 누구나 제 개인 채널로 슬랙 알림을 보낼 수 있습니다. 따라서 action에 직접 slack 채널의 URL을 하드코딩하기 보다는 레포지토리 secret으로 등록하여 action에서는 secrets를 참조하여 사용할 수 있도록 합니다. 그렇다면 메시지 요청을 하는 `curl` 실행문은 아래와 같이 쓸 수 있습니다.
 
-{% raw %}
-
-```bash
-curl -X POST --data-urlencode "payload={\"channel\": \"#알고_알리미\", \"username\": \"알고 알리미\", \"text\": \"${DAILY_MESSAGE}\", \"icon_emoji\": \":male-technologist:\"}" ${{ secrets.SLACK_WEBHOOK_URL | escape }}
-```
-
-{% endraw %}
+{% highlight yaml %}
+curl -X POST --data-urlencode "payload={\"channel\": \"#알고_알리미\", \"username\": \"알고 알리미\", \"text\": \"${DAILY_MESSAGE}\", \"icon_emoji\": \":male-technologist:\"}" {% raw %}${{ secrets.SLACK_WEBHOOK_URL }}{% endraw %}
+{% endhighlight %}
 
 ## 일일 알고리즘 알림 만들기
 
 완성된 일일 알고리즘 알림은 이렇습니다. 일일 알고리즘 알림은 퇴근하고 얼추 집에 오는 시간인 매일 오후 8시에, 이번달에 푼 알고리즘 문제가 총 몇 문제인지 알려주고, 목표로 설정한 30문제에 얼마나 근접했는지 알려줍니다.
-{% raw %}
 
-```yaml
+
+{% highlight yaml %}
+
 name: algo_daily_alarm
 
 on:
@@ -170,10 +167,9 @@ jobs:
           DAILY_MESSAGE="알고리즘 문제 풀기 좋은 밤이네요!\n현재일($NOW_DATE)기준으로, *${NOW_YEAR}년 ${NOW_MONTH}월에 ${COUNT}문제* 푸셨어요\n한 달 목표는 *30문제* 입니다. ${SITUATION}"
 
         # 슬랙 채널로 메시지 요청
-          curl -X POST --data-urlencode "payload={\"channel\": \"#알고_알리미\", \"username\": \"알고 알리미\", \"text\": \"${DAILY_MESSAGE}\", \"icon_emoji\": \":male-technologist:\"}" ${{ secrets.SLACK_WEBHOOK_URL }}
-```
+          curl -X POST --data-urlencode "payload={\"channel\": \"#알고_알리미\", \"username\": \"알고 알리미\", \"text\": \"${DAILY_MESSAGE}\", \"icon_emoji\": \":male-technologist:\"}" {% raw %}${{ secrets.SLACK_WEBHOOK_URL }}{% endraw %}
+{% endhighlight %}
 
-{% endraw %}
 
 ## 주간 알고리즘 알림 만들기
 
@@ -181,9 +177,8 @@ jobs:
 
 기세를 몰아 주간 알고리즘 알림도 만들어 봤습니다. 주간 알고리즘 알림은 매주 금요일에 올해에는 알고리즘을 총 몇 문제 풀었는지, 올해의 지난 달 각각 알고리즘을 몇 문제 풀었는지도 알려줍니다.
 
-{% raw %}
 
-```yaml
+{% highlight yaml %}
 name: algo_weekly_alarm
 
 on:
@@ -233,10 +228,10 @@ jobs:
           MESSAGE+="--------------------------------\n${NOW_YEAR}년에 푼 문제\n*총합 $TOTAL 문제*\n\n무지 고통스럽지만, 언젠간 빛을 볼 PS입니다. 화이팅!!!"
 
         # 채널로 메시지 보내기
-          curl -X POST --data-urlencode "payload={\"channel\": \"#알고_알리미\", \"username\": \"알고 알리미\", \"text\": \"${MESSAGE}\", \"icon_emoji\": \":male-technologist:\"}" ${{ secrets.SLACK_WEBHOOK_URL }}
-```
+          curl -X POST --data-urlencode "payload={\"channel\": \"#알고_알리미\", \"username\": \"알고 알리미\", \"text\": \"${MESSAGE}\", \"icon_emoji\": \":male-technologist:\"}"{% raw %}${{ secrets.SLACK_WEBHOOK_URL }}{% endraw %}
+{% endhighlight %}
 
-{% endraw %}
+
 
 ## 마무리
 
