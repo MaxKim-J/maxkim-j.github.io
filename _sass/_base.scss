@@ -22,8 +22,8 @@ body {
   margin-bottom: 8em;
 }
 .wrapper {
-  max-width: 48rem;
-  margin: 4rem auto 1rem auto;
+  max-width: 50rem;
+  margin: 9rem auto 1rem auto;
 }
 
 @media (max-width: 48rem) {
@@ -32,7 +32,7 @@ body {
   }
   .wrapper {
     width: 90%;
-    margin: 3rem auto 2rem auto;
+    margin: 7rem auto 2rem auto;
   }
 }
 
@@ -44,13 +44,11 @@ a,
   color: var(--link-color);
   text-decoration: none;
   position: relative;
-  border-bottom: 0.18rem solid transparent;
-  transition: border 0.15s;
 
   &:hover,
   &:focus {
     text-decoration: none;
-    border-bottom: 0.15em solid;
+    // border-bottom: 0.15em solid;
   }
   strong {
     color: inherit;

@@ -6,10 +6,8 @@ url:
   # `http://<username>.github.io` - for GitHub
 
 blog:
-  title: 맥스킴 개발블로그
-  after_title: MAX
-  before_title: DEVLOG
-  description: 맥스킴 개발 블로그 powered By Jekyll,
+  title: 김맥스 기술블로그
+  description: 김맥스 기술 블로그 powered By Jekyll,
 
   # Layout configuration
   logo_path: "" # path to logo file
@@ -23,15 +21,15 @@ blog:
   titles_only: false # show post titles only on main blog page
 
   # Fonts
-  font: '"Rubik", -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif'
-  load_google_fonts: "Rubik:400,400italic,700,700italic"
+  font: '"Noto Sans KR", "Rubik", -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif'
+  load_google_fonts: "Noto Rubik:400,400italic,700,700italic"
 # Author info
 author:
   fullname: Max Jonghyuk Kim
   rss: false # generate RSS feed and show it's icon in header
-  mail: hwaseen@email.com # change to your e-mail address
+  mail: false # change to your e-mail address
   twitter: false
-  github: MaxKim-J
+  github: false
   youtube: false
   stackoverflow: false
   disqus: https-maxkim-j-github-io # your disqus site name

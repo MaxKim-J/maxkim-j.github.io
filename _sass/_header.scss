@@ -1,33 +1,46 @@
 // Header
 //-------------------------------
 
+.header-wrapper {
+  position: fixed;
+  top:0;
+  width:100%;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--text-color);
+  background-color: var(--bg-color);
+  z-index: 10;
+}
+
+
 header {
-  overflow: hidden;
-  margin-bottom: 3rem;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  margin: 0 auto;
+  justify-content: space-between;
+  width: 89%;
 }
 
 .logo {
-  font-size: 3.5rem;
+  font-size: 2rem;
   font-weight: $base-font-weight-bold;
   color: var(--link-color);
   .logosvg {
     height: 2.7rem;
-    -webkit-filter: var(--invert-logo-color);
   }
 }
 
 .logo,
 .menu,
 .social {
-  @include centered-block();
+  display: flex;
+  align-items: center;
 }
 
 .menu {
   text-align: center;
 
   ul {
+    margin-left:1rem;
     width: inherit;
     list-style-type: none;
     margin-bottom: 0rem;
@@ -41,10 +54,9 @@ header {
     }
     a {
       color: var(--text-color-light);
-      font-size: $base-font-size;
+      font-size: 14px;
       font-weight: $base-font-weight;
       display: block;
-      height: 2rem; // reset
       .smaller {
         font-size: 0.85em;
       }
@@ -54,7 +66,6 @@ header {
 
 // Social icons
 .social {
-  margin-top: 1.75rem;
   ul {
     list-style-type: none;
     margin: 0;
@@ -79,23 +90,12 @@ header {
   }
 }
 
-@media (max-width: 48rem) {
+@media (max-width: 1004px) {
+  .header-wrapper {
+    padding: 0.5rem 0;
+  }
   header {
-    margin-bottom: 1rem;
-  }
-  .menu,
-  .social {
-    @include centered-block();
-  }
-  // fake it till you make it
-  .logo {
-    a {
-      font-size: 3rem;
-    }
-    .logosvg {
-      // display: block;
-      // margin: -9rem auto 5rem auto;
-      // height: 3rem;
-    }
+    width: 100%;
+    padding: 0 1rem;
   }
 }

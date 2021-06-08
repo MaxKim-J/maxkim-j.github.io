@@ -23,21 +23,7 @@
       class="heading-container {% if post.hero %}hero-heading hero-heading-blog{% endif %}"
     >
       {% endif %}
-      <div
-        class="{% if site.blog.hero_layout == true %} post-meta {% else %} post-meta-nohero {% endif %}"
-      >
-        <span>{{ post.date | date: "%Y/%m/%d" }}</span>
 
-        {% if site.blog.hero_layout == false %}
-        <span class="post-meta-link-nohero">&#9642;</span>
-        {% endif %}
-
-        <span>
-          {% for tag in post.tags %}
-          <a href="{{ 'tag/' | relative_url }}{{ tag }}">#{{ tag }}</a>
-          {% endfor %}
-        </span>
-      </div>
       <h1>
         {% if post.link != nil %}
         <a
@@ -54,6 +40,11 @@
         {% endif %}
       </h1>
       <!-- Post meta -->
+      <div
+        class="{% if site.blog.hero_layout == true %} post-meta {% else %} post-meta-nohero {% endif %}"
+      >
+        <span>{{ post.date | date: "%Y년 %m월 %d일" }}</span>
+      </div>
 
       {% if site.blog.hero_layout == true %}
     </div>
@@ -64,17 +55,6 @@
   post.excerpt }} {% else if site.blog.excerpts == false %} {{ post.content |
   remove: '&lt;!–-break-–&gt;' }} {% endif %} {% endif %} {% if forloop.last ==
   false %}
-  <div
-    style="
-      background-color: #828282;
-      width: 100%;
-      height: 0.15rem;
-      margin-top: 1.75rem;
-      margin-bottom: 1.5rem;
-      border-radius: 50%;
-      opacity: 30%;
-    "
-  ></div>
 </article>
 
 {% endif %}

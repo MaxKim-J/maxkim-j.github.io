@@ -3,47 +3,11 @@ layout: default
 title: "Blog"
 ---
 
-
-<div class="whole-post">
-  <div class="dev">
-    전체 포스팅 {{site.posts | size}}개
-  </div>
-</div>
-
 <div class="dev-post active">
   {% for post in paginator.posts %} 
   {% include blog.html %} 
   {% endfor %} 
 </div>
 
-<div class="weekly-post hidden">
-  {% for post in site.tags.retrospect %} 
-  {% include blog.html %} 
-  {% endfor %}   
-</div>
-
 
 {% include post/pagination.html %}
-
-<script>
-var dev = document.querySelector('.dev')
-var weekly = document.querySelector('.weekly')
-var devPost = document.querySelector('.dev-post')
-var weeklyPost = document.querySelector('.weekly-post')
-
-
-dev.addEventListener('click', function() {
-  weeklyPost.classList.remove('active')
-  devPost.classList.remove('hidden')
-  weeklyPost.classList.add('hidden')
-  devPost.classList.add('active')
-})
-
-weekly.addEventListener('click', function() {
-  devPost.classList.remove('active')
-  weeklyPost.classList.remove('hidden')
-  devPost.classList.add('hidden')
-  weeklyPost.classList.add('active')
-})
-
-</script>
