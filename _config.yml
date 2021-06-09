@@ -6,7 +6,8 @@ url:
   # `http://<username>.github.io` - for GitHub
 
 blog:
-  title: 김맥스 기술블로그
+  title: 김맥스 기술 블로그
+  short_title: 技以求道
   description: 김맥스 기술 블로그 powered By Jekyll,
 
   # Layout configuration
@@ -29,7 +30,7 @@ author:
   rss: false # generate RSS feed and show it's icon in header
   mail: false # change to your e-mail address
   twitter: false
-  github: false
+  github: MaxKim-J
   youtube: false
   stackoverflow: false
   disqus: https-maxkim-j-github-io # your disqus site name

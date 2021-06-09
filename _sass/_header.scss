@@ -6,9 +6,11 @@
   top:0;
   width:100%;
   padding: 0.6rem 0;
-  border-bottom: 1px solid var(--text-color);
+  // border-bottom: 2px solid var(--text-color-light);
   background-color: var(--bg-color);
   z-index: 10;
+  -webkit-box-shadow: 0px 5px 9px 0px rgba(0,0,0,0.05); 
+  box-shadow: 0px 5px 9px 0px rgba(0,0,0,0.05);
 }
 
 
@@ -17,7 +19,8 @@ header {
   flex-direction: row;
   margin: 0 auto;
   justify-content: space-between;
-  width: 89%;
+  padding: 0 1rem;
+
 }
 
 .logo {
@@ -26,6 +29,14 @@ header {
   color: var(--link-color);
   .logosvg {
     height: 2.7rem;
+  }
+
+  .title-big {
+    display: block;
+  }
+
+  .title-small {
+    display: none;
   }
 }
 
@@ -74,28 +85,34 @@ header {
   li {
     display: inline-block;
   }
-  li a {
+  a {
     display: block;
     color: var(--text-color-light);
     text-align: center;
-    font-size: 1.5rem;
-    width: 2.5rem;
-    height: 2.5rem;
-    &:focus {
-      border: none;
-      &:focus:hover {
-        border-bottom: 0.1em solid;
-      }
+    font-size: 1.2rem;
+    margin-left: 1rem;
+
+    > span {
+      width: 2.5rem;
+      height: 2.5rem;
     }
   }
 }
 
 @media (max-width: 1004px) {
-  .header-wrapper {
-    padding: 0.5rem 0;
-  }
   header {
     width: 100%;
-    padding: 0 1rem;
   }
+}
+
+@media (max-width: 500px) {
+.logo {
+  .title-big {
+    display: none;
+  }
+
+  .title-small {
+    display: block;
+  }
+}
 }

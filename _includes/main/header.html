@@ -2,8 +2,11 @@
   <header>
     <div class="menu">
       <div class="logo">
-        <a href="{{ '/' | prepend: site.baseurl }}"
+        <a class="title-big" href="{{ '/' | prepend: site.baseurl }}"
           >{{ site.blog.title }}</a
+        >
+        <a class="title-small" href="{{ '/' | prepend: site.baseurl }}"
+          >{{ site.blog.short_title }}</a
         >
       </div>
      
@@ -18,7 +21,10 @@
     </div>
 
     <div class="social">
-      <a href="{{ '/about' | prepend: site.baseurl }}" style="margin-right:0.5rem">About</a>
+      <a href="{{ '/about' | prepend: site.baseurl }}">About</a>
+      <a href="https://github.com/{{ site.author.github }}" target="_blank" class="smaller">
+        <span class="icon-github"></span>
+      </a>
       <a href="#" onclick="switchTheme()" title="Switch theme?">
         <span class="icon-invert_colors" id="theme-switcher"></span>
       </a>

@@ -12,54 +12,24 @@ published: true
 
 {% include page/title.html title=page.title subtitle=page.subtitle %}
 
-<div style="display:flex;justify-content:center">
 
-<div>
-<img src="/uploads/about.jpeg" width="300" height="360" style="margin:0"/>
-<div><strong>Name</strong> : 김종혁, Max Jonghyuk Kim </div>
-<div><strong>Start Development</strong> : 2019년 6월  </div>
-<div><strong>Residence</strong> : 서울   </div>
-<div><strong>Contact</strong> : <a href="mailto:hwaseen@gmail.com">이메일(클릭)</a> </div>
-</div>
-</div>
+<img src="/uploads/about.jpeg" />
+생업으로 소프트웨어 개발을 하고 있는 영문학도입니다.  
+개발을 시작하기 전에는 독립잡지, 대학사회 참여, 편집 디자인을 했습니다.  
+졸업을 미루고 [**회사(클릭)**](https://moye.kr/)에서 일하는 중입니다.  
+기술을 통해 공동체에 기여하려 노력합니다.  
+技以求道 : 기술로 제 스스로와 세상의 속도/방향을 구합니다.  
+누구든 가치와 신념을 존중받았으면 합니다.  
+누구든 서로에게 조금 더 관심을 가지고 필요한 도움을 받거나 줄 수 있었으면 좋겠습니다.  
+주도적으로 일하고 생각할 수 있는 환경을 좋아합니다.  
+개발이나 업무와 상관없는 글은 [**브런치(클릭)**](https://brunch.co.kr/@hwaseen)에 아주 가끔 씁니다.  
 
->**👋🏻 반갑습니다. 맥스킴입니다 !**  
----
-이것저것 보고 배우고 만듭니다. 개발을 시작하고 지금까지는 자바스크립트를 사용한 웹 클라이언트 개발을 주로 해왔지만, 어떤 분야의 개발자가 되고 싶은지는 아직 미정입니다.  
 
-## Skills
+## RESUME
 
-### Web Dev
+경력과 기술은 아래 링크를 참조하세요
 
-- **Main Lang** : Javascript, Python
-- **Client** : HTML, CSS(SASS), ES6+, TypeScript,React.js(Next.js, Redux), Vue.js(Vuex)
-- **Server** : Express.js, Django  
-- **Crawling** : cheerio, puppeteer  
-- **Infrastructure** : firebase functions/store, AWS Elastic Beanstalk/S3  
-
-### Design Tools
-
-- Photoshop CC, CS5+
-- Illustrator CC, CS5+
-- Sketch
-
-### Currently Learning
-
-- AWS, DataBase, Java, Algorithm  
-
-## Interest
-
-- User Experience
-- Documentation
-- Edit README
-- Clean Code
-- Front-end
-
-## More Details
-
-- [RESUME - 한국어](https://github.com/MaxKim-J/RESUME)
-- [RESUME - Eng](https://www.notion.so/projectmaxkim/RESUME-Max-Jonghyuk-Kim-fac8c0b9eb274fcfbc4d591bdb288b34)
-- [Portfolio](https://www.notion.so/projectmaxkim/527e6946f5d947d2a1c7a1c232244504)
-- [RocketPunch Profile](https://www.rocketpunch.com/@hwaseen)
+- [RESUME - KR](https://github.com/MaxKim-J/RESUME)
+- [Rocket Punch Profile](https://www.rocketpunch.com/@hwaseen)
 
 </div>
