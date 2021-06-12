@@ -8,7 +8,7 @@
     {% for tag in tags %}
     <li>
       {% if tag[0] == page.slug %}
-          <a class="current" href="/tag/{{ tag | first | slugify }}/">#{{ tag[0] }}({{tag[1] | size}})</a>
+          <a class="current" href="/tag/{{ tag | first | slugify }}">#{{ tag[0] }}({{tag[1] | size}})</a>
       {% else %}
           <a href="/tag/{{ tag | first | slugify }}">#{{ tag[0] }}({{tag[1] | size}})</a>
       {% endif %}
