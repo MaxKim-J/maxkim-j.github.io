@@ -5,21 +5,23 @@ layout: compress
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    {%include externals/google_analytics.html %} {% include main/head.html %} {%
-    seo %}
+    {% include externals/google_analytics.html %}
+    {% include main/head.html %}
+    {% seo %}
     <link rel="shortcut icon" href="../assets/img/favicon.ico" />
   </head>
 
   <body>
     {% include main/header.html %}
+
     <div class="content-wrapper">
       {{ content }} 
+      {% include main/footer.html %}
     </div>
-    {% include main/footer.html%}
+
     <script type="text/javascript" src="{{ "assets/js/theme.js" | relative_url }}"></script>
     {% include externals/scripting.html %}
   </body>
-
 </html>
 
 
