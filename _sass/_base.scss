@@ -21,16 +21,17 @@ body {
 .page {
   margin-bottom: 8em;
 }
-.wrapper {
+.content-wrapper {
   max-width: 50rem;
-  margin: 9rem auto 1rem auto;
+  margin: 8rem auto 1rem auto;
+  min-height: 600px;
 }
 
 @media (max-width: 48rem) {
   body {
     font-size: $mobile-font-size;
   }
-  .wrapper {
+  .content-wrapper {
     width: 90%;
     margin: 7rem auto 2rem auto;
   }
@@ -46,7 +47,7 @@ a,
 
   &:hover,
   &:focus {
-    text-decoration: none;
+    // text-decoration: none;
     // border-bottom: 0.15em solid;
   }
   strong {

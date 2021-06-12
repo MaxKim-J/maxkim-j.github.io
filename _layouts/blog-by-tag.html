@@ -1,20 +1,20 @@
 ---
 layout: default
+title: "Tag"
 ---
 
 
-{% capture page_subtitle %}
-{% if page.description %}
-  {% capture desc %}{{ page.description }}{% endcapture %}
-  {{ desc | markdownify }}
-{% else %}
-<strong>{{ page.name }}</strong> 관련 게시물 모아보기
-{% endif %}
-{% endcapture %}
+{% include utils/tag-box.html %}
+<div class="active">
+  {% for post in site.posts %} 
+    {% if post.tags contains page.slug %}
+      {% include blog.html %} 
+    {% endif %}
+  {% endfor %} 
+</div>
 
-{% include page/title.html title=page.name subtitle=page_subtitle %}
 
-{% if site.tags[page.slug] %}
+<!-- {% if site.tags[page.slug] %}
     {% for post in site.tags[page.slug] %}
 
       {% assign currentdate = post.date | date: "%Y/%m" %}
@@ -42,6 +42,6 @@ layout: default
 
      {% else %}
    <p>태그에 해당하는 포스트가 없습니다.</p>
-{% endif %}
+{% endif %} -->
 
-  {% include utils/tag-box.html %}
+

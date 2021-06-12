@@ -3,7 +3,6 @@
 <article class="blog">
   {% if site.blog.hero_layout == true %} {% include utils/hero.html %} {% endif
   %}
-
   <!-- Post title (& hero image) container -->
   <div
     class="
@@ -51,10 +50,12 @@
     {% endif %}
   </div>
 
-  {% if site.blog.titles_only == false %} {% if site.blog.excerpts == true %} {{
-  post.excerpt }} {% else if site.blog.excerpts == false %} {{ post.content |
-  remove: '&lt;!–-break-–&gt;' }} {% endif %} {% endif %} {% if forloop.last ==
-  false %}
+  <div class="post-description">
+    {% if site.blog.titles_only == false %} {% if site.blog.excerpts == true %} {{
+      post.excerpt }} {% else if site.blog.excerpts == false %} {{ post.content |
+      remove: '&lt;!–-break-–&gt;' }} {% endif %} {% endif %} {% if forloop.last ==
+      false %}
+  </div>
 </article>
 
 {% endif %}

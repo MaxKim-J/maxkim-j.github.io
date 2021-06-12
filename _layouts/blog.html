@@ -3,10 +3,15 @@ layout: default
 title: "Blog"
 ---
 
-<div class="dev-post active">
-  {% for post in paginator.posts %} 
-  {% include blog.html %} 
-  {% endfor %} 
+<div class="dev-post">
+  <div>
+    {% include utils/tag-box.html %}
+  </div>
+  <div class="active">
+    {% for post in paginator.posts %} 
+      {% include blog.html %} 
+    {% endfor %} 
+  </div>
 </div>
 
 

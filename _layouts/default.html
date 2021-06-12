@@ -12,10 +12,14 @@ layout: compress
 
   <body>
     {% include main/header.html %}
-    <div class="wrapper" id="blep">
-      {{ content }} {% include main/footer.html%}
+    <div class="content-wrapper">
+      {{ content }} 
     </div>
+    {% include main/footer.html%}
     <script type="text/javascript" src="{{ "assets/js/theme.js" | relative_url }}"></script>
     {% include externals/scripting.html %}
   </body>
+
 </html>
+
+

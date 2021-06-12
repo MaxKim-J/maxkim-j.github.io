@@ -30,28 +30,50 @@
 
 // Tag list boxes
 .tag-box {
-  margin: 2rem 0;
+  margin-bottom: 4rem;
+  border: 1px solid var(--shadow-color);
+  border-radius: 16px;
+  padding: 1rem 1rem 0 1rem;
+  div>a {
+    text-decoration: underline;
+  }
 
   span {
-    text-align: center;
     display: block;
   }
   ul {
-    text-align: center;
     color: var(--text-color-light);
     list-style-type: none;
-    margin: 0.5em 0 1.5em 0;
     padding: 0px;
+    margin-top:1.5rem;
 
     li {
       display: inline-block;
-      font-weight: $base-font-weight-bold;
+
       font-size: $mobile-font-size;
-      margin: 0 0.5rem;
+      margin-right: 0.75rem;
+      
+      .whole-post {
+        text-decoration:wavy;
+        font-size: 17px;
+        font-weight: $base-font-weight-bold;
+        color: var(--text-color);
+
+      }
+
+      a.current {
+        color: var(--text-color);
+      }
 
       a {
-        color: var (--text-color);
+        color: var(--text-color-light);
+        text-decoration: underline;
       }
+
+      a:hover {
+        color: var(--text-color);
+      }
+
     }
   }
 

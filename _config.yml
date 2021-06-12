@@ -6,9 +6,9 @@ url:
   # `http://<username>.github.io` - for GitHub
 
 blog:
-  title: 김맥스 기술 블로그
-  short_title: 技以求道
-  description: 김맥스 기술 블로그 powered By Jekyll,
+  title: 技以求道
+  meta_title: 김맥스 기술 블로그
+  description: 개발자 김맥스의 기술 블로그입니다
 
   # Layout configuration
   logo_path: "" # path to logo file

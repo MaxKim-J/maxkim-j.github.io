@@ -13,7 +13,6 @@
     display: inline-block;
     padding: 0px 20px;
     margin-right:1rem;
-    transition: background-color 0.5s;
   }
   div:hover {
     background-color: #ffffff;
@@ -24,12 +23,12 @@
 
 .active {
   display: block;
-  animation: appear .3s ease-out;
+  animation: appear .5s ease;
 }
 
 .hidden {
   display: none;
-  animation: disappear .3s ease-out;
+  animation: disappear .5s ease;
 }
 
 @keyframes appear {
@@ -46,15 +45,15 @@
 
 article {
   &.blog {
-    margin-bottom: 2em;
+    margin-bottom: 4rem;
 
     &:last-of-type {
       margin-bottom: 6em;
     }
 
-    p {
-      margin-bottom: 4.5rem;
-    }
+    // p {
+    //   margin-bottom: 4.5rem;
+    // }
   }
 
   &.post {
@@ -153,5 +152,9 @@ article {
     text-align: center;
     display: flex;
     justify-content: center;
+  }
+
+  .post-description {
+    display: none;
   }
 }

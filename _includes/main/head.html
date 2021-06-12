@@ -5,17 +5,11 @@
   content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no"
 />
 <title>
-  {% if page.title == "Blog" %} {{ site.blog.title }} {% else %} {{
+  {% if page.title == "Blog" %} {{ site.blog.meta_title }} {% else %} {{
   site.blog.title }} | {% endif %} {% if page.title == "Blog" %} {{ site.tagline
   }} {% else %} {% if page.tag %} {{ site.data.tags[page.tag].name }} {% else %}
   {{ page.title }} {% endif %} {% endif %}
 </title>
-<!--{% if page.description %}
-{% capture desc %}{{ page.description }}{:.message}{% endcapture %}
-<meta name="description" content="{{ desc | markdownify | strip_html | truncatewords: 50 }}">
-{% else %}{% if page.excerpt %}
-<meta name="description" content="{{ page.excerpt | strip_html | truncatewords: 50 }}">
-{% endif %}{% endif %}-->
 
 <meta
   name="description"
@@ -58,7 +52,9 @@ site.cover %} {% endif %}
   content="{{ page.url | replace:'index.html','' | prepend: site.url }}"
 />
 <meta property="og:site_name" content="{{ site.blog.title }}" />
-
+{% if page.title == "Blog" %}
+<meta property="og:image" content="../../uploads/default.png" />
+{% endif %}
 <!-- Styles -->
 <link rel="stylesheet" href="{{ "assets/vendor/normalize-css/normalize.css" |
 relative_url }}"> <link rel="stylesheet" href="{{ "assets/css/main.css" |

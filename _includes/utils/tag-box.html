@@ -1,14 +1,20 @@
 <div class="tag-box">
-  <hr />
-  <span>다른 태그 보기 :</span>
+  <div style="font-size: 16px;">🙌 안녕하세요! 소프트웨어 개발로 생계를 꾸리고 있는 김맥스의 블로그입니다. 생각, 고민, 공부를 정리해 글로 남깁니다. 저에 대해 더 알고싶으시다면 <a href="/about">about</a>을 확인해 주세요!</div>
   <ul>
-    {% assign tags = site.tags | sort %} {% for tag in tags %}
     <li>
-      <a href="/tag/{{ tag | first | slugify }}/">#{{ tag[0] }}</a>
+      <a href="/" class="whole-post">전체 {{site.posts | size}}개의 포스팅</a>
+    </li>
+    {% assign tags = site.tags | sort %}
+    {% for tag in tags %}
+    <li>
+      {% if tag[0] == page.slug %}
+          <a class="current" href="/tag/{{ tag | first | slugify }}/">#{{ tag[0] }}({{tag[1] | size}})</a>
+      {% else %}
+          <a href="/tag/{{ tag | first | slugify }}/">#{{ tag[0] }}({{tag[1] | size}})</a>
+      {% endif %}
     </li>
     {% endfor %}
   </ul>
-  <hr />
 </div>
 
 {% comment %} {{ tag[0] | replace:'-', ' ' }} ({{ tag | last | size }}) {%
