@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 나는 어떤 개발자일까
-description:
+description: 생각해봤습니다.
 image: /uploads/default.png
 emoji: 🧐
 tags:
