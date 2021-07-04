@@ -5,7 +5,7 @@ description: TypeScript로 프로그래밍 하면서 느낀 점
 image: /uploads/default.png
 emoji: 🧐
 tags:
-  - retrospect
+  - thought
 published: true
 ---
 
