@@ -40,11 +40,12 @@ UI를 실질적으로 채우는 데이터를 다루는 로직들은 앱의 **중
 
 이 외에 Redux + Saga를 사용할때 얻을 수 있다고 생각하는 장점은 다음과 같습니다.
 
-- **비동기 API 호출의 재사용성 극대화** : 프론트엔드 개발을 진행하다보면 초기 계획과는 완전 다르게, 주로 백엔드 API의 생김새 때문에 정말 생각지도 못한 곳에서 생각지도 못한 데이터가 필요할 수도 있습니다. 이때 async await로 비동기를 컴포넌트 단에 붙여서 처리하고 있었다면 똑같은 로직을 다른 컴포넌트에 한 번 더 써야하죠.
-  - 서버도 처음부터 완성되있는 것은 아니기 때문에 어떤 response에서 UI에 필요한 모든 데이터를 보내주지는 못하는 경우도 종종 생깁니다. 작은 팀일수록 그런 상황에 부닥치기 쉬운데요.
-  - 백엔드가 수정되기 전까지 프론트엔드에서는 다른 비동기 로직 호출을 통해 UI가 필요한 데이터를 적당히 때워(?) 줘야 하는 상황도 충분히 가능합니다. 웹앱의 여러 곳에서 특정한 데이터 패칭이 필요하면 필요할수록 Saga를 사용하기 위해 지출했던 비용에 상회하는 이득을 얻을 수 있다고 봅니다.
-  - 물론 모든 API 호출 함수를 util을 모아놓듯 한 곳에 정리하는 방식으로 재사용하기 쉽게 만들수도 있어Redux+Saga만의 장점이라고 말하기엔 좀 애매하긴 합니다. 더 좋은 점이 있다면, Saga에서는 앱의 UI를 전역적으로 바꿀 수 있는 store의 상태까지 건드릴 수 있다는 것 정도겠습니다.
-- **캐싱을 활용할 수 있는 여지** : 유저가 앱을 사용하는 흐름 안에서 store에 이미 데이터가 이미 있는 경우 굳이 fetch를 하지 않아도 되는 상황이 있습니다. store에 이런 식으로 데이터를 저장해 놓는다면, 불필요한 패칭을 하지 않는 방향으로 앱을 최적화할 수 있습니다.
+**비동기 API 호출의 재사용성 극대화** : 프론트엔드 개발을 진행하다보면 초기 계획과는 완전 다르게, 주로 백엔드 API의 생김새 때문에 정말 생각지도 못한 곳에서 생각지도 못한 데이터가 필요할 수도 있습니다. 이때 async await로 비동기를 컴포넌트 단에 붙여서 처리하고 있었다면 똑같은 로직을 다른 컴포넌트에 한 번 더 써야하죠.
+- 서버도 처음부터 완성되있는 것은 아니기 때문에 어떤 response에서 UI에 필요한 모든 데이터를 보내주지는 못하는 경우도 종종 생깁니다. 작은 팀일수록 그런 상황에 부닥치기 쉬운데요.
+- 백엔드가 수정되기 전까지 프론트엔드에서는 다른 비동기 로직 호출을 통해 UI가 필요한 데이터를 적당히 때워(?) 줘야 하는 상황도 충분히 가능합니다. 웹앱의 여러 곳에서 특정한 데이터 패칭이 필요하면 필요할수록 Saga를 사용하기 위해 지출했던 비용에 상회하는 이득을 얻을 수 있다고 봅니다.
+- 물론 모든 API 호출 함수를 util을 모아놓듯 한 곳에 정리하는 방식으로 재사용하기 쉽게 만들수도 있어Redux+Saga만의 장점이라고 말하기엔 좀 애매하긴 합니다. 더 좋은 점이 있다면, Saga에서는 앱의 UI를 전역적으로 바꿀 수 있는 store의 상태까지 건드릴 수 있다는 것 정도겠습니다.
+
+**캐싱을 활용할 수 있는 여지** : 유저가 앱을 사용하는 흐름 안에서 store에 이미 데이터가 이미 있는 경우 굳이 fetch를 하지 않아도 되는 상황이 있습니다. store에 이런 식으로 데이터를 저장해 놓는다면, 불필요한 패칭을 하지 않는 방향으로 앱을 최적화할 수 있습니다.
 
 물론 모든 앱에 Redux+Saga가 필요한 것은 아닙니다. 앱이 크지 않아 전역 상태를 활용할 여지가 많이 없고, 비동기 API를 많이 호출하지 않고, 컴포넌트 단에서 여러 유형의 예외처리를 해줘야 하는 것도 아니라면 Context API나 useReducer 같은 더 작은 상태관리 도구들을 사용하는게 바람직합니다. Redux+Saga는 **웹앱의 복잡함이 Redux+Saga의 복잡함을 상회할 때** 사용하면 좋다고 생각합니다.
 
@@ -79,16 +80,16 @@ type DataAction =
 
 // 리듀서
 export const dataReducer = (state:DataState = initalState, action:DataAction) => {
-switch(action.type) {
-case GET_DATA:
-return {...state, status : 'loading' };
-case GET_DATA_SUCCESS:
-return {...state, userData: action.payload, status: 'success' };
-case GET_DATA_FAIL:
-return {...state, error:action.payload, status: 'fail'};
-default:
-return state;
-}
+  switch(action.type) {
+    case GET_DATA:
+      return {...state, status : 'loading' };
+    case GET_DATA_SUCCESS:
+      return {...state, userData: action.payload, status: 'success' };
+    case GET_DATA_FAIL:
+      return {...state, error:action.payload, status: 'fail'};
+    default:
+      return state;
+  }
 }
 
 export default dataReducer
@@ -97,17 +98,17 @@ export default dataReducer
 {% highlight typescript %}
 // 2. saga
 
-function\* getDataSaga(action) {
-try {
-const { data } = fetchData()
-yield put(getDataSuccess({ data }));
-} catch(error) {
-yield put(getDataFail({ error }));
-}
+function* getDataSaga(action) {
+  try {
+    const { data } = fetchData()
+    yield put(getDataSuccess({ data }));
+  } catch(error) {
+    yield put(getDataFail({ error }));
+  }
 }
 
-export function\* dataSaga() {
-yield takeEvery(GET_DATA, getDataSaga);
+export function* dataSaga() {
+  yield takeEvery(GET_DATA, getDataSaga);
 }
 {% endhighlight %}
 
@@ -135,25 +136,25 @@ Saga 타이핑 줄이는 방법을 적용하는 실제 코드는 포스팅이 �
 {% highlight typescript %}
 // 순수한 Saga => 서버에서 내려주는 데이터를 있는 그대로 저장합니다
 // fetchEntity 패턴을 사용하기도 좋습니다
-function\* getDataPureSaga(action) {
-try {
-const { data } = fetchData()
-yield put(getDataSuccess({ data }));
-} catch(error) {
-yield put(getDataFail({ error }));
-}
+function* getDataPureSaga(action) {
+  try {
+    const { data } = fetchData()
+    yield put(getDataSuccess({ data }));
+  } catch(error) {
+    yield put(getDataFail({ error }));
+  }
 }
 
 // 불순한 Saga
-function\* getDataImpureSaga(action) {
-try {
-const { data } = fetchData();
-Cookie.set(data.id); // 쿠키를 건든다던가
-const processedData = nomalizeData(data); // 데이터를 가공한다거나
-yield put(getDataSuccess({ data: processedData }));
-} catch(error) {
-yield put(getDataFail({ error }));
-}
+function* getDataImpureSaga(action) {
+  try {
+    const { data } = fetchData();
+    Cookie.set(data.id); // 쿠키를 건든다던가
+    const processedData = nomalizeData(data); // 데이터를 가공한다거나
+    yield put(getDataSuccess({ data: processedData }));
+  } catch(error) {
+    yield put(getDataFail({ error }));
+  }
 }
 {% endhighlight %}
 
@@ -181,8 +182,8 @@ SUCCESS, FAIL, LOADING 정도로 비동기 로직의 상태를 표현하는 것�
 
 {% highlight typescript %}
 {
-status: 'idle' | 'loading' | 'succeeded' | 'failed', // 초기 | 로딩 | 성공 | 실패
-error: string | null
+  status: 'idle' | 'loading' | 'succeeded' | 'failed', // 초기 | 로딩 | 성공 | 실패
+  error: string | null
 }
 {% endhighlight %}
 
@@ -190,9 +191,9 @@ error: string | null
 
 {% highlight typescript %}
 {
-// 실패하거나 성공하는 방식이 여러가지일 경우
-status: 'idle' | 'loading' | 'succeeded1' | 'succeeded2' | 'failed1' | 'failed2',
-error: string | null
+  // 실패하거나 성공하는 방식이 여러가지일 경우
+  status: 'idle' | 'loading' | 'succeeded1' | 'succeeded2' | 'failed1' | 'failed2',
+  error: string | null
 }
 {% endhighlight %}
 
@@ -200,20 +201,20 @@ error: string | null
 
 {% highlight typescript %}
 type DefaultEntity<T> = {
-data: T;
-status: 'loading' | 'success' | 'fail';
-error: Error;
+  data: T;
+  status: 'loading' | 'success' | 'fail';
+  error: Error;
 }
 
 type ParticularEntity<T> = {
-data: T;
-status: 'loading' | 'success' | 'fail1' | 'fail2';
-error: Error;
+  data: T;
+  status: 'loading' | 'success' | 'fail1' | 'fail2';
+  error: Error;
 }
 
 type initialState = {
-data1: DefaultEntity<Data1>;
-data2: ParticularEntity<Data2>;
+  data1: DefaultEntity<Data1>;
+  data2: ParticularEntity<Data2>;
 }
 {% endhighlight %}
 
@@ -223,19 +224,19 @@ data2: ParticularEntity<Data2>;
 
 {% highlight typescript %}
 function SomeComponent() {
-const dipatch = useDispatch()
-const { data, status, error } = useSelector((state:RootState) => (state.dataReducer), shallowEqual)
-const [showAlert, setShowAlert] = useState(false);
+  const dipatch = useDispatch()
+  const { data, status, error } = useSelector((state:RootState) => (state.dataReducer), shallowEqual)
+  const [showAlert, setShowAlert] = useState(false);
 
-useEffect(() => {
-dispatch(getData())
-}, [])
+  useEffect(() => {
+    dispatch(getData())
+  }, [])
 
-useEffect(()=> {
-if (status === 'fail') {
-setShowAlert(true);
-}
-},[status])
+  useEffect(()=> {
+    if (status === 'fail') {
+      setShowAlert(true);
+    }
+  },[status])
 
 ...
 }
@@ -247,39 +248,39 @@ setShowAlert(true);
 
 {% highlight typescript %}
 // saga
-function\* getDataSaga(action) {
-try {
-const { data } = fetchData()
-yield put(getDataSuccess({ data }));
-yield put(showAlert()); // store의 alert state를 true로 바꿈
-} catch(error) {
-yield put(getDatafail({ error }));
-}
+function* getDataSaga(action) {
+  try {
+    const { data } = fetchData()
+    yield put(getDataSuccess({ data }));
+    yield put(showAlert()); // store의 alert state를 true로 바꿈
+  } catch(error) {
+    yield put(getDatafail({ error }));
+  }
 }
 
 // component
 function SomeComponent() {
-const dipatch = useDispatch()
-const { data, status, error } = useSelector((state:RootState) => (state.dataReducer), shallowEqual)
-const showAlert = useSelector((state:RootState) => (state.alertReducer.showAlert))
-const [showAlert, setShowAlert] = useState(false);
+  const dipatch = useDispatch()
+  const { data, status, error } = useSelector((state:RootState) => (state.dataReducer), shallowEqual)
+  const showAlert = useSelector((state:RootState) => (state.alertReducer.showAlert))
+  const [showAlert, setShowAlert] = useState(false);
 
-useEffect(() => {
-dispatch(getData())
-}, [])
+  useEffect(() => {
+    dispatch(getData())
+  }, [])
 
-return (
-<div>
-{showAlert ? <Alert/> : null}
-...
-</div>
-)
+  return (
+    <div>
+    {showAlert ? <Alert/> : null}
+    ...
+    </div>
+  )
 }
 {% endhighlight %}
 
 이러한 방법으로 비동기 로직의 완결과, 완결에 따른 UI 처리까지 Saga에서 처리할 수 있습니다. Saga에서 모든게 한꺼번에 처리되는, 꽤 직관적인 로직이 된 것 같지만 고려해봐야 하는 것이 있습니다.
 
-- 예외처리 구문을 Saga entity 패턴을 사용해 함수로 선언해서 사용하는 경우, 예외처리시 그냥 fail 액션을 부르는 것 뿐 아니라 위처럼 다른 로직을 수행한다면 다른 형태의 Saga Entity 함수가 필요할 수 있습니다. SagaEntity를 만드는 함수를 하나 더 만들어서 위처럼 alert처리가 필요한 비동기 로직의 경우 활용하면 될 것 같습니다.
+- 예외처리 구문을 Saga entity 패턴을 사용해 함수로 선언해서 사용하는 경우, 예외처리시 그냥 fail 액션을 부르는 것 뿐 아니라 위처럼 다른 로직을 수행한다면 다른 형태의 Saga Entity 함수가 필요할 수 있습니다. SagaEntity를 만드는 함수를 하나 더 만들어서 위처럼 alert 처리가 필요한 비동기 로직의 경우 활용하면 될 것 같습니다.
 - 앞에서도 자주 언급했던 사항으로 Saga에 프로덕트에 의존하는 로직(UI를 보여주는 state)의 변화를 발생시키는 것이 비즈니스 로직이 아닌 UI로직에 더 가깝다고 볼 수 있기 때문에 Saga에 포함시키는게 찝찝할 수 있습니다. 하지만 해당 Redux+Saga를 활용해 개발하는 다른 클라이언트에서도 똑같은 예외 처리 방법을 가지고 간다면 크게 문제는 없을 수 있습니다.
 
 ## 맺는말
