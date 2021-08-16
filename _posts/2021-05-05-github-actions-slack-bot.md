@@ -7,6 +7,7 @@ emoji: 🕰
 tags:
   - tutorial
   - infrastructure
+  - automation
 published: true
 ---
 
@@ -29,31 +30,23 @@ yaml 파일의 구조는 다음과 같습니다. 해당 action은 [제가 만든
 name: Publish # action의 이름
 
 # on 단락에서 지정해준 이벤트가 레포지토리에서 일어나면 job을 실행합니다.
+
 on:
-  # release를 만들었을 때
-  release:
-    types: [published]
+
+# release를 만들었을 때
+
+release:
+types: [published]
 
 jobs:
-  build: # 작업의 이름
-    runs-on: ubuntu-latest # 가상머신의 버전 설정
-    # 작업을 이루는 단계들입니다.
-    steps:
-      # uses를 통해 이미 만들어진 github actions를 사용할 수 있습니다.
-      # 해당 레포지토리로 체크아웃 한 후, node 환경을 셋업합니다.
-      - uses: actions/checkout@v1
-      - uses: actions/setup-node@v1
-        with:
-          node-version: 12
-          registry-url: https://registry.npmjs.org/
-      # run으로 특정 shell 명령어를 실행시킬 수 있습니다.
-      - run: npm install
-      - run: npm run build
-      - run: npm publish --access public
-        # 실행시키는 명령어에 환경변수를 넣어줄 수도 있습니다.
-        # secrets는 레포지토리에 지정한 secret값을 참조할 수 있는 변수입니다.
-        env:
-          NODE_AUTH_TOKEN: {% raw %}${{ secrets.NPM_TOKEN }} {% endraw %}
+build: # 작업의 이름
+runs-on: ubuntu-latest # 가상머신의 버전 설정 # 작업을 이루는 단계들입니다.
+steps: # uses를 통해 이미 만들어진 github actions를 사용할 수 있습니다. # 해당 레포지토리로 체크아웃 한 후, node 환경을 셋업합니다. - uses: actions/checkout@v1 - uses: actions/setup-node@v1
+with:
+node-version: 12
+registry-url: https://registry.npmjs.org/ # run으로 특정 shell 명령어를 실행시킬 수 있습니다. - run: npm install - run: npm run build - run: npm publish --access public # 실행시키는 명령어에 환경변수를 넣어줄 수도 있습니다. # secrets는 레포지토리에 지정한 secret값을 참조할 수 있는 변수입니다.
+env:
+NODE_AUTH_TOKEN: {% raw %}${{ secrets.NPM_TOKEN }} {% endraw %}
 
 {% endhighlight %}
 
@@ -65,8 +58,7 @@ jobs:
 name: algo_daily_alarm
 
 on:
-  schedule:
-    - cron: "00 11 * * *" # 한국시간 기준 오후 8시(20시)에 해당 Action 실행
+schedule: - cron: "00 11 \* \* \*" # 한국시간 기준 오후 8시(20시)에 해당 Action 실행
 {% endhighlight %}
 
 ## Slack Incoming WebHooks 연동
@@ -89,20 +81,19 @@ Github Actions에서 쉘 스크립트를 실행시키는 것은 어렵지 않습
 name: algo_daily_alarm
 
 on:
-  schedule:
-    - cron: "00 11 * * *"
+schedule: - cron: "00 11 \* \* \*"
 
 jobs:
-  algo_daily_alarm:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
+algo_daily_alarm:
+runs-on: ubuntu-latest
+steps: - name: Checkout
+uses: actions/checkout@v2
 
       - name: POST Algo repo daily alarm to Slack
         shell: bash
         run: |
           ...쉘 스크립트 내용...
+
 {% endhighlight %}
 
 ## 레포지토리 secret 지정해주기
@@ -110,25 +101,23 @@ jobs:
 요청을 보내는 slack 채널 URL을 알면 누구나 제 개인 채널로 슬랙 알림을 보낼 수 있습니다. 따라서 action에 직접 slack 채널의 URL을 하드코딩하기 보다는 레포지토리 secret으로 등록하여 action에서는 secrets를 참조하여 사용할 수 있도록 합니다. 그렇다면 메시지 요청을 하는 `curl` 실행문은 아래와 같이 쓸 수 있습니다.
 
 {% highlight yaml %}
-curl -X POST --data-urlencode "payload={\"channel\": \"#알고_알리미\", \"username\": \"알고 알리미\", \"text\": \"${DAILY_MESSAGE}\", \"icon_emoji\": \":male-technologist:\"}" {% raw %}${{ secrets.SLACK_WEBHOOK_URL }}{% endraw %}
+curl -X POST --data-urlencode "payload={\"channel\": \"#알고\_알리미\", \"username\": \"알고 알리미\", \"text\": \"${DAILY_MESSAGE}\", \"icon_emoji\": \":male-technologist:\"}" {% raw %}${{ secrets.SLACK_WEBHOOK_URL }}{% endraw %}
 {% endhighlight %}
 
 ## 일일 알고리즘 알림 만들기
 
 완성된 일일 알고리즘 알림은 이렇습니다. 일일 알고리즘 알림은 퇴근하고 얼추 집에 오는 시간인 매일 오후 8시에, 이번달에 푼 알고리즘 문제가 총 몇 문제인지 알려주고, 목표로 설정한 30문제에 얼마나 근접했는지 알려줍니다.
 
-
 {% highlight yaml %}
 
 name: algo_daily_alarm
 
 on:
-  schedule:
-    - cron: "00 11 * * *" # 오후 8시
+schedule: - cron: "00 11 \* \* \*" # 오후 8시
 
 jobs:
-  algo_daily_alarm:
-    runs-on: ubuntu-latest
+algo_daily_alarm:
+runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
@@ -168,8 +157,8 @@ jobs:
 
         # 슬랙 채널로 메시지 요청
           curl -X POST --data-urlencode "payload={\"channel\": \"#알고_알리미\", \"username\": \"알고 알리미\", \"text\": \"${DAILY_MESSAGE}\", \"icon_emoji\": \":male-technologist:\"}" {% raw %}${{ secrets.SLACK_WEBHOOK_URL }}{% endraw %}
-{% endhighlight %}
 
+{% endhighlight %}
 
 ## 주간 알고리즘 알림 만들기
 
@@ -177,17 +166,15 @@ jobs:
 
 기세를 몰아 주간 알고리즘 알림도 만들어 봤습니다. 주간 알고리즘 알림은 매주 금요일에 올해에는 알고리즘을 총 몇 문제 풀었는지, 올해의 지난 달 각각 알고리즘을 몇 문제 풀었는지도 알려줍니다.
 
-
 {% highlight yaml %}
 name: algo_weekly_alarm
 
 on:
-  schedule:
-    - cron: "0 9 * * 5"
+schedule: - cron: "0 9 \* \* 5"
 
 jobs:
-  algo_daily_alarm:
-    runs-on: ubuntu-latest
+algo_daily_alarm:
+runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
@@ -229,9 +216,8 @@ jobs:
 
         # 채널로 메시지 보내기
           curl -X POST --data-urlencode "payload={\"channel\": \"#알고_알리미\", \"username\": \"알고 알리미\", \"text\": \"${MESSAGE}\", \"icon_emoji\": \":male-technologist:\"}"{% raw %}${{ secrets.SLACK_WEBHOOK_URL }}{% endraw %}
+
 {% endhighlight %}
-
-
 
 ## 마무리
 

@@ -1,0 +1,4 @@
+---
+slug: automation
+name: automation
+---
