@@ -69,6 +69,7 @@ TCP 프로토콜은 Three-Way Handshake 악수를 통해 SYN과 ACK 비트를 �
 ## 6. TCP 프로토콜 스택에서 패킷을 만들고 TCP 헤더를 붙인다.
 
 <small>[이미지 출처](http://web.deu.edu.tr/doc/oreily/networking/firewall/ch06_03.htm)</small>
+
 ![패킷](http://web.deu.edu.tr/doc/oreily/networking/firewall/figs/fire0602.gif)
 
 여기서부터는 OSI 4 계층, 전송 계층의 시작점입니다.
