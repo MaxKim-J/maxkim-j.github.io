@@ -51,7 +51,7 @@ const ProfilePage = React.lazy(() => import('./ProfilePage')); // 지연 로딩
 
 주로 JS 번들을 스플리팅하고 웹 자원 중 **코드**를 Lazy Loading하는데 쓰였던 Suspense는 React 18에서 **무엇이든 
 기다릴 수 있는 기능**으로 확장됩니다. Suspense는 이제 이미지, 스크립트, 그 밖의 비동기 작업을 기다리는데에 모두
-사용 될 수 있는 기능입니다. 
+사용 될 수 있는 기능입니다. (아직 React 18은 릴리즈 전이라, [Docs의 해당 페이지](https://ko.reactjs.org/docs/concurrent-mode-suspense.html#what-is-suspense-exactly)에는 실험적 기능임을 표시하는 경고문이 있습니다.)
 
 Suspense for Data Fetching이란 Lazy Loading하는 데이터에 Suspense의 컨셉을 도입한 것입니다.
 
@@ -224,7 +224,7 @@ Suspense for Data Fetching에는 또 어떤 장점이 있는지 보여드리겠�
 
 ## React Docs
 
-[React Docs 예제](https://ko.reactjs.org/docs/concurrent-mode-suspense.html#what-is-suspense-exactly)
+[React Docs 예제](https://codesandbox.io/s/frosty-hermann-bztrp)
 
 위에서 다뤘던 예제의 resource.posts..read() 메소드의 내부 구현은 다음과 같습니다.
 
