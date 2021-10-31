@@ -368,7 +368,7 @@ Fallback UI를 찾습니다.
 
 # 대수적 효과와 Suspense
 
-<img src="/uploads/suspense-algebraic-effect/tweet.png" width="400" height="400" />
+<img src="/uploads/suspense-algebraic-effect/tweet.png" />
 
 Sebastian Markbåge는 코드 블럭을 트위터로 공유할 때 algebraic effect, 대수적 효과를 언급했습니다.
 또한 React 코어 팀의 프로그래머 Dan Abramov는 Suspense가 대수적 효과를 토대로
@@ -506,7 +506,7 @@ Dan이 제시한 문법은 **뒤이어 호출된 함수의 컨텍스트가 먼�
 
 앞에서도 언급했던 박서진 님의 세션에서는 Dan이 보여주는 대수적 효과의 구현을 웹 클라이언트 개발의 관점에 맞게 설명합니다.
 
-<img src="/uploads/suspense-algebraic-effect/toss.png" width="700" height="400" />
+<img src="/uploads/suspense-algebraic-effect/toss.png" />
 
 이 세션에서는 **코드 조각을 감싸는 맥락으로 책임을 분리하는 방식을 대수적 효과라고 한다**고 언급하고 있습니다. 컴포넌트의
 특정 역할을 분리해 특정 컴포넌트를 감싸는 부모 컴포넌트에게 위임할 수 있다는 것입니다. Suspense나 ErrorBoundary가 실제로 그렇게
