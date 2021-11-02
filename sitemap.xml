@@ -1,56 +1,267 @@
----
-layout: null
-sitemap:
-  exclude: 'yes'
----
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  {% for post in site.posts %}
-    {% unless post.published == false %}
-    <url>
-      <loc>{{ site.url }}{{ post.url }}</loc>
-      {% if post.sitemap.lastmod %}
-        <lastmod>{{ post.sitemap.lastmod | date: "%Y-%m-%d" }}</lastmod>
-      {% elsif post.date %}
-        <lastmod>{{ post.date | date_to_xmlschema }}</lastmod>
-      {% else %}
-        <lastmod>{{ site.time | date_to_xmlschema }}</lastmod>
-      {% endif %}
-      {% if post.sitemap.changefreq %}
-        <changefreq>{{ post.sitemap.changefreq }}</changefreq>
-      {% else %}
-        <changefreq>monthly</changefreq>
-      {% endif %}
-      {% if post.sitemap.priority %}
-        <priority>{{ post.sitemap.priority }}</priority>
-      {% else %}
-        <priority>0.7</priority>
-      {% endif %}
-    </url>
-    {% endunless %}
-  {% endfor %}
-  {% for page in site.pages %}
-    {% unless page.sitemap.exclude == "yes" %}
-    <url>
-      <loc>{{ site.url }}{{ page.url | remove: "index.html" }}</loc>
-      {% if page.sitemap.lastmod %}
-        <lastmod>{{ page.sitemap.lastmod | date: "%Y-%m-%d" }}</lastmod>
-      {% elsif page.date %}
-        <lastmod>{{ page.date | date_to_xmlschema }}</lastmod>
-      {% else %}
-        <lastmod>{{ site.time | date_to_xmlschema }}</lastmod>
-      {% endif %}
-      {% if page.sitemap.changefreq %}
-        <changefreq>{{ page.sitemap.changefreq }}</changefreq>
-      {% else %}
-        <changefreq>monthly</changefreq>
-      {% endif %}
-      {% if page.sitemap.priority %}
-        <priority>{{ page.sitemap.priority }}</priority>
-      {% else %}
-        <priority>0.5</priority>
-      {% endif %}
-    </url>
-    {% endunless %}
-  {% endfor %}
+<urlset
+      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+<!-- created with Free Online Sitemap Generator www.xml-sitemaps.com -->
+
+
+<url>
+  <loc>https://maxkim-j.github.io/</loc>
+  <lastmod>2021-10-31T12:34:57+00:00</lastmod>
+  <priority>1.00</priority>
+</url>
+<url>
+  <loc>https://maxkim-j.github.io/about/</loc>
+  <lastmod>2021-10-31T12:34:57+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://maxkim-j.github.io/tag/tdd</loc>
+  <lastmod>2021-10-31T12:34:57+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://maxkim-j.github.io/tag/automation</loc>
+  <lastmod>2021-10-31T12:34:57+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://maxkim-j.github.io/tag/dom</loc>
+  <lastmod>2021-10-31T12:34:57+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://maxkim-j.github.io/tag/git</loc>
+  <lastmod>2021-10-31T12:34:57+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://maxkim-j.github.io/tag/infrastructure</loc>
+  <lastmod>2021-10-31T12:34:57+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://maxkim-j.github.io/tag/javascript</loc>
+  <lastmod>2021-10-31T12:34:57+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://maxkim-j.github.io/tag/network</loc>
+  <lastmod>2021-10-31T12:34:57+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://maxkim-j.github.io/tag/react</loc>
+  <lastmod>2021-10-31T12:34:57+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://maxkim-j.github.io/tag/reactnative</loc>
+  <lastmod>2021-10-31T12:34:57+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://maxkim-j.github.io/tag/redux</loc>
+  <lastmod>2021-10-31T12:34:57+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://maxkim-j.github.io/tag/retrospect</loc>
+  <lastmod>2021-10-31T12:34:57+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://maxkim-j.github.io/tag/thought</loc>
+  <lastmod>2021-10-31T12:34:57+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://maxkim-j.github.io/tag/tutorial</loc>
+  <lastmod>2021-10-31T12:34:57+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://maxkim-j.github.io/tag/vue</loc>
+  <lastmod>2021-10-31T12:34:57+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://maxkim-j.github.io/tag/webpack</loc>
+  <lastmod>2021-10-31T12:34:57+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://maxkim-j.github.io/posts/suspense-argibraic-effect</loc>
+  <lastmod>2021-10-31T12:34:57+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://maxkim-j.github.io/posts/packet-travel</loc>
+  <lastmod>2021-10-31T12:34:57+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://maxkim-j.github.io/posts/dev-job-retrospect</loc>
+  <lastmod>2021-10-31T12:34:57+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://maxkim-j.github.io/posts/redux-store-structure</loc>
+  <lastmod>2021-10-31T12:34:57+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://maxkim-j.github.io/posts/react-native-ci-cd</loc>
+  <lastmod>2021-10-31T12:34:57+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://maxkim-j.github.io/posts/like-legacy</loc>
+  <lastmod>2021-10-31T12:34:57+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://maxkim-j.github.io/posts/what-type-of-developer-am-i</loc>
+  <lastmod>2021-10-31T12:34:57+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://maxkim-j.github.io/posts/how-to-minimize-redux-saga-typing</loc>
+  <lastmod>2021-10-31T12:34:57+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://maxkim-j.github.io/posts/how-to-use-redux-saga</loc>
+  <lastmod>2021-10-31T12:34:57+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://maxkim-j.github.io/posts/github-actions-slack-bot</loc>
+  <lastmod>2021-10-31T12:34:57+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://maxkim-j.github.io/page-2/</loc>
+  <lastmod>2021-10-31T12:34:57+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://maxkim-j.github.io/posts/vue-comp-test</loc>
+  <lastmod>2021-10-31T12:34:57+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://maxkim-j.github.io/posts/keyboard-input</loc>
+  <lastmod>2021-10-31T12:34:57+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://maxkim-j.github.io/posts/dom-pos-scroll</loc>
+  <lastmod>2021-10-31T12:34:57+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://maxkim-j.github.io/posts/git-start</loc>
+  <lastmod>2021-10-31T12:34:57+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://maxkim-j.github.io/posts/frontend-infrastructure</loc>
+  <lastmod>2021-10-31T12:34:57+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://maxkim-j.github.io/posts/react-query-preview</loc>
+  <lastmod>2021-10-31T12:34:57+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://maxkim-j.github.io/posts/nuxt-ssr</loc>
+  <lastmod>2021-10-31T12:34:57+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://maxkim-j.github.io/posts/async-console-log</loc>
+  <lastmod>2021-10-31T12:34:57+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://maxkim-j.github.io/posts/protect-var-against-undefined</loc>
+  <lastmod>2021-10-31T12:34:57+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://maxkim-j.github.io/posts/function-props-vuejs</loc>
+  <lastmod>2021-10-31T12:34:57+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://maxkim-j.github.io/posts/cra-webpack-config</loc>
+  <lastmod>2021-10-31T12:34:57+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://maxkim-j.github.io/posts/react-component-this</loc>
+  <lastmod>2021-10-31T12:34:57+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://maxkim-j.github.io/posts/js-pure-function</loc>
+  <lastmod>2021-10-31T12:34:57+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://maxkim-j.github.io/posts/js-map</loc>
+  <lastmod>2021-10-31T12:34:57+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://maxkim-j.github.io/posts/2020-retrospect</loc>
+  <lastmod>2021-10-31T12:34:57+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://maxkim-j.github.io/posts/precedent-bot-retrospect</loc>
+  <lastmod>2021-10-31T12:34:57+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://maxkim-j.github.io/posts/dev-job-after-junior</loc>
+  <lastmod>2021-10-31T12:34:57+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://maxkim-j.github.io/posts/school-personal-project</loc>
+  <lastmod>2021-10-31T12:34:57+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://maxkim-j.github.io/posts/hufs-semester-clock</loc>
+  <lastmod>2021-10-31T12:34:57+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://maxkim-j.github.io/posts/thought-ts</loc>
+  <lastmod>2021-10-31T12:34:57+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://maxkim-j.github.io/posts/why-dev</loc>
+  <lastmod>2021-10-31T12:34:57+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://maxkim-j.github.io/page-3/</loc>
+  <lastmod>2021-10-31T12:34:57+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://maxkim-j.github.io/page-4/</loc>
+  <lastmod>2021-10-31T12:34:57+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+
+
 </urlset>
