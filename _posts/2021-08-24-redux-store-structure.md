@@ -115,7 +115,7 @@ userInfo: {
 {% highlight typescript %}
 export type GeneralStatus = "idle" | "loading" | "success" | "fail";
 
-export type CustomStatusOnlyAsyncEntity<StatusType> = {
+export type AsyncEntityStatus<StatusType> = {
   status: StatusType;
   error?: BaseException | null;
 };
@@ -123,42 +123,44 @@ export type CustomStatusOnlyAsyncEntity<StatusType> = {
 
 기본적으로는 status 프로퍼티가 `success | fail | idle | loading` 이라는 기본적인 4가지 상태를 갖게 GeneralStatus type을 선언합니다.
 
-성공, 혹은 실패의 유형이 여러가지라면 `success1 | success2 | fail1 | fail2 | idle | loading` 이런 식의 상태값이 가능할 수도 있을 것입니다. `CustomStatusOnlyAsyncEntity`에는 제네릭으로 가질 수 있는 상태값의 타입을 넣어줄 수도 있도록 설정했습니다.
+성공, 혹은 실패의 유형이 여러가지라면 `success1 | success2 | fail1 | fail2 | idle | loading` 이런 식의 상태값이 가능할 수도 있을 것입니다. `AsyncEntityStatus`에는 제네릭으로 가질 수 있는 상태값의 타입을 넣어줄 수도 있도록 설정했습니다.
 
 이전에 고정적이었던 AsyncEntity 프로퍼티는 잘게 분해되었습니다. 아래와 같은 타입들이 모두 모여 하나의 AsyncEntity를 만듭니다.
 
 {% highlight typescript %}
-export type DataContainer<DataType> = {
+export type AsyncEntityData<DataType> = {
   data: DataType | null;
 };
 
-export type GetStatusEntity<GetStatusType> = {
+export type AsyncEntityGetStatus<GetStatus = GeneralStatus> = {
   GET: CustomStatusOnlyAsyncEntity<GetStatusType>;
 };
 
-export type PostStatusEntity<PostStatusType> = {
+export type AsyncEntityPostStatus<PostStatus = GeneralStatus> = {
   POST: CustomStatusOnlyAsyncEntity<PostStatusType>;
 };
 
-export type PutStatusEntity<PutStatusType> = {
+export type AsyncEntityPutStatus<PutStatus = GeneralStatus> = {
   PUT: CustomStatusOnlyAsyncEntity<PutStatusType>;
 };
 
-export type DeleteStatusEntity<DeleteStatusType> = {
+export type AsyncEntityDeleteStatus<DeleteStatus = GeneralStatus> = {
   DELETE: CustomStatusOnlyAsyncEntity<DeleteStatusType>;
 };
 
 // Store Type
 // GET, POST, PUT 하는 userInfo 데이터 - 필요한 메서드마다 자유롭게 붙일 수 있습니다
+type UserInfoAsyncEntity = AsyncEntityData<UserInfo> &
+  AsyncEntityGetStatus &
+  AsyncEntityPostStatus &
+  AsyncEntityPutStatus;
+
 type UserStore = {
-  userInfo: DataContainer<UserInfo> &
-    GetStatusEntity<GeneralStatus> &
-    PostStatusEntity<GeneralStatus> &
-    PutStatusEntity<GeneralStatus>;
+  userInfo: UserInfoAsyncEntity
 };
 {% endhighlight %}
 
-데이터를 저장할 프로퍼티(DataContainer)를 하나 만들고, 해당 데이터를 수정하는 메소드 이름으로 프로퍼티들을 하나씩 붙이는 방식으로 선언합니다.
+데이터를 저장할 프로퍼티(AsyncEntityData)를 하나 만들고, 해당 데이터를 수정하는 메소드 이름으로 프로퍼티들을 하나씩 붙이는 방식으로 선언합니다.
 
 이제 완성된 타입들을 사용하여 slice를 선언하는 곳에 initalState를 선언합니다.
 
@@ -184,10 +186,10 @@ const initialStore: UserStore = {
 };
 {% endhighlight %}
 
-`DataContainer`의 data 프로퍼티 타입은 null도 가능한데요, 데이터가 없는 상태를 명시적으로 null로 표현하기 위해서입니다. data타입에 아래와 같이 null 대입이 가능하지 않으면 문제가 생길 수 있습니다.
+`AsyncEntityData`의 data 프로퍼티 타입은 null도 가능한데요, 데이터가 없는 상태를 명시적으로 null로 표현하기 위해서입니다. data타입에 아래와 같이 null 대입이 가능하지 않으면 문제가 생길 수 있습니다.
 
 {% highlight typescript %}
-export type DataContainer<DataType> = {
+export type AsyncEntityData<DataType> = {
   data: DataType;
 };
 {% endhighlight %}
@@ -230,19 +232,18 @@ const initialStore:UserStore = {
 
 제가 사용하는 redux toolkit slice의 reducer 함수를 만드는 유틸 함수는 크게 4가지입니다.
 
-위에서 선언한 `GeneralStatusType`의 상태변화를 만들고, 요청 성공 시 적당한 처리를 할 수 있는 reducer 함수를 만드는 팩토리 함수들입니다. 다른 StatusType을 쓴다면 reducer 함수를 직접 구현해야겠지만 일반적인 상황에서는 이 4가지 함수로 모든 상황이 커버됩니다.
+위에서 선언한 `GeneralStatus` 타입의 상태변화를 만들고, 요청 성공 시 적당한 처리를 할 수 있는 reducer 함수를 만드는 팩토리 함수들입니다. 비동기 동작이 아닌 StatusType을 쓴다면 reducer 함수를 직접 구현해야겠지만 일반적인 상황에서는 이 4가지 함수로 대부분의 상황이 커버됩니다.
 
 {% highlight typescript %}
-const createMethodStartReducer =
+const createStartReducer =
   <State extends { [key: string]: any }>(entity: string, method: HttpMethods) =>
   <PayloadType>() => {
     return (state: State, action: PayloadAction<PayloadType>) => {
-      state[entity].data = null;
       state[entity][method].status = "loading";
     };
   };
 
-const createMethodSuccessReducer =
+const createSuccessReducer =
   <State extends { [key: string]: any }>(entity: string, method: HttpMethods) =>
   <PayloadType>() => {
     return (state: State, action: PayloadAction<PayloadType>) => {
@@ -293,10 +294,10 @@ const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    getUserInfo: createMethodStartReducer("userInfo", "GET")<GetUserStartPayload>(),
-    getUserInfoSuccess: createMethodSuccessReducer("userInfo","GET")<UserInfo>(),
-    getUserInfoFail: createMethodFailReducer("project", "GET")<Error>(),
-    getUserInfoRestore: createMethodRestoreReducer("project", "GET")(),
+    getUserInfo: createStartReducer("userInfo", "GET")<GetUserStartPayload>(),
+    getUserInfoSuccess: createSuccessReducer("userInfo","GET")<UserInfo>(),
+    getUserInfoFail: createFailReducer("userInfo", "GET")<AxiosError>(),
+    getUserInfoRestore: createRestoreReducer("userInfo", "GET")(),
   },
 });
 
@@ -331,7 +332,7 @@ const createAsyncSaga = <Start, Success, Fail>(
       const response: AxiosResponse<Success> = yield call(fn, action.payload);
       yield put(success(response.data));
     } catch (error) {
-      const { response }: { response: AxiosResponse<Fail> } = error;
+      const response: AxiosResponse<Fail> = error;
       yield put(fail(response.data));
     } finally {
       yield delay(sustain); // success혹은 fail이후 상태 유지를 얼마나 할 것인지
@@ -343,7 +344,7 @@ const createAsyncSaga = <Start, Success, Fail>(
 
 인자로 success, fail, restore 액션을 받고 적절한 상황에 액션을 발행해 Saga를 호출합니다.
 
-기본적으로는 요청에 필요한 requestBody를 Start action의 payload로 삼아 넣어줍니다. Axios 요청 객체를 requestBody를 받는 비동기 요청 함수로 미리 감싸야 합니다.
+기본적으로는 요청에 필요한 requestBody이나 쿼리파람을 Start action의 payload로 삼아 넣어줍니다. Saga 내부에서 호출할 함수는 다음과 같이 만들어놓아야 합니다.
 
 {% highlight typescript %}
 const getUserInfo = ({ userId }: GetUserStartPayload) => {
@@ -382,7 +383,7 @@ const createAsyncSaga = <Start, Success, Fail>(
     }
   };
 };
-{% endhighlight %}
+{% endhighlight %} 
 
 ## 실제 구현
 
@@ -404,11 +405,11 @@ export function* userSaga() {
 
 success, fail, restore 액션과 파라미터, 타입을 같이 넘겨 제네레이터 함수를 반환합니다. 마지막으로 takeLatest를 사용해 호출을 시작하는 start 액션을 구독하고 Saga와 맵핑시켜줍니다.
 
-# 전체 스토어 구조
+# 디렉토리 구조
 
-이렇게 하면 전체 스토어 구조는 다음과 같습니다. toolkit을 쓰지 않았을 때보다 훨씬 간결하고 정리가 깨끗하게 된 로직을 볼 수 있습니다! import 구문들을 생략한, 맥락만 보여드리는 예제입니다.
+아래와 같은 디렉토리 구조를 가집니다. 서버에서 관리하는 데이터의 도메인별로 Store을 나눕니다. 공통적으로 사용되는 유틸 함수(SagaUtil, createReducers)는 상위 디렉토리에 놓습니다.  
 
-아래와 같은 디렉토리 구조를 포함합니다.
+컨벤션을 만들어 비동기 데이터를 가져오기 위해 필요한 reducer 함수들과 그렇지 않은 reducer 함수들을 공간적으로 분리할 수 있는 방법도 필요할 것입니다.
 
 {% highlight bash %}
 src
@@ -423,123 +424,16 @@ src
     |- types.ts # store 전체에 사용되는 타입과 유틸함수는 store 디렉토리에 저장
 {% endhighlight %}
 
-{% highlight typescript %}
-// src/api/index.ts
+# 전체 구현
 
-export const getUserInfo = ({ userId }: GetUserStartPayload) => {
-  return axios.get("baseurl/user", {
-    params: { userId },
-  });
-};
-{% endhighlight %}
+유틸 함수 부분과 실제 구현 부분으로 나누어 전체 구현 코드를 보여드리겠습니다. 확실히 Redux Toolkit 도입으로 [이전 글의 Redux 예제](https://maxkim-j.github.io/posts/how-to-use-redux-saga#%EC%93%B4%EB%8B%A4%EB%A9%B4-%EB%8D%94-%EC%83%9D%EA%B0%81%ED%95%B4%EB%B4%90%EC%95%BC-%ED%95%A0-%EA%B2%83%EB%93%A4)에 비해 간소화된 모습입니다. 
+
+저번 예제보다 개행이 많아서 라인 수 자체는 별로 차이가 나는 것 같지는 않지만, 전체적인 타이핑은 많이 줄었습니다. 액션 문자열과 액션 반환 함수를 정의할 필요가 없는게 제일 좋네요.
 
 {% highlight typescript %}
-// src/store/utils.ts
+// 실제 구현 부분
 
-export const createMethodStartReducer =
-  <State extends { [key: string]: any }>(entity: string, method: HttpMethods) =>
-  <PayloadType>() => {
-    return (state: State, action: PayloadAction<PayloadType>) => {
-      state[entity].data = null;
-      state[entity][method].status = "loading";
-    };
-  };
-
-export const createMethodSuccessReducer =
-  <State extends { [key: string]: any }>(entity: string, method: HttpMethods) =>
-  <PayloadType>() => {
-    return (state: State, action: PayloadAction<PayloadType>) => {
-      state[entity].data = action.payload;
-      state[entity][method].error = null;
-      state[entity][method].status = "success";
-    };
-  };
-
-export const createMethodFailReducer =
-  <State extends { [key: string]: any }>(entity: string, method: HttpMethods) =>
-  <PayloadType>() => {
-    return (state: State, action: PayloadAction<PayloadType>) => {
-      state[entity][method].error = action.payload;
-      state[entity][method].status = "fail";
-    };
-  };
-
-export const createMethodStatusRestoreReducer =
-  <State extends { [key: string]: any }>(entity: string, method: HttpMethods) =>
-  () => {
-    return (state: State) => {
-      state[entity][method].status = "idle";
-    };
-  };
-
-type CreateAsyncSagaOptions<Start, Success> = {
-  fn: (requestBody: Start) => Promise<AxiosResponse<Success>>;
-  sustain?: number;
-};
-
-const createAsyncSaga = <Start, Success, Fail>(
-  success: ActionCreatorWithPayload<Success>,
-  fail: ActionCreatorWithPayload<Fail>,
-  { fn, sustain = 1000 }: CreateAsyncSagaOptions<Start, Success>
-) => {
-  return function* (action: PayloadAction<Start>) {
-    try {
-      // 비동기 요청 함수의 인자에 맞게 Start의 action.payload 프로퍼티를 맞춰준다
-      const response: AxiosResponse<Success> = yield call(fn, action.payload);
-      yield put(success(response.data));
-    } catch (error) {
-      const { response }: { response: AxiosResponse<Fail> } = error;
-      yield put(fail(response.data));
-    } finally {
-      yield delay(sustain); // success혹은 fail이후 상태 유지를 얼마나 할 것인지
-      yield put(restore(undefined)); // 상태유지 시간이 지나고 나면 idle로 전환
-    }
-  };
-};
-{% endhighlight %}
-
-{% highlight typescript %}
-// src/store/types.ts
-
-export type DataContainer<DataType> = {
-  data: DataType | null;
-};
-
-export type GetStatusEntity<GetStatusType> = {
-  GET: CustomStatusOnlyAsyncEntity<GetStatusType>;
-};
-
-export type PostStatusEntity<PostStatusType> = {
-  POST: CustomStatusOnlyAsyncEntity<PostStatusType>;
-};
-
-export type PutStatusEntity<PutStatusType> = {
-  PUT: CustomStatusOnlyAsyncEntity<PutStatusType>;
-};
-
-export type DeleteStatusEntity<DeleteStatusType> = {
-  DELETE: CustomStatusOnlyAsyncEntity<DeleteStatusType>;
-};
-{% endhighlight %}
-
-{% highlight typescript %}
-// src/store/user/types.ts
-
-export type UserStore = {
-  userInfo: DataContainer<UserInfo> &
-    GetStatusEntity<GeneralStatus> &
-    PostStatusEntity<GeneralStatus> &
-    PutStatusEntity<GeneralStatus>;
-};
-
-export type GetUserStartPayload = {
-  userId: number;
-};
-{% endhighlight %}
-
-{% highlight typescript %}
-// src/store/user/reducer.ts
-
+// index.ts
 const initialStore: UserStore = {
   userInfo: {
     data: null,
@@ -562,18 +456,15 @@ const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    getUserInfo: createMethodStartReducer("userInfo","GET")<GetUserStartPayload>(),
-    getUserInfoSuccess: createMethodSuccessReducer("userInfo","GET")<UserInfo>(),
-    getUserInfoFail: createMethodFailReducer("project", "GET")<Error>(),
-    getUserInfoRestore: createMethodRestoreReducer("project", "GET")(),
+    getUserInfo: createStartReducer("userInfo", "GET")<GetUserStartPayload>(),
+    getUserInfoSuccess: createSuccessReducer("userInfo","GET")<UserInfo>(),
+    getUserInfoFail: createFailReducer("userInfo", "GET")<AxiosError>(),
+    getUserInfoRestore: createRestoreReducer("userInfo", "GET")(),
   },
 });
 
+// saga.ts
 export const userActions = userSlice.actions;
-{% endhighlight %}
-
-{% highlight typescript %}
-// src/store/user/saga.ts
 
 const getUserInfoSaga = createAsyncSaga<GetUserStartPayload, UserInfo, Error>(
   userActions.getUserInfoSuccess,
@@ -581,7 +472,7 @@ const getUserInfoSaga = createAsyncSaga<GetUserStartPayload, UserInfo, Error>(
   userActions.getUserInfoRestore,
   {
     fn: getUserInfo,
-    sustain: 2000,
+    sustain: 1000,
   }
 );
 
@@ -589,7 +480,6 @@ export function* userSaga() {
   yield takeLatest(userActions.getUserInfo.type, getUserInfoSaga);
 }
 {% endhighlight %}
-
 # 맺는말
 
 막상 정리해보면 내용이 그렇게 많지는 않은 것 같지만 근 몇달동안 상당히 골몰했던 주제였습니다. 회사에서의 태스크를 정신없이 처리하고 있어 짬이 쉽게 나지가 않았지만 내가 리덕스는 리팩토링 하고 만다!!!! 고 생각하며 벼르고 있었던 부분이기도 합니다.

@@ -15,7 +15,7 @@ published: true
 
 ## 동기
 
-회사에서 Saga를 도입해 프로젝트를 진행 중에, 반복되는 Saga 타이핑과 빠듯했던 데드라인 때문에 Saga를 사용하다 말고 async/await 를 사용해 컴포넌트 단에서 API를 호출하는 방법으로 전환했습니다. 
+회사에서 Saga를 도입해 프로젝트를 진행 중에, 반복되는 Saga 타이핑과 빠듯했던 데드라인 때문에 Saga를 사용하다 말고 async/await를 사용해 컴포넌트 단에서 API를 호출하는 방법으로 개발이 진행되는 상황이 빈번해졌습니다.
 
 그러다보니 어떤 API와 비즈니스 로직은 Saga를 통해 실행되고, 어떤 API는 컴포넌트 단에서 바로 요청되는 등 비즈니스 로직을 작성하는 방법에 일관성이 없어지고, 비즈니스 로직과 UI로직이 섞여 추후 유지보수가 상당히 불편한 상황이 만들어졌습니다. 
 
@@ -243,7 +243,27 @@ export const catSlice = createSlice({
 
 reducer 함수들은 reducers 객체 내부의 최상위에 존재해야 합니다. 그래서 위의 `createAsyncReducers` 사용례에서도 전개 연산자를 쓴 것이죠.
 
-뇌피셜이지만, 네스팅하여 reducer 함수를 배치할 수 있다면 모든 깊이의 함수들을 모아서 action, reducer을 모두 만들어내기 위한 로직은 꽤 복잡할 것입니다. 그렇기 때문에 최상위에 함수가 아닌 다른 타입의 무언가가 있으면 에러를 뿜도록 규칙을 정한것이 아닌가 생각됩니다.
+Redux Toolkit은 slice의 reducer 속성 내부의 객체 네스팅을 할 수 있는 경우로 다음과 같은 경우만 허용합니다. 네스팅을 [Action Creator을 커스텀하는 일종의 API로 사용](https://redux-toolkit.js.org/api/createSlice#customizing-generated-action-creators)하는 것입니다.
+
+{% highlight typescript %}
+const todosSlice = createSlice({
+  name: 'todos',
+  initialState: [] as Item[],
+  reducers: {
+    addTodo: {
+      reducer: (state, action: PayloadAction<Item>) => {
+        state.push(action.payload)
+      },
+      prepare: (text: string) => {
+        const id = nanoid()
+        return { payload: { id, text } }
+      },
+    },
+  },
+})
+{% endhighlight %}
+
+뇌피셜이지만, 네스팅하여 reducer 함수를 배치할 수 있다면 모든 깊이의 함수들을 모아서 action, reducer을 모두 만들어내기 위한 로직은 꽤 복잡할 것입니다. 그렇기 때문에 최상위에 리듀서 함수, 혹은 위와 같은 Custom Action Creator 객체가 아닌 다른 타입의 무언가가 있으면 에러를 뿜도록 규칙을 정한것이 아닌가 생각됩니다.
 
 ## 4. CreateSaga 유틸 함수로 반복되는 Saga 타이핑 방지하기
 
@@ -270,7 +290,7 @@ export function createSaga<P>(actions: IFetchActionGroup, req: any) {
 }
 {% endhighlight %}
 
-하지만 slice를 사용하면 저렇게 관련된 action들을 객체로 감싸지 못하기 때문에, 일일히 인자로 넣어줘야 합니다. 이 프로젝트에서 사용하는 `createSaga`함수는 이렇게 생겼습니다.
+하지만 slice를 사용하면 저렇게 관련된 action들을 객체로 감싸지 못하기 때문에, 일일히 인자로 넣어줘야 합니다. 이 프로젝트에서 사용하는 `createSaga`함수는 이렇게 생겼습니다. 사실 인자로 넘겨야 하는 상황이 마음에 들지 않네요. Slice에서 Reducer 네스팅이 되었으면 좋았을텐데......
 
 {% highlight typescript %}
 export const createSaga = <Start, Success, Fail>(
@@ -309,9 +329,42 @@ export default function* catSaga() {
 
 ![에러](../uploads/how-to-minimize/error-example.png)
 
+이때 `createAsyncActions`의 반환값 타이핑을 제대로 정의하기 위해 삽질을 해봤습니다. 문제가 뭐냐면 이 함수의 인자 중 하나인 `name`을 받아 그걸 토대로 객체 프로퍼티를 동적으로 만들어내기 때문에 타입을 사전적으로 정의하기가 어려웠습니다. 아래 코드는 컴파일되지 않겠지만, 대강 이런 식의 타입이 필요한 것입니다.
+
+{% highlight typescript %}
+// Name인자에 따라 다른 프로퍼티 이름을 반환
+// Name은 "FetchCatInfo" 이런식으로 추론되었을 경우 가능
+type AsyncReducers<Name, Start, Success, Fail> = {
+  [`${Name}`]:((state: State, action: PayloadAction<Start>) => void),
+  [`success${Name}`]:((state: State, action: PayloadAction<Success>) => void),
+  [`fail${Name}`]:((state: State, action: PayloadAction<Fail>) => void),
+}
+{% endhighlight %}
+
+구글링 하던 도중 올해 7월 중에 [Template Literal Type을 interface나 types의 key로 선언할 수 있는 문법이 Typescript 4.4부터 추가되었다](https://github.com/microsoft/TypeScript/pull/44512)는 사실을 최근에 발견해서, 연습용 레포지토리 타입스크립트 버전을 올려 다시 시도해보았지만, 제네릭이랑 동작하지는 않는 것으로 보여 단념했습니다.
+
+{% highlight typescript %}
+// 이렇게는 동작하는데
+type AsyncReducers<Start, Success, Fail> = {
+  [key:`${string}`]:((state: State, action: PayloadAction<Start>) => void),
+  [key:`success${string}`]:((state: State, action: PayloadAction<Success>) => void),
+  [key:`fail${string}`]:((state: State, action: PayloadAction<Fail>) => void),
+}
+
+// 이렇게는 동작하지 않았습니다...
+type AsyncReducers<Name, Start, Success, Fail> = {
+  [key:`${Name}`]:((state: State, action: PayloadAction<Start>) => void),
+  [key:`success${Name}`]:((state: State, action: PayloadAction<Success>) => void),
+  [key:`fail${Name}`]:((state: State, action: PayloadAction<Fail>) => void),
+}
+{% endhighlight %}
+
+사실 이쯤 해보고 나니 `createAsyncActions`을 쓰고싶다는 생각이 사라진게, 이렇게 Reducer를 자동으로 생성하면 리듀서 함수와 dispatch할 액션의 이름을 코드에서 찾아볼 수 없어 **가독성을 해치는 과한 추상화**가 되는 것이 아닐까 하는 생각이 들었던 것 같습니다. 
+
+하나의 유틸 함수로 비동기 요청에 필요한 모든 액션과 리듀서를 생성하니 개발시 타이핑은 줄어들긴 하겠지만, 온보딩중인 개발자의 경우 이 코드를 보고 제대로 액션을 디스패치할 수 없을 것 같았달까요. 결국 타이핑 비용이 준 만큼 커뮤니케이션 비용이 발생할 것 같았습니다. 그래서 단념하고 아래와 같은 방법을 시도해보게 되었습니다.
 ## 5. 보완) slice.reducers에 명시적으로 reducer 선언하기
 
-reducers에 선언된 각 액션들마다 고유한 타입을 가지려면, 전개연산자를 사용하지 않고 reducers 객체에 직접 프로퍼티 이름을 선언하여 reducers 함수를 선언해야 합니다. 그러기 위해서 먼저 `createAsyncActions`를 다음과 같은 함수들로 분리했습니다.
+reducers에 선언된 각 액션들마다 고유한 타입을 가지려면, 전개연산자를 사용하지 않고 정석대로 reducers 객체에 직접 프로퍼티 이름을 선언하여 reducers 함수를 선언해야 합니다. 그러기 위해서 먼저 `createAsyncActions`를 다음과 같은 함수들로 분리했습니다.
 
 {% highlight typescript %}
 // 3등분 합니다 
@@ -366,16 +419,16 @@ export const catSlice = createSlice({
 (state[entity] as AsyncEntity<Success, Fail>).data = action.payload;
 
 // 함수를 분리하면(createStartReducer, createSuccessReducer, createFailReducer)
-// action.payload타입 전체의 일부만 받으므로
+// action.payload 타입 전체의 일부만 받으므로
 // AsyncEntity와 제네릭을 사용하여 추론이 불가능해서 그냥 any로 추론된다.
 state[entity].status = "loading";
 {% endhighlight %}
 
-그렇다고 `createSuccessReducer` 만들자고 Start와 Fail 액션의 페이로드 타입까지 넘기자니 좀 과한 듯 합니다. 그렇게 되면 Start, Success, Fail 액션 타입 적는걸 리듀서에서 3번 사가에서 1번 하게되는 것이라 반복되는 타이핑이 많아집니다.
+그렇다고 `createSuccessReducer` 만들자고 Start와 Fail 액션의 페이로드 타입까지 넘기자니 좀 과한 듯 합니다. 그렇게 되면 Start, Success, Fail 액션 타입 적는걸 리듀서에서 3번 사가에서 1번 하게되는 것이라 반복되는 타이핑이 많아지고 직관적이지 않게 됩니다.
 
 ## 맺음말 & 들었던 생각
 
-이렇게 Redux+Saga를 사용하는 프로젝트에서 Redux toolkit과 자체 유틸 함수를 활용해 타이핑을 줄이는 용례를 만들어 보았습니다. 코드를 작성하면서 느낀점2 몇 가지가 있는데요.
+이렇게 Redux+Saga를 사용하는 프로젝트에서 Redux toolkit과 자체 유틸 함수를 활용해 타이핑을 줄이는 용례를 만들어 보았습니다. 작업의 흐름을 글에 그대로 정리해서 꽤 긴 글이 된 듯 합니다. 코드를 작성하면서 느낀점이 몇 가지가 있는데요.
 
 먼저 TypeScript를 좀 더 파볼 때가 된 것 같다는 생각이었습니다. 이렇게 하면 되겠지 싶어서 코드를 작성했는데, 타입 에러가 나는 경우가 발생해서 그렇습니다. 타입 시스템에 대한 이해도 더 필요한 것 같습니다.
 
