@@ -1,6 +1,6 @@
 ---
 layout: post
-title: React 개발 환경 만들며 알게된 것들(TypeScript+Webpack+Babel)
+title: React 개발 환경 구축하며 알게된 것들
 description: 별 거 아닐수도 있지만...
 image: /uploads/default.png
 emoji: 🍳
