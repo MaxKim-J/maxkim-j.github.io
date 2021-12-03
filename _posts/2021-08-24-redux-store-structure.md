@@ -465,7 +465,7 @@ const userSlice = createSlice({
     getUserInfoRestore: createRestoreReducer("userInfo", "GET")(),
   },
 });
-
+  
 // saga.ts
 export const userActions = userSlice.actions;
 
@@ -476,7 +476,7 @@ const getUserInfoSaga = createAsyncSaga<GetUserStartPayload, UserInfo, Error>(
   {
     fn: getUserInfo,
     sustain: 1000,
-  }
+  } 
 );
 
 export function* userSaga() {
