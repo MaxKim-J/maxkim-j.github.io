@@ -7,6 +7,7 @@ emoji: 🍳
 tags:
   - react
   - webpack
+  - babel
 published: true
 ---
 
