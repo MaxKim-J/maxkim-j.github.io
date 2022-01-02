@@ -23,12 +23,12 @@
 
 .active {
   display: block;
-  animation: appear .5s ease;
+  animation: appear .25s ease;
 }
 
 .hidden {
   display: none;
-  animation: disappear .5s ease;
+  animation: disappear .25s ease;
 }
 
 @keyframes appear {

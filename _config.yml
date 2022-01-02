@@ -1,6 +1,6 @@
 # Base blog settings
 baseurl: "" # the subpath of your site,                         # e.g. /blog/
-# set to '' in case of hosting on GitHub
+# set to '' in case of hosting on GitHub'
 url:
   "https://maxkim-j.github.io" # the base hostname & protocol for your site
   # `http://<username>.github.io` - for GitHub
@@ -22,8 +22,8 @@ blog:
   titles_only: false # show post titles only on main blog page
 
   # Fonts
-  font: '"Noto Sans KR", "Rubik", -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif'
-  load_google_fonts: "Noto Rubik:400,400italic,700,700italic"
+  font: "'Noto Sans KR', 'Rubik', '-apple-system', 'BlinkMacSystemFont', 'Helvetica Neue', sans-serif"
+  load_google_fonts: "Noto+Sans+KR:wght@400;700&display=swap"
 # Author info
 author:
   fullname: Max Jonghyuk Kim

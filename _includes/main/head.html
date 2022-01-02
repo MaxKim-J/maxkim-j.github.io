@@ -11,6 +11,16 @@
   {{ page.title }} {% endif %} {% endif %}
 </title>
 
+<link
+  rel="preload"
+  as="stylesheet"
+  href="https://fonts.googleapis.com/css2?family={{ site.blog.load_google_fonts }}"
+/>
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family={{ site.blog.load_google_fonts }}"
+/>
+
 <meta
   name="description"
   content="{% if page.description %}{{ page.description | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.blog.description }}{% endif %}"
@@ -32,6 +42,8 @@ else %} {% assign title = site.blog.title %} {% endif %} {% if page.description
 {% if page.cover %} {% assign cover = page.cover %} {% else %} {% assign cover =
 site.cover %} {% endif %}
 
+
+
 <!-- Twitter Cards -->
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:title" content="{{ title }}" />
@@ -52,23 +64,25 @@ site.cover %} {% endif %}
   content="{{ page.url | replace:'index.html','' | prepend: site.url }}"
 />
 <meta property="og:site_name" content="{{ site.blog.title }}" />
+
 {% if page.title == "Blog" %}
 <meta property="og:image" content="../../uploads/default.png" />
 {% endif %}
+
 <!-- Styles -->
+
 <link rel="stylesheet" href="{{ "assets/vendor/normalize-css/normalize.css" |
 relative_url }}"> <link rel="stylesheet" href="{{ "assets/css/main.css" |
-relative_url }}"> {% if site.blog.load_google_fonts %}
-<link
-  rel="stylesheet"
-  href="https://fonts.googleapis.com/css?family={{ site.blog.load_google_fonts }}"
-/>
-<link rel="preconnect" href="https://fonts.gstatic.com">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+relative_url }}"> 
+
+
+{% if site.blog.load_google_fonts %}
 <style>
   html {
     font-family: {{ site.blog.font }};
   }
 </style>
-{% endif %} {% if site.blog.inline_footnotes == true %} <link rel="stylesheet"
+{% endif %} 
+
+{% if site.blog.inline_footnotes == true %} <link rel="stylesheet"
 href="{{ "assets/css/bf.css" | relative_url }}"> {% endif %}
