@@ -1,4 +1,4 @@
 ---
-slug: TDD
-name: Test Drive Development
+slug: test
+name: test
 ---

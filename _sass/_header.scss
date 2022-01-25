@@ -38,6 +38,9 @@ header {
   .title-small {
     display: none;
   }
+  a {
+    border: none;
+  }
 }
 
 .logo,
@@ -91,6 +94,7 @@ header {
     text-align: center;
     font-size: 1.2rem;
     margin-left: 1rem;
+    border: none;
 
     > span {
       width: 2.5rem;
