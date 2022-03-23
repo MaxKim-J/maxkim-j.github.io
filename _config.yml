@@ -26,6 +26,7 @@ blog:
   load_google_fonts: "Noto+Sans+KR:wght@400;700&display=swap"
 # Author info
 author:
+  name: Max Jonghyuk Kim
   fullname: Max Jonghyuk Kim
   rss: false # generate RSS feed and show it's icon in header
   mail: false # change to your e-mail address

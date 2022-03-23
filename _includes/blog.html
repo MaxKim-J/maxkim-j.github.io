@@ -51,10 +51,10 @@
   </div>
 
   <div class="post-description">
-    {% if site.blog.titles_only == false %} {% if site.blog.excerpts == true %} {{
-      post.excerpt }} {% else if site.blog.excerpts == false %} {{ post.content |
-      remove: '&lt;!–-break-–&gt;' }} {% endif %} {% endif %} {% if forloop.last ==
-      false %}
+    {% if site.blog.titles_only == false %} {% if site.blog.excerpts == true %}
+    {{ post.excerpt }} {% else if site.blog.excerpts == false %} {{ post.content
+    | remove: '&lt;!–-break-–&gt;' }} {% endif %} {% endif %} {% if forloop.last
+    == false %}
   </div>
 </article>
 

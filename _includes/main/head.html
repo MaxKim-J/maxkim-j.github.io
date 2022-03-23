@@ -11,10 +11,6 @@
   {{ page.title }} {% endif %} {% endif %}
 </title>
 
-<meta
-  name="description"
-  content="{% if page.description %}{{ page.description | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.blog.description }}{% endif %}"
-/>
 {% if page.tags %}<meta
   name="keywords"
   content="{{ page.tags | join: ', ' }}"
@@ -35,31 +31,10 @@ else %} {% assign title = site.blog.title %} {% endif %} {% if page.description
 = site.blog.description %} {% endif %} {% if page.keywords %} {% assign keywords
 = page.keywords %} {% else %} {% assign keywords = site.keywords %} {% endif %}
 {% if page.cover %} {% assign cover = page.cover %} {% else %} {% assign cover =
-site.cover %} {% endif %}
-
-<!-- Twitter Cards -->
-<meta name="twitter:card" content="summary" />
-<meta name="twitter:title" content="{{ title }}" />
-<meta name="twitter:description" content="{{ description }}" />
-<meta name="twitter:image" content="{{ site.url }}{{ cover }}" />
-
-<!-- Google plus -->
-<meta name="author" content="{{ site.author.googleplus }}" />
-<link rel="author" href="{{ site.author.googleplus }}" />
-
-<!-- Open Graph -->
-<meta property="og:locale" content="{{ site.lang }}" />
-<meta property="og:type" content="article" />
-<meta property="og:title" content="{{ title }}" />
-<meta property="og:description" content="{{ description }}" />
-<meta
-  property="og:url"
-  content="{{ page.url | replace:'index.html','' | prepend: site.url }}"
-/>
-<meta property="og:site_name" content="{{ site.blog.title }}" />
-
-{% if page.title == "Blog" %}
+site.cover %} {% endif %} {% if page.title == "Blog" %}
 <meta property="og:image" content="../../uploads/default.png" />
+<meta property="og:title" content="김맥스 기술 블로그" />
+<meta property="twitter:title" content="김맥스 기술 블로그" />
 {% endif %}
 
 <!-- Styles -->
