@@ -1,47 +1,33 @@
 // Articles / posts
 //-------------------------------
 
-.whole-post {
-  display: flex;
-  justify-content: center;
-  div {
-    cursor: pointer;
-    margin-bottom: 3rem;
-    font-size: 1rem;
-    background-color: black;
-    color: #ffffff;
-    display: inline-block;
-    padding: 0px 20px;
-    margin-right:1rem;
-  }
-  div:hover {
-    background-color: #ffffff;
-    color: black;
-    // text-decoration: underline;
-  }
-}
-
 .active {
   display: block;
-  animation: appear .25s ease;
+  animation: appear 0.25s ease;
 }
 
 .hidden {
   display: none;
-  animation: disappear .25s ease;
+  animation: disappear 0.25s ease;
 }
 
 @keyframes appear {
-  0% { opacity: 0; }   
-  100% { opacity: 1; }
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 @keyframes disappear {
-  0% { opacity: 1; }   
-  100% { opacity: 0;}
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
 }
-
-
 
 article {
   &.blog {
@@ -50,10 +36,6 @@ article {
     &:last-of-type {
       margin-bottom: 6em;
     }
-
-    // p {
-    //   margin-bottom: 4.5rem;
-    // }
   }
 
   &.post {
@@ -117,10 +99,6 @@ article {
   .oversize {
     margin: inherit;
     max-width: 100%;
-  }
-  .whole-post {
-    text-align: center;
-    display: block;
   }
   .post-pagination {
     font-size: 0.8rem;
