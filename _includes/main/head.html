@@ -11,16 +11,6 @@
   {{ page.title }} {% endif %} {% endif %}
 </title>
 
-<link
-  rel="preload"
-  as="stylesheet"
-  href="https://fonts.googleapis.com/css2?family={{ site.blog.load_google_fonts }}"
-/>
-<link
-  rel="stylesheet"
-  href="https://fonts.googleapis.com/css2?family={{ site.blog.load_google_fonts }}"
-/>
-
 <meta
   name="description"
   content="{% if page.description %}{{ page.description | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.blog.description }}{% endif %}"
@@ -33,6 +23,11 @@
   rel="canonical"
   href="{{ page.url | replace:'index.html','' | prepend: site.url }}"
 />
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard-dynamic-subset.css"
+/>
 
 {% if page.title %} {% assign title = page.title ~ ' - ' ~ page.subtitle %} {%
 else %} {% assign title = site.blog.title %} {% endif %} {% if page.description
@@ -41,8 +36,6 @@ else %} {% assign title = site.blog.title %} {% endif %} {% if page.description
 = page.keywords %} {% else %} {% assign keywords = site.keywords %} {% endif %}
 {% if page.cover %} {% assign cover = page.cover %} {% else %} {% assign cover =
 site.cover %} {% endif %}
-
-
 
 <!-- Twitter Cards -->
 <meta name="twitter:card" content="summary" />
@@ -73,16 +66,11 @@ site.cover %} {% endif %}
 
 <link rel="stylesheet" href="{{ "assets/vendor/normalize-css/normalize.css" |
 relative_url }}"> <link rel="stylesheet" href="{{ "assets/css/main.css" |
-relative_url }}"> 
+relative_url }}"> {% if site.blog.inline_footnotes == true %} <link
+rel="stylesheet" href="{{ "assets/css/bf.css" | relative_url }}"> {% endif %}
 
-
-{% if site.blog.load_google_fonts %}
 <style>
   html {
     font-family: {{ site.blog.font }};
   }
 </style>
-{% endif %} 
-
-{% if site.blog.inline_footnotes == true %} <link rel="stylesheet"
-href="{{ "assets/css/bf.css" | relative_url }}"> {% endif %}

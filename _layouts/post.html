@@ -2,10 +2,12 @@
 layout: default
 ---
 
-{% include post.html post=page %} 
-{% include post/related.html %} 
-{% if site.author.disqus %} 
-<div style="margin-bottom: 1rem">
-  {% include externals/disqus.html %} 
-</div>
-{% endif %}
+{% include post.html post=page %} {% include post/related.html %}
+<script
+  src="https://utteranc.es/client.js"
+  repo="MaxKim-J/maxkim-j.github.io"
+  issue-term="url"
+  theme="github-light"
+  crossorigin="anonymous"
+  async
+></script>

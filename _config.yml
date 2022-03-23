@@ -22,7 +22,7 @@ blog:
   titles_only: false # show post titles only on main blog page
 
   # Fonts
-  font: "'Noto Sans KR', 'Rubik', '-apple-system', 'BlinkMacSystemFont', 'Helvetica Neue', sans-serif"
+  font: "'Pretendard','-apple-system', 'Rubik', 'BlinkMacSystemFont', 'Helvetica Neue', sans-serif"
   load_google_fonts: "Noto+Sans+KR:wght@400;700&display=swap"
 # Author info
 author:

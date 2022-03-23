@@ -3,23 +3,25 @@
     <div class="menu">
       <div class="logo">
         <a class="title-big" href="{{ '/' | prepend: site.baseurl }}"
-          >技以求道</a
+          >以技求道</a
         >
       </div>
-     
 
-        <!-- <li>
+      <!-- <li>
           <a href="{{ '/' | prepend: site.baseurl }}">blog</a>
         </li> -->
-       
-        <!-- <li><a href="{{ '/tag' | prepend: site.baseurl }}">tags</a></li>
+
+      <!-- <li><a href="{{ '/tag' | prepend: site.baseurl }}">tags</a></li>
         <li><a href="{{ '/archive' | prepend: site.baseurl }}">archive</a></li> -->
-   
     </div>
 
     <div class="social">
       <a href="{{ '/about' | prepend: site.baseurl }}">About</a>
-      <a href="https://github.com/{{ site.author.github }}" target="_blank" class="smaller">
+      <a
+        href="https://github.com/{{ site.author.github }}"
+        target="_blank"
+        class="smaller"
+      >
         <span class="icon-github"></span>
       </a>
       <a onclick="switchTheme()" title="Switch theme?" role="button">
@@ -28,4 +30,3 @@
     </div>
   </header>
 </div>
-
