@@ -4,15 +4,9 @@ title: "김맥스 기술 블로그"
 ---
 
 <div class="dev-post">
-  <div>
-    {% include utils/tag-box.html %}
-  </div>
+  <div>{% include utils/tag-box.html %}</div>
   <div class="active">
-    {% for post in paginator.posts %} 
-      {% include blog.html %} 
-    {% endfor %} 
+    {% for post in site.posts %} {% unless post.tags contains "review" %} {%
+    include blog.html %} {% endunless %} {% endfor %}
   </div>
 </div>
-
-
-{% include post/pagination.html %}

@@ -5,7 +5,7 @@ description: 2달동안 8개 회사와 진행한 구직
 image: /uploads/default.png
 emoji: 👔
 tags:
-  - restrospect
+  - retrospect
 published: true
 ---
 
