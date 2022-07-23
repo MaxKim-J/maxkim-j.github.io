@@ -1,0 +1,44 @@
+{
+  "name": "max-kim-tech-blog",
+  "version": "1.0.0",
+  "private": true,
+  "description": "max-kim-tech-blog",
+  "author": "Max Kim",
+  "keywords": [
+    "gatsby"
+  ],
+  "scripts": {
+    "develop": "gatsby develop",
+    "start": "gatsby develop",
+    "build": "gatsby build",
+    "serve": "gatsby serve",
+    "clean": "gatsby clean",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@babel/core": "^7.18.9",
+    "@mdx-js/mdx": "^1.6.22",
+    "@mdx-js/react": "^1.6.22",
+    "babel-eslint": "^10.1.0",
+    "gatsby": "^4.19.2",
+    "gatsby-plugin-google-analytics": "^4.19.0",
+    "gatsby-plugin-image": "^2.19.0",
+    "gatsby-plugin-mdx": "^3.19.0",
+    "gatsby-plugin-pnpm": "^1.2.10",
+    "gatsby-plugin-react-helmet": "^5.19.0",
+    "gatsby-plugin-sharp": "^4.19.0",
+    "gatsby-plugin-sitemap": "^5.19.0",
+    "gatsby-source-filesystem": "^4.19.0",
+    "gatsby-transformer-sharp": "^4.19.0",
+    "react": "^18.1.0",
+    "react-dom": "^18.1.0",
+    "react-helmet": "^6.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^17.0.45",
+    "@types/react": "^18.0.15",
+    "@types/react-dom": "^18.0.6",
+    "eslint": "4.12.1",
+    "typescript": "^4.7.4"
+  }
+}
