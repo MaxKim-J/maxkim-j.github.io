@@ -4,7 +4,7 @@ const config: GatsbyConfig = {
   siteMetadata: {
     title: '김맥스 블로그',
     description: '필요에 의해 씁니다',
-    siteUrl: 'maxkim-j.github.io',
+    siteUrl: 'https://maxkim-j.github.io',
   },
   graphqlTypegen: true,
   plugins: [
@@ -32,10 +32,9 @@ const config: GatsbyConfig = {
     {
       resolve: 'gatsby-source-filesystem',
       options: {
-        name: 'pages',
-        path: './src/pages/',
+        path: `${__dirname}/src/contents`,
+        name: `contents`,
       },
-      __key: 'pages',
     },
   ],
 };
