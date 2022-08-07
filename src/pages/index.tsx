@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { graphql, Link } from 'gatsby';
-import globalStyle from '../styles/global';
+
+import MainLayout from '../components/@layout/MainLayout';
 
 interface Props {
   data: {
@@ -19,25 +20,26 @@ interface Props {
 }
 
 const IndexPage = ({ data }: Props) => {
-  // 쿼리파람 가져오기
-  globalStyle();
-  console.log(data);
-
   return (
-    <main>
-      <h1>김맥스 기술블로그</h1>
-      {data &&
-        data.allMdx.nodes.map(({ id, excerpt, frontmatter, slug }) => (
-          <div key={id}>
-            <Link to={`/posts/${slug}`}>
-              <h2>{frontmatter.title}</h2>
-              <p>
-                {frontmatter.date}, {frontmatter.description}
-              </p>
-            </Link>
-          </div>
-        ))}
-    </main>
+    <MainLayout
+      header={<h1>김맥스 기술블로그</h1>}
+      main={
+        <div>
+          {data &&
+            data.allMdx.nodes.map(({ id, excerpt, frontmatter, slug }) => (
+              <div key={id}>
+                <Link to={`/posts/${slug}`}>
+                  <p>{frontmatter.title}</p>
+                  <p>
+                    {frontmatter.date}, {frontmatter.description}
+                  </p>
+                </Link>
+              </div>
+            ))}
+        </div>
+      }
+      footer={<div>갯츠비</div>}
+    />
   );
 };
 

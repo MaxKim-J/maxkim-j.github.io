@@ -1,18 +1,29 @@
 import { createStitches } from '@stitches/react';
 
-export const { styled, css, getCssText, globalCss } = createStitches({
-  tokens: {
-    fonts: {
-      system: 'system-ui',
+export const { styled, css, getCssText, globalCss, createTheme } =
+  createStitches({
+    theme: {
+      fonts: {
+        system: 'system-ui',
+      },
+      colors: {
+        black: '#000000',
+        white: '#ffffff',
+      },
+      fontSizes: {
+        title: '56px',
+        heading1: '32px',
+        heading2: '28px',
+        heading3: '24px',
+        heading4: '20px',
+        body1: '18px',
+        body2: '16px',
+        body3: '14px',
+        body4: '12px',
+      },
     },
-    colors: {
-      hiContrast: 'hsl(206,10%,5%)',
-      loContrast: 'white',
+    media: {
+      tablet: '(max-width: 1060px)',
+      mobile: '(max-width: 420px)',
     },
-    fontSizes: {
-      1: '13px',
-      2: '15px',
-      3: '17px',
-    },
-  },
-});
+  });
