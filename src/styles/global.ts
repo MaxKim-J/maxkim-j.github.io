@@ -2,6 +2,9 @@ import { globalCss } from './stitches';
 
 // default
 const globalStyles = globalCss({
+  '*': {
+    fontFamily: 'Pretendard',
+  },
   'p, body': { margin: 0, padding: 0, color: '$black', fontSize: '$body1' },
   a: { textDecoration: 'none', color: '$black' },
   h1: {

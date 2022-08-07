@@ -2,6 +2,8 @@ import React, { ReactChildren } from 'react';
 import { styled } from '../../styles/stitches';
 import globalStyle from '../../styles/global';
 
+import '../../styles/font.css';
+
 interface Props {
   header: ReactChildren;
   main: ReactChildren;
