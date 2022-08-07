@@ -22,8 +22,8 @@ function MainLayout({ main, header, footer }: Props) {
     <ContainerWrapper>
       <ResponsiveContainer>
         <header>{header}</header>
-        <main>{main}</main>
-        <header>{footer}</header>
+        <Main>{main}</Main>
+        <footer>{footer}</footer>
       </ResponsiveContainer>
     </ContainerWrapper>
   );
@@ -34,12 +34,13 @@ const ContainerWrapper = styled('div', {
   minHeight: '100vh',
   display: 'flex',
   justifyContent: 'center',
-  backgroundColor: 'green',
+  backgroundColor: '#ffbb32',
 });
 
 const ResponsiveContainer = styled('div', {
   backgroundColor: '$white',
-  padding: '12px',
+  padding: '24px 18px 0px 18px',
+  boxSizing: 'border-box',
   width: '1060px',
   '@tablet': {
     width: '760px',
@@ -62,6 +63,10 @@ const ResponsiveContainer = styled('div', {
       fontSize: 'body1',
     },
   },
+});
+
+const Main = styled('main', {
+  minHeight: '700px',
 });
 
 export default MainLayout;

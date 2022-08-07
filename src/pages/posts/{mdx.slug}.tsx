@@ -1,6 +1,10 @@
 import { graphql } from 'gatsby';
 import { MDXRenderer } from 'gatsby-plugin-mdx';
 import React from 'react';
+import Footer from '../../components/@layout/Footer';
+import Header from '../../components/@layout/Header/Header';
+
+import MainLayout from '../../components/@layout/MainLayout';
 import globalStyle from '../../styles/global';
 
 interface Props {
@@ -26,10 +30,16 @@ export default function PostPage({ data }: Props) {
   } = data.mdx;
 
   return (
-    <>
-      <h1>{title}</h1>
-      <MDXRenderer>{body}</MDXRenderer>
-    </>
+    <MainLayout
+      header={<Header />}
+      main={
+        <div>
+          <h1>{title}</h1>
+          <MDXRenderer>{body}</MDXRenderer>
+        </div>
+      }
+      footer={<Footer />}
+    />
   );
 }
 

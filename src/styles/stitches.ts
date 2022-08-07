@@ -11,7 +11,9 @@ export const { styled, css, getCssText, globalCss, createTheme } =
         white: '#ffffff',
       },
       fontSizes: {
-        title: '56px',
+        title: '28px',
+        subTitle: '24px',
+        description: '16px',
         heading1: '32px',
         heading2: '28px',
         heading3: '24px',
@@ -20,6 +22,12 @@ export const { styled, css, getCssText, globalCss, createTheme } =
         body2: '16px',
         body3: '14px',
         body4: '12px',
+      },
+      fontWeights: {
+        extraBold: '900',
+        bold: '700',
+        regular: '500',
+        thin: '300',
       },
     },
     media: {

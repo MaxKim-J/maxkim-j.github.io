@@ -2,7 +2,8 @@ import * as React from 'react';
 import { graphql, Link } from 'gatsby';
 
 import MainLayout from '../components/@layout/MainLayout';
-
+import MainHeader from '../components/@layout/Header/MainHeader';
+import Footer from '../components/@layout/Footer';
 interface Props {
   data: {
     allMdx: {
@@ -22,7 +23,7 @@ interface Props {
 const IndexPage = ({ data }: Props) => {
   return (
     <MainLayout
-      header={<h1>김맥스 기술블로그</h1>}
+      header={<MainHeader />}
       main={
         <div>
           {data &&
@@ -38,7 +39,7 @@ const IndexPage = ({ data }: Props) => {
             ))}
         </div>
       }
-      footer={<div>갯츠비</div>}
+      footer={<Footer />}
     />
   );
 };
