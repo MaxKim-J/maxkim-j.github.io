@@ -14,6 +14,7 @@ function Footer() {
 }
 
 const FooterContent = styled('div', {
+  marginTop: '32px',
   display: 'flex',
   height: '32px',
   alignItems: 'center',
