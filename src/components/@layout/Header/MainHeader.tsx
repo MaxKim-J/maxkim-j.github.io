@@ -2,6 +2,8 @@ import { Link } from 'gatsby';
 import React from 'react';
 import { styled } from '../../../styles/stitches';
 
+import Tooltip from '../../@fundamentals/Tooltip';
+
 function MainHeader() {
   return (
     <MainHeaderWrapper>
@@ -18,10 +20,14 @@ function MainHeader() {
       </TitleSection>
       <NavSection>
         <LeftSide>
-          <div>all</div>
+          <Tooltip tooltip={<div>툴팁</div>}>
+            <div>all</div>
+          </Tooltip>
         </LeftSide>
         <RightSide>
-          <div>color</div>
+          <Tooltip tooltip={<div>툴팁</div>}>
+            <div>color</div>
+          </Tooltip>
           <div>
             <Link to="/photo">photo</Link>
           </div>
@@ -66,9 +72,8 @@ const LeftSide = styled('div', {});
 const RightSide = styled('div', {
   display: 'flex',
   alignItems: 'center',
-  '& div': {
-    marginLeft: '15px',
-  },
+  justifyContent: 'space-between',
+  minWidth: '180px',
 });
 
 export default MainHeader;
