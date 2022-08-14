@@ -4,7 +4,8 @@ import { graphql, Link } from 'gatsby';
 import MainLayout from '../components/@layout/MainLayout';
 import MainHeader from '../components/@layout/Header/MainHeader';
 import Footer from '../components/@layout/Footer';
-interface Props {
+import PostList from '../components/@pages/home/PostList';
+export interface Props {
   data: {
     allMdx: {
       nodes: {
@@ -22,25 +23,10 @@ interface Props {
 
 const IndexPage = ({ data }: Props) => {
   return (
-    <MainLayout
-      header={<MainHeader />}
-      main={
-        <div>
-          {data &&
-            data.allMdx.nodes.map(({ id, excerpt, frontmatter, slug }) => (
-              <div key={id}>
-                <Link to={`/posts/${slug}`}>
-                  <p>{frontmatter.title}</p>
-                  <p>
-                    {frontmatter.date}, {frontmatter.description}
-                  </p>
-                </Link>
-              </div>
-            ))}
-        </div>
-      }
-      footer={<Footer />}
-    />
+    <MainLayout header={<MainHeader />} footer={<Footer />}>
+      {/* 개수 받기 */}
+      <PostList postList={data} />
+    </MainLayout>
   );
 };
 
@@ -53,7 +39,7 @@ export const query = graphql`
         id
         frontmatter {
           title
-          date(formatString: "YYYY MMMM Do")
+          date(formatString: "YYYY월 MM월 DD일")
           description
           tags
         }

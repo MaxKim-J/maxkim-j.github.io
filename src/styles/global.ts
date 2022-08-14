@@ -7,6 +7,15 @@ const globalStyles = globalCss({
   },
   'p, body': { margin: 0, padding: 0, color: '$black', fontSize: '$body1' },
   a: { textDecoration: 'none', color: '$black' },
+  img: { width: '100%', height: 'auto' },
+  ol: {
+    listStyleType: 'none',
+    marginBlockStart: 0,
+    marginBlockEnd: 0,
+    marginInlineStart: 0,
+    marginInlineEnd: 0,
+    paddingInlineStart: 0,
+  },
   h1: {
     fontSize: '$heading1',
   },

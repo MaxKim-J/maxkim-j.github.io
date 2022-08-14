@@ -13,7 +13,9 @@ export const { styled, css, getCssText, globalCss, createTheme } =
       fontSizes: {
         title: '28px',
         subTitle: '24px',
-        description: '16px',
+        mobileTitle: '20px',
+        description: '14px',
+        mobileDescription: '10px',
         heading1: '32px',
         heading2: '28px',
         heading3: '24px',

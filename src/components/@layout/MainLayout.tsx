@@ -6,13 +6,13 @@ import '../../styles/font.css';
 
 interface Props {
   header: ReactChildren;
-  main: ReactChildren;
+  children: ReactChildren;
   footer: ReactChildren;
 }
 
 // themeColor을 위에서 받아야함
 
-function MainLayout({ main, header, footer }: Props) {
+function MainLayout({ children, header, footer }: Props) {
   globalStyle();
 
   // header에서 결정해줘야하는데 이게좀 애매취하군
@@ -22,7 +22,7 @@ function MainLayout({ main, header, footer }: Props) {
     <ContainerWrapper>
       <ResponsiveContainer>
         <header>{header}</header>
-        <Main>{main}</Main>
+        <Main>{children}</Main>
         <footer>{footer}</footer>
       </ResponsiveContainer>
     </ContainerWrapper>

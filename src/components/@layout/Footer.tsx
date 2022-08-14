@@ -19,11 +19,14 @@ const FooterContent = styled('div', {
   height: '32px',
   alignItems: 'center',
   justifyContent: 'space-between',
-  fontSize: '$body4',
   bottom: 0,
   zIndex: 10,
+  '& div': {
+    fontSize: '10px',
+  },
   '& a': {
     textDecoration: 'underline',
+    fontSize: '10px',
   },
 });
 

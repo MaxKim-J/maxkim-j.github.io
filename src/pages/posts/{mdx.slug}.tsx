@@ -26,20 +26,16 @@ export default function PostPage({ data }: Props) {
 
   const {
     body,
-    frontmatter: { title },
+    frontmatter: { title, embeddedImagesLocal },
   } = data.mdx;
 
   return (
-    <MainLayout
-      header={<Header />}
-      main={
-        <div>
-          <h1>{title}</h1>
-          <MDXRenderer>{body}</MDXRenderer>
-        </div>
-      }
-      footer={<Footer />}
-    />
+    <MainLayout header={<Header />} footer={<Footer />}>
+      <div>
+        <h1>{title}</h1>
+        <MDXRenderer>{body}</MDXRenderer>
+      </div>
+    </MainLayout>
   );
 }
 
