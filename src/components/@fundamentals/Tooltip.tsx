@@ -1,4 +1,5 @@
-import React, { ReactChild, useState, useRef } from 'react';
+import React, { ReactChild, useState, useRef, useContext } from 'react';
+import { themeContext } from '../../context/themeContext';
 import { styled } from '../../styles/stitches';
 
 interface Props {
@@ -11,6 +12,8 @@ function Tooltip({ children, tooltip }: Props) {
   const [isTooltipOpen, setIsTooltipOpen] = useState(false);
   const tooltipWrapperRef = useRef<HTMLDivElement>(null);
 
+  const { theme } = useContext(themeContext);
+
   return (
     <TooltipWrapper
       onClick={() => {
@@ -21,6 +24,7 @@ function Tooltip({ children, tooltip }: Props) {
       <div>{children}</div>
       {isTooltipOpen ? (
         <TooltipContent
+          borderColor={theme === 'dark' ? 'white' : 'black'}
           onClick={(e) => {
             e.stopPropagation();
           }}
@@ -44,6 +48,16 @@ const TooltipContent = styled('div', {
   padding: '3px',
   position: 'absolute',
   border: '1px solid $black',
+  variants: {
+    borderColor: {
+      white: {
+        border: '1px solid $white',
+      },
+      black: {
+        border: '1px solid $black',
+      },
+    },
+  },
 });
 
 export default Tooltip;
