@@ -1,8 +1,9 @@
-import { Link } from 'gatsby';
 import React from 'react';
+import { Link } from 'gatsby';
 import { styled } from '../../../styles/stitches';
 
 import Tooltip from '../../@fundamentals/Tooltip';
+import ThemeTooltip from './ThemeTooltip';
 
 function MainHeader() {
   return (
@@ -20,12 +21,18 @@ function MainHeader() {
       </TitleSection>
       <NavSection>
         <LeftSide>
-          <Tooltip tooltip={<div>툴팁</div>}>
+          <Tooltip
+            tooltip={
+              <div>
+                <div>다크</div>
+              </div>
+            }
+          >
             <div>all</div>
           </Tooltip>
         </LeftSide>
         <RightSide>
-          <Tooltip tooltip={<div>툴팁</div>}>
+          <Tooltip tooltip={<ThemeTooltip />}>
             <div>color</div>
           </Tooltip>
           <div>

@@ -1,4 +1,4 @@
-import React, { ReactChild, useState, useRef, useEffect } from 'react';
+import React, { ReactChild, useState, useRef } from 'react';
 import { styled } from '../../styles/stitches';
 
 interface Props {
@@ -19,7 +19,15 @@ function Tooltip({ children, tooltip }: Props) {
       ref={tooltipWrapperRef}
     >
       <div>{children}</div>
-      {isTooltipOpen ? <TooltipContent>{tooltip}</TooltipContent> : null}
+      {isTooltipOpen ? (
+        <TooltipContent
+          onClick={(e) => {
+            e.stopPropagation();
+          }}
+        >
+          {tooltip}
+        </TooltipContent>
+      ) : null}
     </TooltipWrapper>
   );
 }

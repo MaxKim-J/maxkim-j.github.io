@@ -28,7 +28,7 @@ const ListItem = styled('li', {
 
 const ListItemTitle = styled('div', {
   fontSize: '$title',
-  fontWeight: 'bold',
+  fontWeight: '$bold',
   textAlign: 'right',
   '@mobile': {
     fontSize: '$mobileTitle',

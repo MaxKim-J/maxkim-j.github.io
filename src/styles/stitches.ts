@@ -8,7 +8,11 @@ export const { styled, css, getCssText, globalCss, createTheme } =
       },
       colors: {
         black: '#000000',
+        dark: '#232323',
         white: '#ffffff',
+        orange: '#ffb566',
+        turquoise: '#8cffd6',
+        pink: '#ffa5e4',
       },
       fontSizes: {
         title: '28px',
@@ -27,7 +31,7 @@ export const { styled, css, getCssText, globalCss, createTheme } =
       },
       fontWeights: {
         extraBold: '900',
-        bold: '700',
+        bold: '550',
         regular: '500',
         thin: '300',
       },

@@ -1,6 +1,11 @@
-import React, { ReactChildren } from 'react';
+import React, { ReactChildren, useState } from 'react';
 import { styled } from '../../styles/stitches';
 import globalStyle from '../../styles/global';
+import {
+  themeContext,
+  ThemeContextProvider,
+  type Theme,
+} from '../../context/themeContext';
 
 import '../../styles/font.css';
 
@@ -10,22 +15,19 @@ interface Props {
   footer: ReactChildren;
 }
 
-// themeColor을 위에서 받아야함
-
 function MainLayout({ children, header, footer }: Props) {
   globalStyle();
 
-  // header에서 결정해줘야하는데 이게좀 애매취하군
-  // context api?
-
   return (
-    <ContainerWrapper>
-      <ResponsiveContainer>
-        <header>{header}</header>
-        <Main>{children}</Main>
-        <footer>{footer}</footer>
-      </ResponsiveContainer>
-    </ContainerWrapper>
+    <ThemeContextProvider>
+      <ContainerWrapper>
+        <ResponsiveContainer>
+          <header>{header}</header>
+          <Main>{children}</Main>
+          <footer>{footer}</footer>
+        </ResponsiveContainer>
+      </ContainerWrapper>
+    </ThemeContextProvider>
   );
 }
 
@@ -34,11 +36,9 @@ const ContainerWrapper = styled('div', {
   minHeight: '100vh',
   display: 'flex',
   justifyContent: 'center',
-  backgroundColor: '#ffbb32',
 });
 
 const ResponsiveContainer = styled('div', {
-  backgroundColor: '$white',
   padding: '24px 18px 0px 18px',
   boxSizing: 'border-box',
   width: '1060px',
