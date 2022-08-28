@@ -15,6 +15,7 @@ export const { styled, css, getCssText, globalCss, createTheme } =
         pink: '#ffa5e4',
       },
       fontSizes: {
+        mainTitle: '30px',
         title: '28px',
         subTitle: '24px',
         mobileTitle: '20px',
@@ -30,7 +31,7 @@ export const { styled, css, getCssText, globalCss, createTheme } =
         body4: '12px',
       },
       fontWeights: {
-        extraBold: '900',
+        extraBold: '700',
         bold: '550',
         regular: '500',
         thin: '300',

@@ -6,38 +6,51 @@ import { styled } from '../../../styles/stitches';
 
 function PostList({ postList }: Props['data']) {
   return (
-    <ol>
+    <ListItemRoot>
       {postList &&
         postList.allMdx.nodes.map(({ id, excerpt, frontmatter, slug }) => (
-          <ListItem key={id}>
-            <Link to={`/posts/${slug}`}>
+          <Link to={`/posts/${slug}`} key={id}>
+            <ListItem>
               <ListItemTitle>{frontmatter.title}</ListItemTitle>
               <ListItemDescription>
                 {frontmatter.date} - {frontmatter.description}
               </ListItemDescription>
-            </Link>
-          </ListItem>
+            </ListItem>
+          </Link>
         ))}
-    </ol>
+    </ListItemRoot>
   );
 }
 
-const ListItem = styled('li', {
-  marginBottom: '48px',
+const ListItemRoot = styled('ol', {
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'flex-end',
+  '@mobile': {
+    alignItems: 'flex-start',
+  },
 });
 
-const ListItemTitle = styled('div', {
-  fontSize: '$title',
+const ListItem = styled('li', {
+  marginBottom: '48px',
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'flex-end',
+  '@mobile': {
+    alignItems: 'flex-start',
+  },
+});
+
+const ListItemTitle = styled('span', {
+  fontSize: '$subTitle',
   fontWeight: '$bold',
-  textAlign: 'right',
   '@mobile': {
     fontSize: '$mobileTitle',
   },
 });
 
-const ListItemDescription = styled('div', {
+const ListItemDescription = styled('span', {
   fontSize: '$description',
-  textAlign: 'right',
   marginTop: '6px',
   '@mobile': {
     fontSize: '$mobileDescription',

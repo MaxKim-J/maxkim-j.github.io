@@ -48,7 +48,7 @@ function MainHeader() {
 }
 
 const MainHeaderWrapper = styled('div', {
-  marginBottom: '84px',
+  marginBottom: '100px',
 });
 
 const TitleSection = styled('div', {});
@@ -56,7 +56,7 @@ const TitleSection = styled('div', {});
 const TitleWrapper = styled('div', {
   marginBottom: '16px',
   '&>div': {
-    fontSize: '$title',
+    fontSize: '$mainTitle',
     fontWeight: '$bold',
     '@mobile': {
       fontSize: '$subTitle',

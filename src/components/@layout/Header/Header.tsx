@@ -41,7 +41,7 @@ const RightSide = styled('div', {
 const HeaderWrapper = styled('div', {
   display: 'flex',
   justifyContent: 'space-between',
-  marginBottom: '52px',
+  marginBottom: '82px',
 });
 
 const Title = styled('div', {
