@@ -24,9 +24,9 @@ const postStyles = globalCss({
     textUnderlinePosition: 'under',
   },
   'p > code': {
-    fontStyle: 'italic',
-    padding: '1px 5px',
-    borderRadius: '5px',
+    padding: '2px 8px',
+    borderRadius: '8px',
+    fontSize: '16px',
   },
   blockquote: {
     borderLeft: '3px solid $black',
@@ -42,7 +42,11 @@ const postStyles = globalCss({
     '--deckgo-highlight-code-carbon-box-shadow': 'none',
   },
   li: {
-    lineHeight: 1.6,
+    lineHeight: 1.8,
+  },
+  'li > a': {
+    textDecoration: 'underline',
+    textUnderlinePosition: 'under',
   },
 });
 
