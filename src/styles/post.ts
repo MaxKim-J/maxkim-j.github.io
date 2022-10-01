@@ -2,7 +2,7 @@ import { globalCss } from './stitches';
 
 // post
 const postStyles = globalCss({
-  p: { marginBottom: '24px', wordWrap: 'break-word', lineHeight: 1.6 },
+  p: { marginBottom: '24px', wordWrap: 'break-word', lineHeight: 1.6, wordBreak: 'all' },
   h1: {
     marginTop: '48px',
     marginBottom: '36px',
@@ -23,6 +23,11 @@ const postStyles = globalCss({
     textDecoration: 'underline',
     textUnderlinePosition: 'under',
   },
+  'p > code': {
+    fontStyle: 'italic',
+    padding: '1px 5px',
+    borderRadius: '5px',
+  },
   blockquote: {
     borderLeft: '3px solid $black',
     paddingLeft: '10px',
@@ -32,6 +37,12 @@ const postStyles = globalCss({
   'deckgo-highlight-code': {
     '--deckgo-highlight-code-white-space': 'pre',
     '--deckgo-highlight-code-margin': '12px 0 16px 0',
+    '--deckgo-highlight-code-scroll': 'none',
+    '--deckgo-highlight-code-carbon-margin': '28px 0',
+    '--deckgo-highlight-code-carbon-box-shadow': 'none',
+  },
+  li: {
+    lineHeight: 1.6,
   },
 });
 

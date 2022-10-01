@@ -6,32 +6,50 @@ function ThemeTooltip() {
   const { setBlogTheme } = useContext(themeContext);
 
   return (
-    <ThemeWrapper>
-      {['none', 'dark', 'orange', 'turquoise', 'pink'].map((theme) => {
-        return (
-          <ThemeText
-            key={theme}
-            onClick={() => {
-              setBlogTheme(theme);
-            }}
-          >
-            {theme}
-          </ThemeText>
-        );
-      })}
-    </ThemeWrapper>
+    <>
+      <ThemeWrapper>
+        {['none', 'dark', 'orange'].map((theme) => {
+          return (
+            <ThemeText
+              key={theme}
+              onClick={() => {
+                setBlogTheme(theme);
+              }}
+            >
+              {theme}
+            </ThemeText>
+          );
+        })}
+      </ThemeWrapper>
+      <ThemeWrapper>
+        {['turquoise', 'pink'].map((theme) => {
+          return (
+            <ThemeText
+              key={theme}
+              onClick={() => {
+                setBlogTheme(theme);
+              }}
+            >
+              {theme}
+            </ThemeText>
+          );
+        })}
+      </ThemeWrapper>
+    </>
   );
 }
 
 const ThemeWrapper = styled('div', {
   display: 'flex',
-  width: '30%',
-  justifyContent: 'space-between',
+  // flexDirection: 'column',
 });
 
 const ThemeText = styled('div', {
   fontSize: '$body4',
-  margin: '0 2px',
+  marginRight: '8px',
+  '&:hover': {
+    textDecoration: 'underline',
+  },
 });
 
 export default ThemeTooltip;

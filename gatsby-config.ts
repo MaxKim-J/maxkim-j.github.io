@@ -25,6 +25,7 @@ const config: GatsbyConfig = {
       options: {
         gatsbyRemarkPlugins: [
           'gatsby-remark-gifs',
+          'gatsby-remark-autolink-headers',
           {
             resolve: `gatsby-remark-images`,
             options: {

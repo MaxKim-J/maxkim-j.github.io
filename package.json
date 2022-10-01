@@ -30,6 +30,7 @@
     "gatsby-plugin-react-helmet": "^5.19.0",
     "gatsby-plugin-sharp": "^4.19.0",
     "gatsby-plugin-sitemap": "^5.19.0",
+    "gatsby-remark-autolink-headers": "^5.24.0",
     "gatsby-remark-gifs": "^1.1.0",
     "gatsby-remark-highlight-code": "^3.2.0",
     "gatsby-remark-images": "^6.20.0",

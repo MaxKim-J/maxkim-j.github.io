@@ -44,7 +44,6 @@ const TooltipWrapper = styled('div', {
 const TooltipContent = styled('div', {
   margin: 0,
   top: '30px',
-  minWidth: '100px',
   padding: '3px',
   position: 'absolute',
   border: '1px solid $black',

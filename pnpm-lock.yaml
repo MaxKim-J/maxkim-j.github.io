@@ -22,6 +22,7 @@ specifiers:
   gatsby-plugin-react-helmet: ^5.19.0
   gatsby-plugin-sharp: ^4.19.0
   gatsby-plugin-sitemap: ^5.19.0
+  gatsby-remark-autolink-headers: ^5.24.0
   gatsby-remark-gifs: ^1.1.0
   gatsby-remark-highlight-code: ^3.2.0
   gatsby-remark-images: ^6.20.0
@@ -53,6 +54,7 @@ dependencies:
   gatsby-plugin-react-helmet: 5.19.0_5cicarcau3c3imfy5oxm4fzkfm
   gatsby-plugin-sharp: 4.19.0_upd2dfgy6javngtb6zz74pjfdq
   gatsby-plugin-sitemap: 5.19.0_cz33eqjg3rpnztut5jkwj5t334
+  gatsby-remark-autolink-headers: 5.24.0_cz33eqjg3rpnztut5jkwj5t334
   gatsby-remark-gifs: 1.1.0_gatsby@4.19.2
   gatsby-remark-highlight-code: 3.2.0_ieffm3b2qhhwb62jwngclcmoga
   gatsby-remark-images: 6.20.0_cyycsdsf7pjgvws7qgtab62zyq
@@ -7411,6 +7413,24 @@ packages:
       prop-types: 15.8.1
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
+    dev: false
+
+  /gatsby-remark-autolink-headers/5.24.0_cz33eqjg3rpnztut5jkwj5t334:
+    resolution: {integrity: sha512-RRBA5eA7Av3/BN9rqpYYppCFWMGX/emK8BoMJGsQfoyOf7y9/zVN7/OVkMkaMmgZkk7NBxO8YEsJ3uaLgUQdIg==}
+    engines: {node: '>=14.15.0'}
+    peerDependencies:
+      gatsby: ^4.0.0-next
+      react: ^16.9.0 || ^17.0.0 || ^18.0.0 || ^0.0.0
+      react-dom: ^16.9.0 || ^17.0.0 || ^18.0.0 || ^0.0.0
+    dependencies:
+      '@babel/runtime': 7.18.9
+      gatsby: 4.19.2_5pseeqoa3w4jcl6fccmssxxawy
+      github-slugger: 1.4.0
+      lodash: 4.17.21
+      mdast-util-to-string: 2.0.0
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+      unist-util-visit: 2.0.3
     dev: false
 
   /gatsby-remark-gifs/1.1.0_gatsby@4.19.2:

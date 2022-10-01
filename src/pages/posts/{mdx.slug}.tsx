@@ -39,12 +39,7 @@ export default function PostPage({ data }: Props) {
 
   return (
     <MainLayout header={<Header />} footer={<Footer />}>
-      <PostTitle
-        title={title}
-        date={date}
-        description={description}
-        tags={tags}
-      />
+      <PostTitle title={title} date={date} description={description} tags={tags} />
       <div>
         <MDXRenderer>{body}</MDXRenderer>
       </div>
