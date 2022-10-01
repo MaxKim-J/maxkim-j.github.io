@@ -57,7 +57,7 @@ const TitleWrapper = styled('div', {
   marginBottom: '16px',
   '&>div': {
     fontSize: '$mainTitle',
-    fontWeight: '$bold',
+    fontWeight: '$extraBold',
     '@mobile': {
       fontSize: '$subTitle',
     },

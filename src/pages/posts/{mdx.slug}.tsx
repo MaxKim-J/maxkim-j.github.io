@@ -5,7 +5,9 @@ import Footer from '../../components/@layout/Footer';
 import Header from '../../components/@layout/Header/Header';
 
 import MainLayout from '../../components/@layout/MainLayout';
+import PostTitle from '../../components/@pages/posts/postTitle';
 import globalStyle from '../../styles/global';
+import postStyles from '../../styles/post';
 
 interface Props {
   data: {
@@ -16,6 +18,8 @@ interface Props {
       frontmatter: {
         date: string;
         title: string;
+        description: string;
+        tags: string[];
       };
     };
   };
@@ -23,16 +27,22 @@ interface Props {
 
 export default function PostPage({ data }: Props) {
   globalStyle();
+  postStyles();
 
   const {
     body,
-    frontmatter: { title, embeddedImagesLocal },
+    frontmatter: { title, date, description, tags },
   } = data.mdx;
 
   return (
     <MainLayout header={<Header />} footer={<Footer />}>
+      <PostTitle
+        title={title}
+        date={date}
+        description={description}
+        tags={tags}
+      />
       <div>
-        <h1>{title}</h1>
         <MDXRenderer>{body}</MDXRenderer>
       </div>
     </MainLayout>
@@ -46,8 +56,10 @@ export const query = graphql`
       slug
       body
       frontmatter {
-        date
         title
+        date(formatString: "YYYY년 MM월 DD일")
+        description
+        tags
       }
     }
   }
