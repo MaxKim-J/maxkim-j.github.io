@@ -1,11 +1,7 @@
 import React, { ReactChildren, useState } from 'react';
 import { styled } from '../../styles/stitches';
 import globalStyle from '../../styles/global';
-import {
-  themeContext,
-  ThemeContextProvider,
-  type Theme,
-} from '../../context/themeContext';
+import { themeContext, ThemeContextProvider, type Theme } from '../../context/themeContext';
 
 import '../../styles/font.css';
 
@@ -41,7 +37,7 @@ const ContainerWrapper = styled('div', {
 const ResponsiveContainer = styled('div', {
   padding: '24px 18px 0px 18px',
   boxSizing: 'border-box',
-  width: '1060px',
+  width: '860px',
   '@tablet': {
     width: '760px',
   },
