@@ -93,13 +93,7 @@ focus 요소의 순서는 개발시 일반적으로 고려되는 UX는 아니며
 ```html
 <!-- aria-label 속성으로 요소에 추가적인 정보를 제공할 수 있습니다. -->
 
-<button
-  type="submit"
-  aria-label="유저 정보 수정하기"
-  onClick="{onClickHandler}"
->
-  수정
-</button>
+<button type="submit" onClick="{onClickHandler}" aria-label="유저 정보 수정하기">수정</button>
 ```
 
 WAI-ARIA에서 정의한 설명 요소를 사용할 수 있지만, 제일 좋은 것은 텍스트의 내용과 시맨틱 태그 만으로 요소를 충분히 설명할 수 있는 요소입니다.

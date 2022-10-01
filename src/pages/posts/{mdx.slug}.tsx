@@ -1,6 +1,8 @@
 import { graphql } from 'gatsby';
 import { MDXRenderer } from 'gatsby-plugin-mdx';
 import React from 'react';
+import { defineCustomElements as deckDeckGoHighlightElement } from '@deckdeckgo/highlight-code/dist/loader';
+
 import Footer from '../../components/@layout/Footer';
 import Header from '../../components/@layout/Header/Header';
 
@@ -26,6 +28,7 @@ interface Props {
 }
 
 export default function PostPage({ data }: Props) {
+  deckDeckGoHighlightElement();
   globalStyle();
   postStyles();
 
