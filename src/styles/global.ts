@@ -18,7 +18,7 @@ const globalStyles = globalCss({
   },
   h1: {
     fontSize: '$heading1',
-    fontWeight: '$extraBold',
+    fontWeight: '$bold',
   },
   h2: {
     fontSize: '$heading2',

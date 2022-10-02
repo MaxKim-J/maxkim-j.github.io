@@ -78,6 +78,12 @@ const ThemeContainer = styled('div', {
         'p > code': {
           backgroundColor: '#6b6b6b',
         },
+        'input[type=range]': {
+          backgroundColor: '$white',
+        },
+        'input[type=range]::-webkit-slider-thumb': {
+          backgroundColor: '$white',
+        },
         'deckgo-highlight-code': {
           '--deckgo-highlight-code-carbon-background': '#2b2b2b',
           '--deckgo-highlight-code-carbon-color': '#f8f8f2',

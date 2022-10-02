@@ -33,7 +33,7 @@ function MainHeader() {
           </div>
         </LeftSide>
         <RightSide>
-          <CategoryNotice>category ↔︎</CategoryNotice>
+          <CategoryNotice>↔︎</CategoryNotice>
           <CategoryRangeInput />
         </RightSide>
       </NavSection>
@@ -48,14 +48,14 @@ const MainHeaderWrapper = styled('div', {
 const TitleSection = styled('div', {});
 
 const CategoryNotice = styled('span', {
-  // fontSize: '$description',
+  fontSize: '$description',
 });
 
 const TitleWrapper = styled('div', {
   marginBottom: '16px',
   '&>div': {
     fontSize: '$mainTitle',
-    fontWeight: '$extraBold',
+    fontWeight: '$bold',
     '@mobile': {
       fontSize: '$subTitle',
     },
@@ -85,7 +85,7 @@ const LeftSide = styled('div', {
 });
 
 const RightSide = styled('div', {
-  marginBottom: '25px',
+  marginBottom: '28px',
   '@mobile': {
     marginTop: '50px',
     marginBottom: 0,

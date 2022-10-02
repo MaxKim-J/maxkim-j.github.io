@@ -38,6 +38,6 @@ export const { styled, css, getCssText, globalCss, createTheme } = createStitche
   },
   media: {
     tablet: '(max-width: 920px)',
-    mobile: '(max-width: 740px)',
+    mobile: '(max-width: 550px)',
   },
 });

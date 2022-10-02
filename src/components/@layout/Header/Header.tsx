@@ -46,7 +46,7 @@ const HeaderWrapper = styled('div', {
 
 const Title = styled('div', {
   fontSize: '$mainTitle',
-  fontWeight: '$extraBold',
+  fontWeight: '$bold',
   '@mobile': {
     fontSize: '$subTitle',
   },
