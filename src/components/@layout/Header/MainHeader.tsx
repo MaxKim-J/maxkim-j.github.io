@@ -4,6 +4,7 @@ import { styled } from '../../../styles/stitches';
 
 import Tooltip from '../../@fundamentals/Tooltip';
 import ThemeTooltip from './ThemeTooltip';
+import CategoryRangeInput from './CategoryRangeInput';
 
 function MainHeader() {
   return (
@@ -21,17 +22,6 @@ function MainHeader() {
       </TitleSection>
       <NavSection>
         <LeftSide>
-          <Tooltip
-            tooltip={
-              <div>
-                <div>다크</div>
-              </div>
-            }
-          >
-            <div>all</div>
-          </Tooltip>
-        </LeftSide>
-        <RightSide>
           <Tooltip tooltip={<ThemeTooltip />}>
             <div>color</div>
           </Tooltip>
@@ -41,6 +31,10 @@ function MainHeader() {
           <div>
             <Link to="/about">about</Link>
           </div>
+        </LeftSide>
+        <RightSide>
+          <CategoryNotice>category ↔︎</CategoryNotice>
+          <CategoryRangeInput />
         </RightSide>
       </NavSection>
     </MainHeaderWrapper>
@@ -48,10 +42,14 @@ function MainHeader() {
 }
 
 const MainHeaderWrapper = styled('div', {
-  marginBottom: '100px',
+  marginBottom: '70px',
 });
 
 const TitleSection = styled('div', {});
+
+const CategoryNotice = styled('span', {
+  // fontSize: '$description',
+});
 
 const TitleWrapper = styled('div', {
   marginBottom: '16px',
@@ -72,15 +70,26 @@ const SubTitleWrapper = styled(TitleWrapper, {
 const NavSection = styled('div', {
   display: 'flex',
   justifyContent: 'space-between',
+  '@mobile': {
+    display: 'block',
+  },
 });
 
-const LeftSide = styled('div', {});
-
-const RightSide = styled('div', {
+const LeftSide = styled('div', {
   display: 'flex',
   alignItems: 'center',
-  justifyContent: 'space-between',
   minWidth: '180px',
+  '&>div': {
+    marginRight: '20px',
+  },
+});
+
+const RightSide = styled('div', {
+  marginBottom: '25px',
+  '@mobile': {
+    marginTop: '50px',
+    marginBottom: 0,
+  },
 });
 
 export default MainHeader;

@@ -36,6 +36,7 @@ const ListItem = styled('li', {
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'flex-end',
+  lineHeight: 1.2,
   '@mobile': {
     alignItems: 'flex-start',
   },

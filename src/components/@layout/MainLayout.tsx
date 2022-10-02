@@ -1,7 +1,7 @@
-import React, { ReactChildren, useState } from 'react';
+import React, { ReactChildren } from 'react';
 import { styled } from '../../styles/stitches';
 import globalStyle from '../../styles/global';
-import { themeContext, ThemeContextProvider, type Theme } from '../../context/themeContext';
+import { ThemeContextProvider } from '../../context/themeContext';
 
 import '../../styles/font.css';
 
