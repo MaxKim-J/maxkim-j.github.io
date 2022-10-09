@@ -2,6 +2,7 @@ import { graphql } from 'gatsby';
 import { MDXRenderer } from 'gatsby-plugin-mdx';
 import React from 'react';
 import { defineCustomElements as deckDeckGoHighlightElement } from '@deckdeckgo/highlight-code/dist/loader';
+import Helmet from 'react-helmet';
 
 import Footer from '../../components/@layout/Footer';
 import Header from '../../components/@layout/Header/Header';
@@ -47,6 +48,7 @@ export default function PostPage({ data: { post, postSlugList } }: Props) {
 
   return (
     <MainLayout header={<Header />} footer={<Footer />}>
+      <Helmet title={`김맥스 블로그 | ${title}`} defer={false} />
       <PostTitle title={title} date={date} description={description} tags={tags} />
       <div>
         <MDXRenderer>{body}</MDXRenderer>

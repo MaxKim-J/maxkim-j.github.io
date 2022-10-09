@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { graphql, Link } from 'gatsby';
+import Helmet from 'react-helmet';
 
 import MainLayout from '../components/@layout/MainLayout';
 import MainHeader from '../components/@layout/Header/MainHeader';
@@ -24,7 +25,7 @@ export interface Props {
 const IndexPage = ({ data }: Props) => {
   return (
     <MainLayout header={<MainHeader />} footer={<Footer />}>
-      {/* 개수 받기 */}
+      <Helmet title="김맥스 블로그" defer={false} />
       <PostList postList={data} />
     </MainLayout>
   );
