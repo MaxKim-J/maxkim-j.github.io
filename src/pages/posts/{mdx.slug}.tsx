@@ -10,10 +10,11 @@ import MainLayout from '../../components/@layout/MainLayout';
 import PostTitle from '../../components/@pages/posts/postTitle';
 import globalStyle from '../../styles/global';
 import postStyles from '../../styles/post';
+import ByLine from '../../components/@pages/posts/ByLine';
 
 interface Props {
   data: {
-    mdx: {
+    post: {
       id: string;
       slug: string;
       body: string;
@@ -24,18 +25,25 @@ interface Props {
         tags: string[];
       };
     };
+    postSlugList: {
+      nodes: { slug: string }[];
+    };
   };
 }
 
-export default function PostPage({ data }: Props) {
+export default function PostPage({ data: { post, postSlugList } }: Props) {
   deckDeckGoHighlightElement();
   globalStyle();
   postStyles();
 
   const {
     body,
+    slug,
     frontmatter: { title, date, description, tags },
-  } = data.mdx;
+  } = post;
+
+  const { nodes } = postSlugList;
+  const postSlugs = nodes.map((node) => node.slug);
 
   return (
     <MainLayout header={<Header />} footer={<Footer />}>
@@ -43,13 +51,14 @@ export default function PostPage({ data }: Props) {
       <div>
         <MDXRenderer>{body}</MDXRenderer>
       </div>
+      <ByLine postSlugs={postSlugs} currentSlug={slug} title={title} />
     </MainLayout>
   );
 }
 
 export const query = graphql`
-  query POST_BY_SLUG($slug: String) {
-    mdx(slug: { eq: $slug }) {
+  query ($slug: String) {
+    post: mdx(slug: { eq: $slug }) {
       id
       slug
       body
@@ -58,6 +67,11 @@ export const query = graphql`
         date(formatString: "YYYY년 MM월 DD일")
         description
         tags
+      }
+    }
+    postSlugList: allMdx(sort: { fields: [frontmatter___date], order: DESC }) {
+      nodes {
+        slug
       }
     }
   }

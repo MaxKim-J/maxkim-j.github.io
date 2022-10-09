@@ -6,8 +6,7 @@ function Footer() {
     <FooterContent>
       <div>김맥스 블로그ⓒ김종혁, 2022</div>
       <div>
-        Powered By <a href="https://www.gatsbyjs.com/">gatsby</a> /
-        <a href="">gh-pages</a>
+        Powered By <a href="https://www.gatsbyjs.com/">gatsby</a> /<a href="">gh-pages</a>
       </div>
     </FooterContent>
   );
@@ -27,6 +26,9 @@ const FooterContent = styled('div', {
   '& a': {
     textDecoration: 'underline',
     fontSize: '10px',
+  },
+  '@mobile': {
+    fontSize: '$mobileDescription',
   },
 });
 

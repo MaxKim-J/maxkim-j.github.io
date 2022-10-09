@@ -36,8 +36,19 @@ export const { styled, css, getCssText, globalCss, createTheme } = createStitche
       thin: '300',
     },
   },
+  utils: {
+    hoverUnderline: (value: boolean) =>
+      value
+        ? {
+            '&:hover': {
+              textDecoration: 'underline',
+              textUnderlinePosition: 'under',
+            },
+          }
+        : null,
+  },
   media: {
     tablet: '(max-width: 920px)',
-    mobile: '(max-width: 550px)',
+    mobile: '(max-width: 650px)',
   },
 });

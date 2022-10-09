@@ -42,11 +42,11 @@ const ResponsiveContainer = styled('div', {
   boxSizing: 'border-box',
   width: '900px',
   '@tablet': {
-    width: '760px',
+    width: '650px',
   },
   '@mobile': {
     width: '100%',
-    '& *': {
+    '& p, ul, li': {
       fontSize: '$body2',
     },
     '& h1': {
