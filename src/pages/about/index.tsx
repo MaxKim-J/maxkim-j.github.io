@@ -42,7 +42,7 @@ export default function AboutPage() {
           <StyledLabelContent>
             <p>
               <strong>
-                <a href="https://flex.team">flex.team</a>
+                <Link to="https://flex.team">flex.team</Link>
               </strong>{' '}
               Product Engineer(FE)
             </p>
