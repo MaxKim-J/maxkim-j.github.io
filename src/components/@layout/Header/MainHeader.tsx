@@ -26,7 +26,7 @@ function MainHeader() {
             <div>color</div>
           </Tooltip>
           <div>
-            <Link to="/photo">photo</Link>
+            <Link to="/gallery">gallery</Link>
           </div>
           <div>
             <Link to="/about">about</Link>

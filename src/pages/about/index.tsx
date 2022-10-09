@@ -11,7 +11,7 @@ import MainLayout from '../../components/@layout/MainLayout';
 import globalStyle from '../../styles/global';
 import { Link } from 'gatsby';
 
-export default function TagPage({ data }: Props) {
+export default function AboutPage() {
   globalStyle();
 
   return (
@@ -102,7 +102,7 @@ const StyledLabelSection = styled('div', {
 const StyledLabel = styled('div', {
   display: 'flex',
   justifyContent: 'space-between',
-  width: '60%',
+  width: '70%',
   marginBottom: '20px',
   '@mobile': {
     width: '100%',
@@ -115,7 +115,7 @@ const StyledLabelTitle = styled('div', {
 });
 
 const StyledLabelContent = styled('div', {
-  ' a': {
+  a: {
     marginLeft: '16px',
     hoverUnderline: 'true',
   },
