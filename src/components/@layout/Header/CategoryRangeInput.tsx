@@ -64,7 +64,9 @@ const rangeInputStyle = css({
   },
 });
 
-const StyledRangeInput = styled('input', {});
+const StyledRangeInput = styled('input', {
+  cursor: 'pointer',
+});
 
 const MarkerWrapper = styled('div', {
   width: '59px',
