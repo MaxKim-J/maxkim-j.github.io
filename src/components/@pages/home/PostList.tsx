@@ -8,21 +8,29 @@ import { categoryContext } from '../../../context/categoryContext';
 function PostList({ postList }: Props['data']) {
   const { category } = useContext(categoryContext);
 
+  const refinedPostList = postList.allMdx.nodes.filter(({ frontmatter }) => {
+    if (category === 'all') {
+      return true;
+    }
+    return frontmatter.category === category;
+  });
+
   return (
     <ListItemRoot>
-      {postList &&
-        postList.allMdx.nodes
-          .filter(({ frontmatter }) => frontmatter.category === category)
-          .map(({ id, excerpt, frontmatter, slug }) => (
-            <Link to={`/posts/${slug}`} key={id}>
-              <ListItem>
-                <ListItemTitle>{frontmatter.title}</ListItemTitle>
-                <ListItemDescription>
-                  {frontmatter.date} - {frontmatter.description}
-                </ListItemDescription>
-              </ListItem>
-            </Link>
-          ))}
+      {refinedPostList.length ? (
+        refinedPostList.map(({ id, excerpt, frontmatter, slug }) => (
+          <Link to={`/posts/${slug}`} key={id}>
+            <ListItem>
+              <ListItemTitle>{frontmatter.title}</ListItemTitle>
+              <ListItemDescription>
+                {frontmatter.date} - {frontmatter.description}
+              </ListItemDescription>
+            </ListItem>
+          </Link>
+        ))
+      ) : (
+        <div>No post</div>
+      )}
     </ListItemRoot>
   );
 }
