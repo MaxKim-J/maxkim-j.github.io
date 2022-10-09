@@ -4,6 +4,7 @@ import globalStyle from '../../styles/global';
 import { ThemeContextProvider } from '../../context/themeContext';
 
 import '../../styles/font.css';
+import { CategoryContextProvider } from '../../context/categoryContext';
 
 interface Props {
   header: ReactChildren;
@@ -16,13 +17,15 @@ function MainLayout({ children, header, footer }: Props) {
 
   return (
     <ThemeContextProvider>
-      <ContainerWrapper>
-        <ResponsiveContainer>
-          <header>{header}</header>
-          <Main>{children}</Main>
-          <footer>{footer}</footer>
-        </ResponsiveContainer>
-      </ContainerWrapper>
+      <CategoryContextProvider>
+        <ContainerWrapper>
+          <ResponsiveContainer>
+            <header>{header}</header>
+            <Main>{children}</Main>
+            <footer>{footer}</footer>
+          </ResponsiveContainer>
+        </ContainerWrapper>
+      </CategoryContextProvider>
     </ThemeContextProvider>
   );
 }

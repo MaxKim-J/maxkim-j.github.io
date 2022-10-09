@@ -1,23 +1,28 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'gatsby';
 
 import { Props } from '../../../pages/index';
 import { styled } from '../../../styles/stitches';
+import { categoryContext } from '../../../context/categoryContext';
 
 function PostList({ postList }: Props['data']) {
+  const { category } = useContext(categoryContext);
+
   return (
     <ListItemRoot>
       {postList &&
-        postList.allMdx.nodes.map(({ id, excerpt, frontmatter, slug }) => (
-          <Link to={`/posts/${slug}`} key={id}>
-            <ListItem>
-              <ListItemTitle>{frontmatter.title}</ListItemTitle>
-              <ListItemDescription>
-                {frontmatter.date} - {frontmatter.description}
-              </ListItemDescription>
-            </ListItem>
-          </Link>
-        ))}
+        postList.allMdx.nodes
+          .filter(({ frontmatter }) => frontmatter.category === category)
+          .map(({ id, excerpt, frontmatter, slug }) => (
+            <Link to={`/posts/${slug}`} key={id}>
+              <ListItem>
+                <ListItemTitle>{frontmatter.title}</ListItemTitle>
+                <ListItemDescription>
+                  {frontmatter.date} - {frontmatter.description}
+                </ListItemDescription>
+              </ListItem>
+            </Link>
+          ))}
     </ListItemRoot>
   );
 }

@@ -34,6 +34,7 @@ specifiers:
   gatsby-transformer-sharp: ^4.19.0
   prettier: ^2.7.1
   prismjs: ^1.29.0
+  query-string: ^7.1.1
   react: ^18.1.0
   react-dom: ^18.1.0
   react-helmet: ^6.1.0
@@ -65,6 +66,7 @@ dependencies:
   gatsby-transformer-remark: 5.24.0_gatsby@4.19.2
   gatsby-transformer-sharp: 4.19.0_znzqm6hqtpxv2jzbx45hf5s26q
   prismjs: 1.29.0
+  query-string: 7.1.1
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
   react-helmet: 6.1.0_react@18.2.0
@@ -11373,6 +11375,16 @@ packages:
 
   /query-string/6.14.1:
     resolution: {integrity: sha512-XDxAeVmpfu1/6IjyT/gXHOl+S0vQ9owggJ30hhWKdHAsNPOcasn5o9BW0eejZqL2e4vMjhAxoW3jVHcD6mbcYw==}
+    engines: {node: '>=6'}
+    dependencies:
+      decode-uri-component: 0.2.0
+      filter-obj: 1.1.0
+      split-on-first: 1.1.0
+      strict-uri-encode: 2.0.0
+    dev: false
+
+  /query-string/7.1.1:
+    resolution: {integrity: sha512-MplouLRDHBZSG9z7fpuAAcI7aAYjDLhtsiVZsevsfaHWDS2IDdORKbSd1kWUA+V4zyva/HZoSfpwnYMMQDhb0w==}
     engines: {node: '>=6'}
     dependencies:
       decode-uri-component: 0.2.0

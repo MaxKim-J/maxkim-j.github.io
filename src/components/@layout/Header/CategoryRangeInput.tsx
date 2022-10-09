@@ -1,36 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { styled, css } from '../../../styles/stitches';
+import { categoryContext } from '../../../context/categoryContext';
 
-type Category = 'tech' | 'tech-essay' | 'essay' | 'fiction';
+enum CategoryRange {
+  'all' = 0,
+  'tech' = 50,
+  'name' = 100,
+  'story' = 150,
+}
 
-const categories = [
-  {
-    id: 1,
-    name: 'all',
-    value: 25,
-  },
-  {
-    id: 2,
-    name: 'tech',
-    value: 75,
-  },
-  {
-    id: 3,
-    name: 'essay',
-    value: 125,
-  },
-  {
-    id: 4,
-    name: 'story',
-    value: 175,
-  },
-];
-
-// interface Props {}
+const categoryMap: { [key: string]: CategoryRange } = {
+  '0': 'all',
+  '50': 'tech',
+  '100': 'essay',
+  '150': 'story',
+};
 
 function CategoryRangeInput() {
-  // Location에 따라 초기 상태값이 달라짐
-  const [rangeValue, setRangeValue] = useState(50);
+  const { setCategory, category } = useContext(categoryContext);
+  const [rangeValue, setRangeValue] = useState(CategoryRange[category]);
 
   return (
     <CategoryRangeInputWrapper>
@@ -42,13 +30,13 @@ function CategoryRangeInput() {
         step="50"
         value={rangeValue}
         onChange={(e) => {
-          console.log(e.target.value);
           setRangeValue(e.target.value);
+          setCategory(categoryMap[e.target.value]);
         }}
       />
-      {categories.map((category) => (
-        <MarkerWrapper key={category.id}>
-          <StyledMarkerDescription index={category.id}>{category.name}</StyledMarkerDescription>
+      {Object.values(categoryMap).map((category, index) => (
+        <MarkerWrapper key={category}>
+          <StyledMarkerDescription index={index}>{category}</StyledMarkerDescription>
         </MarkerWrapper>
       ))}
     </CategoryRangeInputWrapper>
@@ -87,16 +75,16 @@ const StyledMarkerDescription = styled('div', {
   position: 'absolute',
   variants: {
     index: {
-      1: {
+      0: {
         left: 3,
       },
-      2: {
+      1: {
         left: 59,
       },
-      3: {
+      2: {
         left: 118,
       },
-      4: {
+      3: {
         left: 180,
       },
     },

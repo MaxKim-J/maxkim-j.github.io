@@ -42,6 +42,7 @@ export const query = graphql`
           date(formatString: "YYYY월 MM월 DD일")
           description
           tags
+          category
         }
         slug
       }
