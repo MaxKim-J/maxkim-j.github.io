@@ -22,7 +22,6 @@ interface Props {
         title: string;
         description: string;
         tags: string[];
-        category: string;
       };
     };
   };

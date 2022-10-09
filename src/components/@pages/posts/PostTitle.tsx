@@ -16,7 +16,7 @@ function PostTitle({ title, date, description, tags }: Props) {
       <PostTitleDescription>{description}</PostTitleDescription>
       <PostTitleTagWrapper>
         {tags.map((tag) => (
-          <PostTitleTag key={tag} to={`/tags/${tag}`}>
+          <PostTitleTag key={tag} to={`/tags/?tag=${tag}`}>
             #{tag}
           </PostTitleTag>
         ))}
