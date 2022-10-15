@@ -39,7 +39,6 @@ function ByLine({ postSlugs, currentSlug, title }: Props) {
                 '_blank'
               )
               .focus();
-            window.new;
           }}
         >
           트위터에 공유하기

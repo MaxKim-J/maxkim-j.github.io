@@ -28,7 +28,7 @@ export interface Props {
 export default function TagPage({ data }: Props) {
   globalStyle();
 
-  const parsed = parse(location.search);
+  const parsed = typeof window !== 'undefined' ? parse(location.search) : {};
 
   return (
     <MainLayout header={<Header />} footer={<Footer />}>

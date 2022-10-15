@@ -6,13 +6,13 @@ import { Props } from '../../../pages/index';
 import { styled } from '../../../styles/stitches';
 
 function PostList({ postList }: Props['data']) {
-  const parsed = parse(location.search);
+  const parsed = typeof window !== 'undefined' ? parse(location.search) : {};
 
   return (
     <ListItemRoot>
       {postList &&
         postList.allMdx.nodes
-          .filter(({ frontmatter }) => frontmatter.tags.includes(parsed.tag))
+          .filter(({ frontmatter }) => (frontmatter.tags ?? []).includes(parsed.tag))
           .map(({ id, frontmatter, slug }) => (
             <PostLink
               key={id}

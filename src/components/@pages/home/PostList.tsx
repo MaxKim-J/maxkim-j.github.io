@@ -10,7 +10,7 @@ function PostList({ postList }: Props['data']) {
 
   const refinedPostList = postList.allMdx.nodes.filter(({ frontmatter }) => {
     if (category === 'all') {
-      return true;
+      return frontmatter.category !== null;
     }
     return frontmatter.category === category;
   });
