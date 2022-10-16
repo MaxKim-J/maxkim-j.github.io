@@ -36,6 +36,9 @@ const RightSide = styled('div', {
   '& >div': {
     marginLeft: '25px',
   },
+  '@mobile': {
+    fontSize: '$body3',
+  },
 });
 
 const HeaderWrapper = styled('div', {

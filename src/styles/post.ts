@@ -35,6 +35,9 @@ const postStyles = globalCss({
     fontStyle: 'italic',
   },
   'deckgo-highlight-code': {
+    '@mobile': {
+      fontSize: '$body2',
+    },
     '--deckgo-highlight-code-white-space': 'pre',
     '--deckgo-highlight-code-margin': '12px 0 16px 0',
     '--deckgo-highlight-code-scroll': 'none',

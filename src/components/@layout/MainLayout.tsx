@@ -40,10 +40,8 @@ const ContainerWrapper = styled('div', {
 const ResponsiveContainer = styled('div', {
   padding: '24px 18px 0px 18px',
   boxSizing: 'border-box',
-  width: '900px',
-  '@tablet': {
-    width: '650px',
-  },
+  width: '920px',
+
   '@mobile': {
     width: '100%',
     '& p, ul, li': {
