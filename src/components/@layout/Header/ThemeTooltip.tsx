@@ -1,14 +1,16 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { styled } from '../../../styles/stitches';
-import { themeContext } from '../../../context/themeContext';
+const STORAGE_KEY_THEME = 'maxkim-blog-theme';
 
 function ThemeTooltip() {
-  const { setBlogTheme } = useContext(themeContext);
-
+  const setBlogTheme = (theme: Theme) => {
+    localStorage.setItem(STORAGE_KEY_THEME, theme);
+    typeof window !== 'undefined' && window.location.reload();
+  };
   return (
     <>
       <ThemeWrapper>
-        {['none', 'dark', 'orange'].map((theme) => {
+        {['light', 'dark', 'mahogany'].map((theme) => {
           return (
             <ThemeText
               key={theme}
@@ -22,7 +24,7 @@ function ThemeTooltip() {
         })}
       </ThemeWrapper>
       <ThemeWrapper>
-        {['turquoise', 'pink'].map((theme) => {
+        {['aquamarine', 'lemon'].map((theme) => {
           return (
             <ThemeText
               key={theme}

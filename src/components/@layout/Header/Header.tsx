@@ -34,7 +34,7 @@ const RightSide = styled('div', {
   display: 'flex',
   alignItems: 'center',
   '& >div': {
-    marginLeft: '25px',
+    marginRight: '25px',
   },
   '@mobile': {
     fontSize: '$body3',

@@ -1,11 +1,13 @@
 import * as React from 'react';
 import { graphql } from 'gatsby';
+import globalStyle from '../styles/global';
 
 import MainLayout from '../components/@layout/MainLayout';
 import MainHeader from '../components/@layout/Header/MainHeader';
 import Footer from '../components/@layout/Footer';
 import PostList from '../components/@pages/home/PostList';
 import MetaHead from '../components/@fundamentals/MetaHead';
+
 export interface Props {
   data: {
     allMdx: {
@@ -23,6 +25,7 @@ export interface Props {
 }
 
 const IndexPage = ({ data }: Props) => {
+  globalStyle();
   return (
     <MainLayout header={<MainHeader />} footer={<Footer />}>
       <PostList postList={data} />

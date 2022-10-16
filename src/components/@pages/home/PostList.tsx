@@ -18,7 +18,7 @@ function PostList({ postList }: Props['data']) {
   return (
     <ListItemRoot>
       {refinedPostList.length ? (
-        refinedPostList.map(({ id, excerpt, frontmatter, slug }) => (
+        refinedPostList.map(({ id, frontmatter, slug }) => (
           <Link to={`/posts/${slug}`} key={id}>
             <ListItem>
               <ListItemTitle>{frontmatter.title}</ListItemTitle>

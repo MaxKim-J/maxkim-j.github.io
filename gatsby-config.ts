@@ -13,6 +13,7 @@ const config: GatsbyConfig = {
     'gatsby-plugin-pnpm',
     'gatsby-plugin-sitemap',
     'gatsby-plugin-sharp',
+    'gatsby-plugin-sass',
     'gatsby-transformer-sharp',
     {
       resolve: 'gatsby-plugin-google-analytics',

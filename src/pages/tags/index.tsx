@@ -58,5 +58,5 @@ export const query = graphql`
 `;
 
 export const Head = () => {
-  return <MetaHead title="김맥스 블로그 | 태그 모아보기" />;
+  return <MetaHead title="김맥스 블로그 | 태그모아보기" />;
 };

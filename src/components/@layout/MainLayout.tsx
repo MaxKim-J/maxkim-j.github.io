@@ -1,9 +1,8 @@
 import React, { ReactChildren } from 'react';
 import { styled } from '../../styles/stitches';
-import globalStyle from '../../styles/global';
-import { ThemeContextProvider } from '../../context/themeContext';
 
 import '../../styles/font.css';
+import '../../styles/theme.scss';
 import { CategoryContextProvider } from '../../context/categoryContext';
 
 interface Props {
@@ -13,20 +12,16 @@ interface Props {
 }
 
 function MainLayout({ children, header, footer }: Props) {
-  globalStyle();
-
   return (
-    <ThemeContextProvider>
-      <CategoryContextProvider>
-        <ContainerWrapper>
-          <ResponsiveContainer>
-            <header>{header}</header>
-            <Main>{children}</Main>
-            <footer>{footer}</footer>
-          </ResponsiveContainer>
-        </ContainerWrapper>
-      </CategoryContextProvider>
-    </ThemeContextProvider>
+    <CategoryContextProvider>
+      <ContainerWrapper>
+        <ResponsiveContainer>
+          <header>{header}</header>
+          <Main>{children}</Main>
+          <footer>{footer}</footer>
+        </ResponsiveContainer>
+      </ContainerWrapper>
+    </CategoryContextProvider>
   );
 }
 

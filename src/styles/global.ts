@@ -6,7 +6,16 @@ const globalStyles = globalCss({
     fontFamily: 'Pretendard',
   },
   'p, body': { margin: 0, padding: 0, fontSize: '$body1' },
-  a: { textDecoration: 'none' },
+  a: {
+    textDecoration: 'none',
+    '&:link': {
+      color: '$black',
+    },
+    '&:visited': {
+      color: '$black',
+    },
+  },
+
   img: { width: '100%', height: 'auto' },
   ol: {
     listStyleType: 'none',
