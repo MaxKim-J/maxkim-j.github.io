@@ -16,7 +16,7 @@ export const categoryContext = createContext<CategoryContextState>({
 });
 
 export const CategoryContextProvider = ({ children }: { children: ReactChildren }) => {
-  const parsed = parse(location.search);
+  const parsed = typeof window !== 'undefined' ? parse(location.search) : {};
   const [category, setCategoryRaw] = useState<Category>(parsed.category ?? 'tech');
 
   const setCategory = (category: Category) => {

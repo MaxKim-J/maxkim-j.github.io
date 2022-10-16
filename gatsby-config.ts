@@ -3,7 +3,7 @@ import type { GatsbyConfig } from 'gatsby';
 const config: GatsbyConfig = {
   siteMetadata: {
     title: '김맥스 블로그',
-    description: '필요 driven 블로깅',
+    description: '그때그때 필요한 엔지니어링',
     siteUrl: 'https://maxkim-j.github.io',
   },
   graphqlTypegen: true,

@@ -18,7 +18,8 @@ export const themeContext = createContext<ThemeContextState>({
 const STORAGE_KEY_THEME = 'maxkim-blog-theme';
 
 export const ThemeContextProvider = ({ children }: { children: ReactChildren }) => {
-  const currentTheme = localStorage.getItem(STORAGE_KEY_THEME);
+  const currentTheme =
+    typeof window !== 'undefined' ? localStorage.getItem(STORAGE_KEY_THEME) : 'none';
   const [theme, setTheme] = useState<Theme>(currentTheme ?? 'none');
 
   const setBlogTheme = (theme: Theme) => {
