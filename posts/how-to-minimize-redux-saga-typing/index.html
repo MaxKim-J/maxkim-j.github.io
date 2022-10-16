@@ -1,0 +1,362 @@
+<!DOCTYPE html><html><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="ie=edge"/><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/><meta name="twitter:creator" content="@max_kim_dev" data-gatsby-head="true"/><meta name="twitter:image" content="https://maxkim-j.github.io/thumbnail.png" data-gatsby-head="true"/><meta name="twitter:description" content="Redux+Saga의 덜 고통스러운 practice 탐구하기" data-gatsby-head="true"/><meta name="twitter:title" content="김맥스 블로그 | Redux Toolkit과 자체 util 함수로 Redux Saga 타이핑 줄이기" data-gatsby-head="true"/><meta name="twitter:card" content="summary_large_image" data-gatsby-head="true"/><meta name="image" content="https://maxkim-j.github.io/thumbnail.png" data-gatsby-head="true"/><meta name="description" content="Redux+Saga의 덜 고통스러운 practice 탐구하기" data-gatsby-head="true"/><meta name="generator" content="Gatsby 4.19.2"/><style data-href="/styles.ffbc937d81cd1f5b5a7f.css" data-identity="gatsby-global-css">@import url(https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.5/dist/web/static/pretendard-dynamic-subset.css);body[data-theme=light] *{color:#000}body[data-theme=light] p{color:"$black"}body[data-theme=light] deckgo-highlight-code{--deckgo-highlight-code-carbon-background:#f5f5f5;--deckgo-highlight-code-carbon-color:#202020;--deckgo-highlight-code-token-atrule:#a626a4;--deckgo-highlight-code-token-comment:#65737e;--deckgo-highlight-code-token-comment-rgb:#65737e;--deckgo-highlight-code-token-function:#ac4142;--deckgo-highlight-code-token-operator:#202020;--deckgo-highlight-code-token-property:#ac4142;--deckgo-highlight-code-token-punctuation:#202020;--deckgo-highlight-code-token-regex:#f4bf75;--deckgo-highlight-code-token-selector:#90a959}body[data-theme=dark] *{background-color:#232323;color:#fff}body[data-theme=dark] a,body[data-theme=dark] a:link,body[data-theme=dark] a:visited,body[data-theme=dark] p{color:#fff}body[data-theme=dark] input[type=range]{background-color:#fff}body[data-theme=dark] input[type=range]::-webkit-slider-thumb{background-color:#fff}body[data-theme=dark] deckgo-highlight-code{--deckgo-highlight-code-carbon-background:#2b2b2b;--deckgo-highlight-code-carbon-color:#f8f8f2;--deckgo-highlight-code-token-atrule:#ffa07a;--deckgo-highlight-code-token-comment:#606060;--deckgo-highlight-code-token-comment-rgb:#d4d0ab;--deckgo-highlight-code-token-function:#00e0e0;--deckgo-highlight-code-token-operator:#abe338;--deckgo-highlight-code-token-property:#00e0e0;--deckgo-highlight-code-token-punctuation:gold;--deckgo-highlight-code-token-regex:#f8f8f2;--deckgo-highlight-code-token-selector:#f8f8f2;background-color:#2b2b2b!important}body[data-theme=aquamarine] *{background-color:#0e3e38;color:#99eae1}body[data-theme=aquamarine] a,body[data-theme=aquamarine] a:link,body[data-theme=aquamarine] a:visited,body[data-theme=aquamarine] p{color:#99eae1}body[data-theme=aquamarine] input[type=range]{background-color:#99eae1}body[data-theme=aquamarine] input[type=range]::-webkit-slider-thumb{background-color:#99eae1}body[data-theme=aquamarine] deckgo-highlight-code{--deckgo-highlight-code-carbon-background:#2b2b2b;--deckgo-highlight-code-carbon-color:#f8f8f2;--deckgo-highlight-code-token-atrule:#ffa07a;--deckgo-highlight-code-token-comment:#606060;--deckgo-highlight-code-token-comment-rgb:#d4d0ab;--deckgo-highlight-code-token-function:#00e0e0;--deckgo-highlight-code-token-operator:#abe338;--deckgo-highlight-code-token-property:#00e0e0;--deckgo-highlight-code-token-punctuation:gold;--deckgo-highlight-code-token-regex:#f8f8f2;--deckgo-highlight-code-token-selector:#f8f8f2;background-color:#2b2b2b!important}body[data-theme=lemon] *{background-color:#340e39;color:#d1ce4c}body[data-theme=lemon] a,body[data-theme=lemon] a:link,body[data-theme=lemon] a:visited,body[data-theme=lemon] p{color:#d1ce4c}body[data-theme=lemon] input[type=range]{background-color:#d1ce4c}body[data-theme=lemon] input[type=range]::-webkit-slider-thumb{background-color:#d1ce4c}body[data-theme=lemon] deckgo-highlight-code{--deckgo-highlight-code-carbon-background:#2b2b2b;--deckgo-highlight-code-carbon-color:#f8f8f2;--deckgo-highlight-code-token-atrule:#ffa07a;--deckgo-highlight-code-token-comment:#606060;--deckgo-highlight-code-token-comment-rgb:#d4d0ab;--deckgo-highlight-code-token-function:#00e0e0;--deckgo-highlight-code-token-operator:#abe338;--deckgo-highlight-code-token-property:#00e0e0;--deckgo-highlight-code-token-punctuation:gold;--deckgo-highlight-code-token-regex:#f8f8f2;--deckgo-highlight-code-token-selector:#f8f8f2;background-color:#2b2b2b!important}body[data-theme=mahogany] *{background-color:#eaedc4;color:#c9263c}body[data-theme=mahogany] a,body[data-theme=mahogany] a:link,body[data-theme=mahogany] a:visited,body[data-theme=mahogany] p{color:#c9263c}body[data-theme=mahogany] input[type=range]{background-color:#c9263c}body[data-theme=mahogany] input[type=range]::-webkit-slider-thumb{background-color:#c9263c}body[data-theme=mahogany] deckgo-highlight-code{--deckgo-highlight-code-carbon-background:#2b2b2b;--deckgo-highlight-code-carbon-color:#f8f8f2;--deckgo-highlight-code-token-atrule:#ffa07a;--deckgo-highlight-code-token-comment:#606060;--deckgo-highlight-code-token-comment-rgb:#d4d0ab;--deckgo-highlight-code-token-function:#00e0e0;--deckgo-highlight-code-token-operator:#abe338;--deckgo-highlight-code-token-property:#00e0e0;--deckgo-highlight-code-token-punctuation:gold;--deckgo-highlight-code-token-regex:#f8f8f2;--deckgo-highlight-code-token-selector:#f8f8f2;background-color:#2b2b2b!important}</style><title data-gatsby-head="true">김맥스 블로그 | Redux Toolkit과 자체 util 함수로 Redux Saga 타이핑 줄이기</title><style>.gatsby-image-wrapper{position:relative;overflow:hidden}.gatsby-image-wrapper picture.object-fit-polyfill{position:static!important}.gatsby-image-wrapper img{bottom:0;height:100%;left:0;margin:0;max-width:none;padding:0;position:absolute;right:0;top:0;width:100%;object-fit:cover}.gatsby-image-wrapper [data-main-image]{opacity:0;transform:translateZ(0);transition:opacity .25s linear;will-change:opacity}.gatsby-image-wrapper-constrained{display:inline-block;vertical-align:top}</style><noscript><style>.gatsby-image-wrapper noscript [data-main-image]{opacity:1!important}.gatsby-image-wrapper [data-placeholder-image]{opacity:0!important}</style></noscript><script type="module">const e="undefined"!=typeof HTMLImageElement&&"loading"in HTMLImageElement.prototype;e&&document.body.addEventListener("load",(function(e){const t=e.target;if(void 0===t.dataset.mainImage)return;if(void 0===t.dataset.gatsbyImageSsr)return;let a=null,n=t;for(;null===a&&n;)void 0!==n.parentNode.dataset.gatsbyImageWrapper&&(a=n.parentNode),n=n.parentNode;const o=a.querySelector("[data-placeholder-image]"),r=new Image;r.src=t.currentSrc,r.decode().catch((()=>{})).then((()=>{t.style.opacity=1,o&&(o.style.opacity=0,o.style.transition="opacity 500ms linear")}))}),!0);</script><link rel="sitemap" type="application/xml" href="/sitemap/sitemap-index.xml"/><link rel="preconnect" href="https://www.google-analytics.com"/><link rel="dns-prefetch" href="https://www.google-analytics.com"/><style type="text/css">
+    .anchor.before {
+      position: absolute;
+      top: 0;
+      left: 0;
+      transform: translateX(-100%);
+      padding-right: 4px;
+    }
+    .anchor.after {
+      display: inline-block;
+      padding-left: 4px;
+    }
+    h1 .anchor svg,
+    h2 .anchor svg,
+    h3 .anchor svg,
+    h4 .anchor svg,
+    h5 .anchor svg,
+    h6 .anchor svg {
+      visibility: hidden;
+    }
+    h1:hover .anchor svg,
+    h2:hover .anchor svg,
+    h3:hover .anchor svg,
+    h4:hover .anchor svg,
+    h5:hover .anchor svg,
+    h6:hover .anchor svg,
+    h1 .anchor:focus svg,
+    h2 .anchor:focus svg,
+    h3 .anchor:focus svg,
+    h4 .anchor:focus svg,
+    h5 .anchor:focus svg,
+    h6 .anchor:focus svg {
+      visibility: visible;
+    }
+  </style><script>
+    document.addEventListener("DOMContentLoaded", function(event) {
+      var hash = window.decodeURI(location.hash.replace('#', ''))
+      if (hash !== '') {
+        var element = document.getElementById(hash)
+        if (element) {
+          var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
+          var clientTop = document.documentElement.clientTop || document.body.clientTop || 0
+          var offset = element.getBoundingClientRect().top + scrollTop - clientTop
+          // Wait for the browser to finish rendering before scrolling.
+          setTimeout((function() {
+            window.scrollTo(0, offset - 0)
+          }), 0)
+        }
+      }
+    })
+  </script><style id="stitches">--sxs{--sxs:0 t-juXrtP}@media{:root,.t-juXrtP{--fonts-system:system-ui;--colors-black:#000000;--colors-dark:#232323;--colors-white:#ffffff;--colors-orange:#ffb566;--colors-turquoise:#8cffd6;--colors-pink:#ffa5e4;--fontSizes-mainTitle:30px;--fontSizes-title:28px;--fontSizes-subTitle:24px;--fontSizes-mobileTitle:20px;--fontSizes-description:14px;--fontSizes-mobileDescription:10px;--fontSizes-heading1:32px;--fontSizes-heading2:28px;--fontSizes-heading3:24px;--fontSizes-heading4:20px;--fontSizes-body1:18px;--fontSizes-body2:16px;--fontSizes-body3:14px;--fontSizes-body4:12px;--fontWeights-extraBold:700;--fontWeights-bold:550;--fontWeights-regular:500;--fontWeights-thin:300}}--sxs{--sxs:1 lhZdba fiFvXz}@media{*{font-family:Pretendard}p,body{margin:0;padding:0;font-size:var(--fontSizes-body1)}a{text-decoration:none}a:link{color:var(--colors-black)}a:visited{color:var(--colors-black)}img{width:100%;height:auto}ol{list-style-type:none;margin-block-start:0;margin-block-end:0;margin-inline-start:0;margin-inline-end:0;padding-inline-start:0}h1{font-size:var(--fontSizes-heading1);font-weight:var(--fontWeights-bold)}h2{font-size:var(--fontSizes-heading2);font-weight:var(--fontWeights-bold)}h3{font-size:var(--fontSizes-heading3);font-weight:var(--fontWeights-bold)}h4{font-size:var(--fontSizes-heading4);font-weight:var(--fontWeights-bold)}h5{font-size:var(--fontSizes-heading5);font-weight:var(--fontWeights-bold)}p{margin-bottom:24px;word-wrap:break-word;line-height:1.6;word-break:all}h1{margin-top:48px;margin-bottom:36px}h2{margin:32px 0}h3{margin:28px 0}h4{margin:24px 0}h5{margin:20px 0}p a{text-decoration:underline;text-underline-position:under}p > code{padding:2px 8px;border-radius:8px;font-size:16px}blockquote{border-left:3px solid var(--colors-black);padding-left:10px;margin:20px 0;font-style:italic}@media (max-width: 730px){deckgo-highlight-code{font-size:var(--fontSizes-body2)}}deckgo-highlight-code{--deckgo-highlight-code-white-space:pre;--deckgo-highlight-code-margin:12px 0 16px 0;--deckgo-highlight-code-scroll:none;--deckgo-highlight-code-carbon-margin:28px 0;--deckgo-highlight-code-carbon-box-shadow:none}li{line-height:1.8}li > a{text-decoration:underline;text-underline-position:under}}--sxs{--sxs:2 c-feMWly c-llJfQk c-dVNheE c-bkUmzp c-PJLV c-jMkcPK c-kdYLWQ c-iEaapN c-enMnGJ c-gHothk c-kcUpuv c-zOevm c-iDjjYv c-fVALJv c-inPSka c-hLbyMm c-kINvOu c-inYmSa c-gAHJmZ c-eqDGAL c-kxdqJo c-jPqceB}@media{.c-feMWly ol{list-style-type:decimal;margin-block-start:1em;margin-block-end:1em;margin-inline-start:2em}.c-llJfQk{width:100vw;min-height:100vh;display:flex;justify-content:center}.c-dVNheE{padding:24px 18px 0px 18px;box-sizing:border-box;width:920px}@media (max-width: 730px){.c-dVNheE{width:100%}}@media (max-width: 730px){.c-dVNheE p,.c-dVNheE ul,.c-dVNheE li{font-size:var(--fontSizes-body2)}}@media (max-width: 730px){.c-dVNheE h1{font-size:var(--fontSizes-heading2)}}@media (max-width: 730px){.c-dVNheE h2{font-size:var(--fontSizes-heading3)}}@media (max-width: 730px){.c-dVNheE h3{font-size:var(--fontSizes-heading4)}}@media (max-width: 730px){.c-dVNheE h4{font-size:body1}}.c-bkUmzp{display:flex;justify-content:space-between;margin-bottom:82px}.c-jMkcPK{font-size:var(--fontSizes-mainTitle);font-weight:var(--fontWeights-bold)}@media (max-width: 730px){.c-jMkcPK{font-size:var(--fontSizes-subTitle)}}.c-kdYLWQ{display:flex;align-items:center}.c-kdYLWQ >div{margin-left:25px}@media (max-width: 730px){.c-kdYLWQ{font-size:var(--fontSizes-body3)}}.c-iEaapN{position:relative;cursor:pointer}.c-enMnGJ{min-height:700px}.c-gHothk{margin-bottom:60px}.c-kcUpuv{margin:28px 0}.c-zOevm{font-size:var(--fontSizes-body2);margin-bottom:6px}.c-iDjjYv{font-size:var(--fontSizes-description)}.c-fVALJv{font-size:var(--fontSizes-description);margin-right:12px;text-decoration:underline}.c-inPSka{width:100%;background-color:var(--colors-black);height:1px;margin:50px 0}.c-hLbyMm{display:flex;justify-content:space-between;font-size:var(--fontSizes-description)}.c-kINvOu{display:flex;justify-content:space-between}.c-kINvOu a{margin-left:20px}.c-kINvOu a:hover{text-decoration:underline;text-underline-position:under}.c-inYmSa{margin-top:20px;display:flex;font-size:var(--fontSizes-description)}.c-inYmSa div{margin-right:18px}.c-inYmSa div:hover{text-decoration:underline;text-underline-position:under}.c-inYmSa div{cursor:pointer}.c-gAHJmZ{margin:20px 0 60px 0;display:flex;justify-content:space-between;font-size:var(--fontSizes-description)}.c-gAHJmZ a:hover{text-decoration:underline;text-underline-position:under}.c-eqDGAL a{margin-left:20px}.c-kxdqJo .utterances{max-width:none}.c-kxdqJo iframe main.timeline{padding:0}.c-jPqceB{margin-top:32px;display:flex;height:32px;align-items:center;justify-content:space-between;bottom:0;z-index:10}.c-jPqceB div{font-size:10px}.c-jPqceB a{text-decoration:underline;font-size:10px}@media (max-width: 730px){.c-jPqceB{font-size:var(--fontSizes-mobileDescription)}}}</style></head><body><script>
+    const savedTheme = localStorage.getItem('maxkim-blog-theme');
+    const theme = savedTheme || 'light';
+    
+    window.__theme = theme;
+    window.__setTheme = (newTheme) => {
+      document.body.setAttribute("data-theme", newTheme);
+      localStorage.setItem('maxkim-blog-theme', newTheme);
+    };
+
+    window.__setTheme(theme);
+  </script><div id="___gatsby"><div style="outline:none" tabindex="-1" id="gatsby-focus-wrapper"><div class="c-llJfQk"><div class="c-dVNheE"><header><div class="c-bkUmzp"><div class="c-PJLV"><a href="/"><div class="c-jMkcPK">김맥스 블로그</div></a></div><div class="c-kdYLWQ"><div class="c-iEaapN"><div><div>color</div></div></div><div><a href="/gallery">gallery</a></div><div><a href="/about">about</a></div></div></div></header><main class="c-enMnGJ"><div class="c-gHothk"><h1 class="c-kcUpuv">Redux Toolkit과 자체 util 함수로 Redux Saga 타이핑 줄이기</h1><div class="c-zOevm">Redux+Saga의 덜 고통스러운 practice 탐구하기</div><div class="c-iDjjYv"><a class="c-fVALJv" href="/tags/?tag=react">#<!-- -->react</a><a class="c-fVALJv" href="/tags/?tag=redux">#<!-- -->redux</a></div></div><div class="c-feMWly"><p><a href="https://maxkim-j.github.io/posts/how-to-use-redux-saga">앞선 글</a>에 이어 Redux Toolkit을 이용하여 Redux+Saga의 타이핑을 줄이는 방법을 탐구해봅니다. 무료 API인 <a href="https://catfact.ninja/">Cat Facts API</a>로 비동기 요청을 해야 하는 상황을 설정했습니다. 예제 전체는 <a href="https://github.com/max-kim-tutorial/redux-saga-minimize">이 레포지토리</a>에서 보실 수 있습니다.</p><h2 id="동기" style="position:relative"><a href="#%EB%8F%99%EA%B8%B0" aria-label="동기 permalink" class="anchor before"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>동기</h2><p>회사에서 Saga를 도입해 프로젝트를 진행 중에, 반복되는 Saga 타이핑과 빠듯했던 데드라인 때문에 Saga를 사용하다 말고 async/await를 사용해 컴포넌트 단에서 API를 호출하는 방법으로 개발이 진행되는 상황이 빈번해졌습니다.</p><p>그러다보니 어떤 API와 비즈니스 로직은 Saga를 통해 실행되고, 어떤 API는 컴포넌트 단에서 바로 요청되는 등 비즈니스 로직을 작성하는 방법에 일관성이 없어지고, 비즈니스 로직과 UI로직이 섞여 추후 유지보수가 상당히 불편한 상황이 만들어졌습니다.</p><p>따라서 Saga를 제대로 쓰려면 타이핑을 줄이고, 비즈니스 로직을 효과적으로 Saga를 통해 정리할 수 있는 설계를 먼저 제대로 가져가야만 Saga의 장점을 제대로 누릴 수 있다는 결론에 도달했습니다.</p><p>Redux Toolkit의 <code>createSlice</code>를 사용하면 Redux+Saga의 타이핑을 많이 줄일 수 있습니다. 하지만 이 포스팅에서는 자체 유틸 함수를 이용해 &#x27;더&#x27; 줄일 수 있는지 타진합니다.</p><h2 id="최소-요구-사항" style="position:relative"><a href="#%EC%B5%9C%EC%86%8C-%EC%9A%94%EA%B5%AC-%EC%82%AC%ED%95%AD" aria-label="최소 요구 사항 permalink" class="anchor before"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>최소 요구 사항</h2><p>아래에서 보여드릴 practice를 작성하기 전에, 최소한으로 만족해야할 요구사항을 설정했습니다.</p><ol><li>타입 오류가 발생하지 않아야 합니다. (TypeScript를 사용합니다)</li><li>타입 오류 없이 잘 돌아가더라도, 개발자들의 원할한 협업을 위해 타입을 노출시키는게 좋다고 판단  될 경우 명시적으로 타입을 작성합니다. 맹목적으로 타이핑을 줄이는 것만이 목적이 되어서는 안 됩니다. <strong>타입을 명시해야 좋은 부분</strong>도 명백히 존재함을 인지하고 팀의 생산성과 프로덕트의 유지보수에 기여할 수 있는 방향으로 생각하려 노력합니다.</li><li>프로젝트에 실제로 적용될 수 있음을 인지하며, <strong>쓸만한 practice</strong>를 만듭니다.</li><li>액션과 리듀서 선언을 한꺼번에 할 수 있는 Redux Toolkit의 기능인 <code>Slice</code>는 Redux+Saga를 효과적으로 간결하게 만드는데 꼭 필요한 기능이라고 보고, 무조건 사용할 생각으로 코드를 작성했습니다.</li></ol><p>이쯤해서 서론은 끝났고, 이제 어떤 시도를 해보았는지 코드와 함께 보여드리겠습니다.</p><h2 id="1-initialstate-명시적-타입-지정" style="position:relative"><a href="#1-initialstate-%EB%AA%85%EC%8B%9C%EC%A0%81-%ED%83%80%EC%9E%85-%EC%A7%80%EC%A0%95" aria-label="1 initialstate 명시적 타입 지정 permalink" class="anchor before"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>1. initialState 명시적 타입 지정</h2><p><code>createSlice</code>를 사용하면 초기 state를 선언할때도 타입 지정이 딱히 필요 없습니다. 바로 <code>initialState</code> 프로퍼티에 초기 상태값을 적어주면 되기 때문입니다. 아래는 <a href="https://redux-toolkit.js.org/api/createSlice#examples">redux-toolkit docs의 createSlice example</a>입니다.</p><deckgo-highlight-code language="typescript" theme="a11y-dark">
+          <code slot="code">const user = createSlice({
+  name: &#x27;user&#x27;,
+  initialState: { name: &#x27;&#x27;, age: 20 },
+  reducers: {
+    setUserName: (state, action) =&gt; {
+      state.name = action.payload
+    },
+  },
+}</code>
+        </deckgo-highlight-code><p>하지만 state의 초기값에 명시적으로 타입을 지정하면 개발 과정에서 store의 초기 상태를 파악하기 더 편합니다. 따라서 아래와 같은 식으로 명시적인 타입 지정을 했습니다.</p><deckgo-highlight-code language="typescript" theme="a11y-dark">
+          <code slot="code">interface CatState {
+  catFact: AsyncEntity&lt;CatFact[], string&gt;;
+}
+
+const initialState: CatState = {
+  catFact: {
+    data: null,
+    status: &quot;idle&quot;,
+    error: null
+  }
+};
+
+export const catSlice = createSlice({
+  name: &quot;cats&quot;,
+  initialState,
+  reducers: {
+  ...
+  }
+});</code>
+        </deckgo-highlight-code><h2 id="2-asyncentity-타입" style="position:relative"><a href="#2-asyncentity-%ED%83%80%EC%9E%85" aria-label="2 asyncentity 타입 permalink" class="anchor before"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>2. AsyncEntity 타입</h2><p>위 코드에서 <code>AsyncEntity</code>라는 미리 정의한 타입을 제네릭과 함께 사용했습니다. AsyncAction에 필요한 프로퍼티라고 할 수 있는 <code>status</code>, <code>data</code>, <code>error</code> 속성을 포함합니다. 제네릭을 이용해 성공시 data의 타입과 실패시 error의 타입을 지정해줄 수 있습니다.</p><deckgo-highlight-code language="typescript" theme="a11y-dark">
+          <code slot="code">export type AsyncEntity&lt;T, R&gt; = {
+  data: T | null; // 데이터 없는 경우에는 명시적으로 null
+  status: &#x27;idle&#x27; | &#x27;loading&#x27; | &#x27;success&#x27; | &#x27;fail&#x27;; // 초기|로딩|성공|실패
+  error: R | null;
+};</code>
+        </deckgo-highlight-code><p><code>AsyncEntity</code>는 용례에 따라 다양한 모습이 될 수 있습니다. 가령 http method에 따라 프로퍼티를 다르게 할 수도 있고, 백엔드의 상태나 개발 진척도에 따라 다른 프로퍼티를 가지게 할 수도 있습니다. 여러 개의 AsyncEntity를 만들고 상황에 맞는 AsyncEntity를 선택해 사용할 수도 있습니다.</p><h2 id="3-createasyncreducers-유틸-함수로-reducer-함수들-한번에-리턴하기" style="position:relative"><a href="#3-createasyncreducers-%EC%9C%A0%ED%8B%B8-%ED%95%A8%EC%88%98%EB%A1%9C-reducer-%ED%95%A8%EC%88%98%EB%93%A4-%ED%95%9C%EB%B2%88%EC%97%90-%EB%A6%AC%ED%84%B4%ED%95%98%EA%B8%B0" aria-label="3 createasyncreducers 유틸 함수로 reducer 함수들 한번에 리턴하기 permalink" class="anchor before"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>3. createAsyncReducers 유틸 함수로 reducer 함수들 한번에 리턴하기</h2><p>하나의 API 요청에 대하여 start, success, fail 동작에 해당하는 3개의 reducer 함수로 이루어진 객체를 한꺼번에 만드는 유틸 함수를 작성합니다.</p><p><code>createAsyncReducers</code>는 고차함수인데, 그 이유가 reducers 객체의 함수는 딱히 함수에 제네릭을  선언하지 않아도 첫번째 제네릭 타입으로 <code>WritableDraft&lt;특정State&gt;</code>를 받기 때문입니다.</p><p>그런데 redux toolkit이 <code>WritableDraft</code> 타입을 은닉해서 import로 제공하지 않기 때문에 첫번째 단계의 함수에서는 <code>WritableDraft</code>를, 두번째 단계의 함수에서는 reducer와 action을 만드는데 필요한 start/success/fail 타입들을 받습니다.</p><deckgo-highlight-code language="typescript" theme="a11y-dark">
+          <code slot="code">interface CreateAsyncReducersParams {
+  name: string;
+  entity: string;
+  cleanDataWhenStart?: boolean; // fetch가 시작되기 전 data 초기화
+}
+
+// reducer 함수의 이름을 camelCase로 만드는데 필요합니다.
+const capitalize = (str: string) =&gt; {
+  return str[0].toUpperCase() + str.slice(1);
+};
+
+const createAsyncReducers =
+  &lt;State extends { [key: string]: any }&gt;({
+    name,
+    entity,
+    cleanDataWhenStart = false,
+  }: CreateAsyncReducersParams) =&gt;
+  &lt;Start, Success, Fail&gt;() =&gt; {
+    const result: {
+      [key: string]:
+        | ((state: State, action: PayloadAction&lt;Start&gt;) =&gt; void)
+        | ((state: State, action: PayloadAction&lt;Success&gt;) =&gt; void)
+        | ((state: State, action: PayloadAction&lt;Fail&gt;) =&gt; void);
+    } = {
+      // start reducer 함수
+      [`${name}`]: (state: State, action: PayloadAction&lt;Start&gt;) =&gt; {
+        if (cleanDataWhenStart) {
+          (state[entity] as AsyncEntity&lt;Success, Fail&gt;).data = null;
+        }
+        (state[entity] as AsyncEntity&lt;Success, Fail&gt;).status = &#x27;loading&#x27;;
+      },
+
+      // success reducer 함수
+      [`success${capitalize(name)}`]: (state: State, action: PayloadAction&lt;Success&gt;) =&gt; {
+        (state[entity] as AsyncEntity&lt;Success, Fail&gt;).data = action.payload;
+        (state[entity] as AsyncEntity&lt;Success, Fail&gt;).status = &#x27;success&#x27;;
+      },
+
+      // fail reducer 함수
+      [`fail${capitalize(name)}`]: (state: State, action: PayloadAction&lt;Fail&gt;) =&gt; {
+        (state[entity] as AsyncEntity&lt;Success, Fail&gt;).error = action.payload;
+        (state[entity] as AsyncEntity&lt;Success, Fail&gt;).status = &#x27;fail&#x27;;
+      },
+    };
+
+    return result;
+  };</code>
+        </deckgo-highlight-code><p>reducers에 함수를 호출하고 전개 연산자로 뿌려줍니다.</p><deckgo-highlight-code language="typescript" theme="a11y-dark">
+          <code slot="code">import { createSlice } from &#x27;@reduxjs/toolkit&#x27;;
+import { CatState, CatFact } from &#x27;./types&#x27;;
+import { createAsyncReducers } from &#x27;../utils&#x27;;
+
+const initialState: CatState = {
+  catFact: {
+    data: null,
+    status: &#x27;idle&#x27;,
+    error: null,
+  },
+};
+
+export const catSlice = createSlice({
+  name: &#x27;cats&#x27;,
+  initialState,
+  reducers: {
+    ...createAsyncReducers({
+      name: &#x27;fetchCatFacts&#x27;,
+      entity: &#x27;catFact&#x27;,
+    })&lt;any, CatFact[], string&gt;(),
+  },
+});
+
+export const { fetchCatFacts, successFetchCatFacts, failFetchCatFacts } = catSlice.actions;
+
+export default catSlice.reducer;</code>
+        </deckgo-highlight-code><p>컴포넌트에서는 이렇게 action dispatch를 합니다.</p><deckgo-highlight-code language="typescript" theme="a11y-dark">
+          <code slot="code">// createAsyncReducers에서는 action.payload를 다 가지고 있는 함수 시그니처를 가진 함수를
+// 리턴하기 때문에 reducer에서 활용하는 action.payload가 따로 없더라도 빈 객체를 인자로 넣어줍니다.
+dispatch(fetchCatFacts({}));</code>
+        </deckgo-highlight-code><p><code>createAsyncReducers</code>는 <a href="https://github.com/piotrwitek/typesafe-actions">typesafe-actions</a>의 <code>createAsyncAction</code>과 비슷한 모양입니다. typesafe-actions도 request, success, failure 액션 페이로드의 타입을 제네릭으로 넘겨서 비동기 액션에 필요한 액션 객체 리턴 함수 여러 개를 한꺼번에 만들 수 있게 합니다.</p><deckgo-highlight-code language="typescript" theme="a11y-dark">
+          <code slot="code">const getSomething = createAsyncAction(
+requestType, successType, failureType, cancelType?
+)&lt;TRequestPayload, TSuccessPayload, TFailurePayload, TCancelPayload?&gt;()
+</code>
+        </deckgo-highlight-code><p><code>createAsyncAction</code>은 액션 객체를 리턴하는 함수들을 만들고, <code>createAsyncReducers</code>는 <code>createSlice</code>의 reducer 함수들을 만든다는 것이 차이점이겠습니다.</p><p><code>createAsyncAction</code>의 리턴값은 request, success, failure 프로퍼티를 통해 접근할 수 있는 함수를 포함한 객체입니다. 컴포넌트에서 dispatch, 혹은 saga에서 put을 사용해 action을 발생시킬때 다음과 같은 방법을 사용합니다.</p><deckgo-highlight-code language="typescript" theme="a11y-dark">
+          <code slot="code">const getCats = createAsyncAction(GET_CATS, GET_CATS_SUCCESS, GET_CATS_FAILURE)&lt;
+  { id: number },
+  Cat[],
+  AxiosError
+&gt;();
+
+// component
+dispatch(getCats.request({ id: 1 }));
+
+// saga
+yield put(getCats.success(cat));</code>
+        </deckgo-highlight-code><p>혹시 reducer에서도 이러한 방식을 사용하면 action을 발생시키는 구문이 좀 더 간결해질 것 같아 비슷한 방식을 시도해 봤습니다. 하지만 slice의 reducers에 객체를 넣는 행위는 허용되지 않습니다. 즉 이렇게 만들수 없는데요.</p><deckgo-highlight-code language="typescript" theme="a11y-dark">
+          <code slot="code">// 컴포넌트에서 이렇게 하려고
+dispatch(fecthCatFacts.request());
+
+// slice 안에다가 이렇게 하면 error가 납니다
+export const catSlice = createSlice({
+  name: &quot;cats&quot;,
+  initialState,
+  reducers: {
+    fetchCatFacts: {
+      request: (state, action) =&gt; {};
+      success: (state, action) =&gt; {};
+      failure: (state, action) =&gt; {};
+    },
+})
+</code>
+        </deckgo-highlight-code><p>reducer 함수들은 reducers 객체 내부의 최상위에 존재해야 합니다. 그래서 위의 <code>createAsyncReducers</code> 사용례에서도 전개 연산자를 쓴 것이죠.</p><p>Redux Toolkit은 slice의 reducer 속성 내부의 객체 네스팅을 할 수 있는 경우로 다음과 같은 경우만 허용합니다. 네스팅을 <a href="https://redux-toolkit.js.org/api/createSlice#customizing-generated-action-creators">Action Creator을 커스텀하는 일종의 API로 사용</a>하는 것입니다.</p><deckgo-highlight-code language="typescript" theme="a11y-dark">
+          <code slot="code">const todosSlice = createSlice({
+  name: &#x27;todos&#x27;,
+  initialState: [] as Item[],
+  reducers: {
+    addTodo: {
+      reducer: (state, action: PayloadAction&lt;Item&gt;) =&gt; {
+        state.push(action.payload);
+      },
+      prepare: (text: string) =&gt; {
+        const id = nanoid();
+        return { payload: { id, text } };
+      },
+    },
+  },
+});</code>
+        </deckgo-highlight-code><p>뇌피셜이지만, 네스팅하여 reducer 함수를 배치할 수 있다면 모든 깊이의 함수들을 모아서 action, reducer을 모두 만들어내기 위한 로직은 꽤 복잡할 것입니다. 그렇기 때문에 최상위에 리듀서 함수, 혹은 위와 같은 Custom Action Creator 객체가 아닌 다른 타입의 무언가가 있으면 에러를 뿜도록 규칙을 정한것이 아닌가 생각됩니다.</p><h2 id="4-createsaga-유틸-함수로-반복되는-saga-타이핑-방지하기" style="position:relative"><a href="#4-createsaga-%EC%9C%A0%ED%8B%B8-%ED%95%A8%EC%88%98%EB%A1%9C-%EB%B0%98%EB%B3%B5%EB%90%98%EB%8A%94-saga-%ED%83%80%EC%9D%B4%ED%95%91-%EB%B0%A9%EC%A7%80%ED%95%98%EA%B8%B0" aria-label="4 createsaga 유틸 함수로 반복되는 saga 타이핑 방지하기 permalink" class="anchor before"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>4. CreateSaga 유틸 함수로  반복되는 Saga 타이핑 방지하기</h2><p><a href="https://github.com/redux-saga/redux-saga/blob/master/examples/real-world/sagas/index.js">Saga Entity Pattern</a>을 사용하여 Saga 내부에서의 비동기 요청 동작을 사가마다 반복해서 작성할 필요가 없도록 만들 수 있습니다.</p><p>typesafe-action을 이용하거나 <a href="https://jbee.io/react/react-2-redux-architecture/#%EC%9E%90%EC%B2%B4-util-%EC%A0%9C%EC%9E%91---redux-saga-util">한재엽님이 작성한 createFetchAction 함수</a>를 사용하면 하나의 비동기 로직에 대한 여러개의 액션 함수를 한 객체에 깔끔하게 정리할 수 있어 Saga를 만들기도 편합니다. 아래와 같은 방식으로 하면 되기 때문입니다. 아래는 <a href="https://jbee.io/react/react-2-redux-architecture/#%EC%9E%90%EC%B2%B4-util-%EC%A0%9C%EC%9E%91---redux-saga-util">한재엽님이 작성한 createSaga 함수입니다.</a></p><deckgo-highlight-code language="typescript" theme="a11y-dark">
+          <code slot="code">export function createSaga&lt;P&gt;(actions: IFetchActionGroup, req: any) {
+// actions 객체 하나로 각 상황에 맞는 액션들에 대한 참조가 가능하다
+return function\* (action: Action&lt;P&gt;) {
+const payload = oc(action).payload(); // oc가 뭐지
+
+    yield put(startLoading(actions.TYPE));
+    try {
+      const res = yield call(req, payload);
+      yield put(actions.success(res));
+    } catch (e) {
+      yield put(actions.failure(e));
+    } finally {
+      yield put(finishLoading(actions.TYPE));
+    }
+
+};
+}
+</code>
+        </deckgo-highlight-code><p>하지만 slice를 사용하면 저렇게 관련된 action들을 객체로 감싸지 못하기 때문에, 일일히 인자로 넣어줘야 합니다. 이 프로젝트에서 사용하는 <code>createSaga</code>함수는 이렇게 생겼습니다. 사실 인자로 넘겨야 하는 상황이 마음에 들지 않네요. Slice에서 Reducer 네스팅이 되었으면 좋았을텐데......</p><deckgo-highlight-code language="typescript" theme="a11y-dark">
+          <code slot="code">export const createSaga = &lt;Start, Success, Fail&gt;(
+  success: ActionCreatorWithPayload&lt;Success&gt;, // 성공액션
+  fail: ActionCreatorWithPayload&lt;Fail&gt;, // 실패액션
+  req: any // request 함수, 혹은 배열
+  ) =&gt; {
+    return function\* (action: PayloadAction&lt;Start&gt;) {
+      try {
+        const response: Success = yield call(req, action.payload);
+        yield put(success(response));
+      } catch (error) {
+        yield put(fail(error.toString() as Fail));
+      }
+    };
+});</code>
+        </deckgo-highlight-code><p>이런 식으로 사용합니다.</p><deckgo-highlight-code language="typescript" theme="a11y-dark">
+          <code slot="code">//saga.ts
+
+const getCatFactsSaga = createSaga&lt;any, CatFact[], string&gt;(
+  successFetchCatFacts,
+  failFetchCatFacts,
+  getCatFacts
+);
+
+export default function\* catSaga() {
+  yield takeEvery(fetchCatFacts.type, getCatFactsSaga);
+}
+</code>
+        </deckgo-highlight-code><p>문제는 <code>createAsyncActions</code>를 쓸 경우 <code>createAsyncActions</code>가 반환하는 값의 타입이 유니언 타입인 <code>요청액션|성공액션|실패액션 함수 시그니처</code>로 추론되기 때문에 createSaga의 인자에 지정된 타입과 달라 타입 에러를 뿜는다는 것입니다.</p><p><span class="gatsby-resp-image-wrapper" style="position:relative;display:block;margin-left:auto;margin-right:auto;max-width:610px">
+      <a class="gatsby-resp-image-link" href="/static/c8838e63bca0ad0e102b2e84395168a2/5aae9/error-example.png" style="display:block" target="_blank" rel="noopener">
+    <span class="gatsby-resp-image-background-image" style="padding-bottom:63.66666666666666%;position:relative;bottom:0;left:0;background-image:url(&#x27;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAANCAYAAACpUE5eAAAACXBIWXMAAAsTAAALEwEAmpwYAAAB7ElEQVQ4y3WTWXKrMBBFvZ6AJBCTmMHYgCHYzvT2v5PzCmGn7FTycWkJxFHfVmsnhMBkCXVXc4g1ZaxJy4y0yDDFFrX2eHEEritY1/+U67rf4936qHLJdVAsneB9lFxHxbn3mQ8+Q6voWw8TSzxP3n52nyBPwNAX9OUKEpx7ydcs+TytY2U3GVvB2Er6RqFuwLt+BUZKMgWKQ6gwuSGvcrIyo2wKEhOhpCDQCiklQkiUUnhqnf9hOZSCoc65XkaOXc1p2DP0LdO4Z5kOXF575lPHeT5y7CpSE1OVqd3AcZwn4Bp364emyng/9yxTx8dl4G3peTsPXJeeadzgp6GlqXPKwtDWuYXGUWChjyXYxb5iGho+/i2MU8frZWCaD8zjnmnsbJbLfGQeO5vpYjOtSeKQKAxQUlp9ZxgFPsPccf56ZfmcrQ5Dg/Y8tO8TBgHa1zZu4+1dqFfpbZ3nIe/AMFD2IPK6IkmNLbj7YOMu5yb3If6UtZwmGl97OK7AEeKpJo7jbs1s5Vo9nuhvDb4LlaJRgsaTtFqS5BEmj8kTxdBKyszZWmStk5S39hG/gjegluw9wTGRzHvBvopIy8KWoagMWWmI0wRT5iRFRlYWKKn+zHSn/dWqa+/qi7PZXG2v8T63JfiOzlPf/QT+B4DRpKC+IpY3AAAAAElFTkSuQmCC&#x27;);background-size:cover;display:block"></span>
+  <img class="gatsby-resp-image-image" alt="에러" title="에러" src="/static/c8838e63bca0ad0e102b2e84395168a2/5aae9/error-example.png" srcSet="/static/c8838e63bca0ad0e102b2e84395168a2/5a46d/error-example.png 300w,/static/c8838e63bca0ad0e102b2e84395168a2/0a47e/error-example.png 600w,/static/c8838e63bca0ad0e102b2e84395168a2/5aae9/error-example.png 610w" sizes="(max-width: 610px) 100vw, 610px" style="width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0" loading="lazy" decoding="async"/>
+  </a>
+    </span></p><p>이때 <code>createAsyncActions</code>의 반환값 타이핑을 제대로 정의하기 위해 삽질을 해봤습니다. 문제가 뭐냐면 이 함수의 인자 중 하나인 <code>name</code>을 받아 그걸 토대로 객체 프로퍼티를 동적으로 만들어내기 때문에 타입을 사전적으로 정의하기가 어려웠습니다. 아래 코드는 컴파일되지 않겠지만, 대강 이런 식의 타입이 필요한 것입니다.</p><deckgo-highlight-code language="typescript" theme="a11y-dark">
+          <code slot="code">// Name인자에 따라 다른 프로퍼티 이름을 반환
+// Name은 &quot;FetchCatInfo&quot; 이런식으로 추론되었을 경우 가능
+type AsyncReducers&lt;Name, Start, Success, Fail&gt; = {
+  [`${Name}`]: (state: State, action: PayloadAction&lt;Start&gt;) =&gt; void;
+  [`success${Name}`]: (state: State, action: PayloadAction&lt;Success&gt;) =&gt; void;
+  [`fail${Name}`]: (state: State, action: PayloadAction&lt;Fail&gt;) =&gt; void;
+};</code>
+        </deckgo-highlight-code><p>구글링 하던 도중 올해 7월 중에 <a href="https://github.com/microsoft/TypeScript/pull/44512">Template Literal Type을 interface나 types의 key로 선언할 수 있는 문법이 Typescript 4.4부터 추가되었다</a>는 사실을 최근에 발견해서, 연습용 레포지토리 타입스크립트 버전을 올려 다시 시도해보았지만, 제네릭이랑 동작하지는 않는 것으로 보여 단 념했습니다.</p><deckgo-highlight-code language="typescript" theme="a11y-dark">
+          <code slot="code">// 이렇게는 동작하는데
+type AsyncReducers&lt;Start, Success, Fail&gt; = {
+  [key: `${string}`]: (state: State, action: PayloadAction&lt;Start&gt;) =&gt; void;
+  [key: `success${string}`]: (state: State, action: PayloadAction&lt;Success&gt;) =&gt; void;
+  [key: `fail${string}`]: (state: State, action: PayloadAction&lt;Fail&gt;) =&gt; void;
+};
+
+// 이렇게는 동작하지 않았습니다...
+type AsyncReducers&lt;Name, Start, Success, Fail&gt; = {
+  [key: `${Name}`]: (state: State, action: PayloadAction&lt;Start&gt;) =&gt; void;
+  [key: `success${Name}`]: (state: State, action: PayloadAction&lt;Success&gt;) =&gt; void;
+  [key: `fail${Name}`]: (state: State, action: PayloadAction&lt;Fail&gt;) =&gt; void;
+};</code>
+        </deckgo-highlight-code><p>사실 이쯤 해보고 나니 <code>createAsyncActions</code>을 쓰고싶다는 생각이 사라진게, 이렇게 Reducer를 자동으로 생성하면 리듀서 함수와 dispatch할 액션의 이름을 코드에서 찾아볼 수 없어 <strong>가독성을 해치는 과한 추상화</strong>가 되는 것이 아닐까 하는 생각이 들었던 것 같습니다.</p><p>하나의 유틸 함수로 비동기 요청에 필요한 모든 액션과 리듀서를 생성하니 개발시 타이핑은 줄어들긴 하겠지만, 온보딩중인 개발자의 경우 이 코드를 보고 제대로 액션을 디스패치할 수 없을 것 같았달까요. 결국 타이핑 비용이 준 만큼 커뮤니케이션 비용이 발생할 것 같았습니다. 그래서 단념하고 아래와 같은 방법을 시도해보게 되었습니다.</p><h2 id="5-보완-slicereducers에-명시적으로-reducer-선언하기" style="position:relative"><a href="#5-%EB%B3%B4%EC%99%84-slicereducers%EC%97%90-%EB%AA%85%EC%8B%9C%EC%A0%81%EC%9C%BC%EB%A1%9C-reducer-%EC%84%A0%EC%96%B8%ED%95%98%EA%B8%B0" aria-label="5 보완 slicereducers에 명시적으로 reducer 선언하기 permalink" class="anchor before"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>5. 보완) slice.reducers에 명시적으로 reducer 선언하기</h2><p>reducers에 선언된 각 액션들마다 고유한 타입을 가지려면, 전개연산자를 사용하지 않고 정석대로 reducers 객체에 직접 프로퍼티 이름을 선언하여 reducers 함수를 선언해야 합니다. 그러기 위해서 먼저 <code>createAsyncActions</code>를 다음과 같은 함수들로 분리했습니다.</p><deckgo-highlight-code language="typescript" theme="a11y-dark">
+          <code slot="code">// 3등분 합니다
+export const createStartReducer =
+  &lt;State extends { [key: string]: any }&gt;(entity: string) =&gt;
+  &lt;PayloadType&gt;() =&gt; {
+    return (state: State, action: PayloadAction&lt;PayloadType&gt;) =&gt; {
+      state[entity].status = &#x27;loading&#x27;;
+    };
+  };
+
+export const createSuccessReducer =
+  &lt;State extends { [key: string]: any }&gt;(entity: string) =&gt;
+  &lt;PayloadType&gt;() =&gt; {
+    return (state: State, action: PayloadAction&lt;PayloadType&gt;) =&gt; {
+      state[entity].data = action.payload;
+      state[entity].status = &#x27;success&#x27;;
+    };
+  };
+
+export const createFailReducer =
+  &lt;State extends { [key: string]: any }&gt;(entity: string) =&gt;
+  &lt;PayloadType&gt;() =&gt; {
+    return (state: State, action: PayloadAction&lt;PayloadType&gt;) =&gt; {
+      state[entity].error = action.payload;
+      state[entity].status = &#x27;fail&#x27;;
+    };
+  };</code>
+        </deckgo-highlight-code><p>그리고 이 함수들을 사용하여 slice.reducers에는 함수들을 명시적으로 선언해줍니다.</p><deckgo-highlight-code language="typescript" theme="a11y-dark">
+          <code slot="code">export const catSlice = createSlice({
+  name: &#x27;cats&#x27;,
+  initialState,
+  reducers: {
+    fetchCatFacts: createStartReducer(&#x27;catFact&#x27;)&lt;any&gt;(),
+    successFetchCatFacts: createSuccessReducer(&#x27;catFact&#x27;)&lt;CatFact[]&gt;(),
+    failFetchCatFacts: createFailReducer(&#x27;catFact&#x27;)&lt;string&gt;(),
+  },
+});</code>
+        </deckgo-highlight-code><p>이렇게 하면 각 액션마다 독립적으로 타입 추론이 가능해져서 createSaga를 사용할때 에러가 발생하지 않습니다.</p><p>다만 reducer함수를 위처럼 분리했을 때 좀 불만족스러운 것은, <code>AsyncEntity</code>의 타입추론을 제대로 해줄 수 없다는 것인데요.</p><deckgo-highlight-code language="typescript" theme="a11y-dark">
+          <code slot="code">// createAsyncReducers에서는 Start, Success, Fail의 모든 action.payload 타입을 받으므로
+// 함수 안에서도 AsyncEntity와 제네릭을 사용하여 추론이 가능했다.
+(state[entity] as AsyncEntity&lt;Success, Fail&gt;).data = action.payload;
+
+// 함수를 분리하면(createStartReducer, createSuccessReducer, createFailReducer)
+// action.payload 타입 전체의 일부만 받으므로
+// AsyncEntity와 제네릭을 사용하여 추론이 불가능해서 그냥 any로 추론된다.
+state[entity].status = &#x27;loading&#x27;;</code>
+        </deckgo-highlight-code><p>그렇다고 <code>createSuccessReducer</code> 만들자고 Start와 Fail 액션의 페이로드 타입까지 넘기자니 좀 과한 듯 합니다. 그렇게 되면 Start, Success, Fail 액션 타입 적는걸 리듀서에서 3번 사가에서 1번 하게되는 것이라 반복되는 타이핑이 많아지고 직관적이지 않게 됩니다.</p><h2 id="맺음말--들었던-생각" style="position:relative"><a href="#%EB%A7%BA%EC%9D%8C%EB%A7%90--%EB%93%A4%EC%97%88%EB%8D%98-%EC%83%9D%EA%B0%81" aria-label="맺음말  들었던 생각 permalink" class="anchor before"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>맺음말 &amp; 들었던 생각</h2><p>이렇게 Redux+Saga를 사용하는 프로젝트에서 Redux toolkit과 자체 유틸 함수를 활용해 타이핑을 줄이는 용례를 만들어 보았습니다. 작업의 흐름을 글에 그대로 정리해서 꽤 긴 글이 된 듯 합니다. 코드를 작성하면서 느낀점이 몇 가지가 있는데요.</p><p>먼저 TypeScript를 좀 더 파볼 때가 된 것 같다는 생각이었습니다. 이렇게 하면 되겠지 싶어서 코드를 작성했는데, 타입 에러가 나는 경우가 발생해서 그렇습니다. 타입 시스템에 대한 이해도 더 필요한 것 같습니다.</p><p>사실 이렇게 타이핑을 줄이고 유틸을 만든다고 해서 <strong>Redux + Saga에 작성하는 비즈니스 로직의 모든 케이스가 커버될 수는 없다</strong>는 생각도 들었습니다. 가장 일반적인 비동기 케이스에 대해 반복을 줄이기 위해 유틸 함수를 만든거고, 특이한 케이스나 다른 로직이 Saga나 reducer 안에서 필요할 때는 처음부터 작성해야 할 것입니다.</p><p>이 practice에서 해본 것은 <code>createSlice</code>를 사용하면서도 반복되는 Redux + Saga 작성 케이스에 대한 타이핑을 최대한 줄이기 위한 시도입니다. 이외의 케이스에 대해 미리 케이스를 상정하고 유틸 함수를 작성하는 것은 이른 추상화가 될 수도 있겠습니다. 이외 케이스가 발생했을 때 상황에 맞는 방식으로 로직을 계속 추가해나가야 할 것 같아요.</p><p>또한 회사 프로젝트에 적용해볼 수도 있겠다! 는 생각을 가지고 작성한 practice지만, 다른 개발자와의 논의와 보강을 통해 더 좋은, 개발팀의 현재 상황에 맞는 방법으로 더 보강이 되어야 할 것 같습니다. 그렇게 미래를 기약하며... 포스팅은 여기서 마치겠습니다. 긴 글 읽어주셔서 감사합니다!</p></div><div><div class="c-inPSka"></div><div class="c-hLbyMm"><div>Written by 김맥스</div><div class="c-kINvOu"><a href="https://twitter.com/max_kim_dev">twitter</a><a href="https://github.com/MaxKim-J">github</a><a href="https://www.linkedin.com/in/%EC%A2%85%ED%98%81-%EA%B9%80-903967177/">linkedin</a></div></div><div class="c-inYmSa"><div>트위터에 공유하기</div><div>링크 복사하기</div></div><div class="c-gAHJmZ"><a href="/">글 목록으로 돌아가기</a><div class="c-eqDGAL"><a href="/posts/what-type-of-developer-am-i">이전글</a><a href="/posts/how-to-use-redux-saga">다음글</a><a href="/posts/js-pure-function">랜덤</a></div></div><div class="c-kxdqJo"></div></div></main><footer><div class="c-jPqceB"><div>김맥스 블로그ⓒ김종혁, 2022</div><div>Powered By <a href="https://www.gatsbyjs.com/">gatsby</a> /<a href="">gh-pages</a></div></div></footer></div></div></div><div id="gatsby-announcer" style="position:absolute;top:0;width:1px;height:1px;padding:0;overflow:hidden;clip:rect(0, 0, 0, 0);white-space:nowrap;border:0" aria-live="assertive" aria-atomic="true"></div></div><script>
+  
+  
+  if(true) {
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  }
+  if (typeof ga === "function") {
+    ga('create', 'UA-132859535-2', 'auto', {});
+      
+      
+      
+      
+      
+      }</script><script id="gatsby-script-loader">/*<![CDATA[*/window.pagePath="/posts/how-to-minimize-redux-saga-typing/";window.___webpackCompilationHash="f7f20b5de3cdf5517536";/*]]>*/</script><script id="gatsby-chunk-mapping">/*<![CDATA[*/window.___chunkMapping={"polyfill":["/polyfill-f012ba4a76c3d692158a.js"],"app":["/app-7f2c0c62411c10d2f3b4.js"],"component---src-pages-404-tsx":["/component---src-pages-404-tsx-ce4bbd1696f109b5d64d.js"],"component---src-pages-about-index-tsx":["/component---src-pages-about-index-tsx-be1f1648f88061779477.js"],"component---src-pages-gallery-index-tsx":["/component---src-pages-gallery-index-tsx-0a570cc011ebe9b221fc.js"],"component---src-pages-index-tsx":["/component---src-pages-index-tsx-4842ac9a19fcb9d09583.js"],"component---src-pages-posts-mdx-slug-tsx":["/component---src-pages-posts-mdx-slug-tsx-2fb801dfa34de5e91c02.js"],"component---src-pages-tags-index-tsx":["/component---src-pages-tags-index-tsx-a9c51cc3342289b54b71.js"]};/*]]>*/</script><script src="/polyfill-f012ba4a76c3d692158a.js" nomodule=""></script><script src="/app-7f2c0c62411c10d2f3b4.js" async=""></script><script src="/framework-0ea894b592cd5d21d3c6.js" async=""></script><script src="/webpack-runtime-0d799acc24fa3839e683.js" async=""></script></body></html>

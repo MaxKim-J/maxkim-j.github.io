@@ -1,0 +1,176 @@
+<!DOCTYPE html><html><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="ie=edge"/><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/><meta name="twitter:creator" content="@max_kim_dev" data-gatsby-head="true"/><meta name="twitter:image" content="https://maxkim-j.github.io/thumbnail.png" data-gatsby-head="true"/><meta name="twitter:description" content="DOM 좌표찍기" data-gatsby-head="true"/><meta name="twitter:title" content="김맥스 블로그 | 스크롤에 따른 DOM 요소의 좌표 얻는 법" data-gatsby-head="true"/><meta name="twitter:card" content="summary_large_image" data-gatsby-head="true"/><meta name="image" content="https://maxkim-j.github.io/thumbnail.png" data-gatsby-head="true"/><meta name="description" content="DOM 좌표찍기" data-gatsby-head="true"/><meta name="generator" content="Gatsby 4.19.2"/><style data-href="/styles.ffbc937d81cd1f5b5a7f.css" data-identity="gatsby-global-css">@import url(https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.5/dist/web/static/pretendard-dynamic-subset.css);body[data-theme=light] *{color:#000}body[data-theme=light] p{color:"$black"}body[data-theme=light] deckgo-highlight-code{--deckgo-highlight-code-carbon-background:#f5f5f5;--deckgo-highlight-code-carbon-color:#202020;--deckgo-highlight-code-token-atrule:#a626a4;--deckgo-highlight-code-token-comment:#65737e;--deckgo-highlight-code-token-comment-rgb:#65737e;--deckgo-highlight-code-token-function:#ac4142;--deckgo-highlight-code-token-operator:#202020;--deckgo-highlight-code-token-property:#ac4142;--deckgo-highlight-code-token-punctuation:#202020;--deckgo-highlight-code-token-regex:#f4bf75;--deckgo-highlight-code-token-selector:#90a959}body[data-theme=dark] *{background-color:#232323;color:#fff}body[data-theme=dark] a,body[data-theme=dark] a:link,body[data-theme=dark] a:visited,body[data-theme=dark] p{color:#fff}body[data-theme=dark] input[type=range]{background-color:#fff}body[data-theme=dark] input[type=range]::-webkit-slider-thumb{background-color:#fff}body[data-theme=dark] deckgo-highlight-code{--deckgo-highlight-code-carbon-background:#2b2b2b;--deckgo-highlight-code-carbon-color:#f8f8f2;--deckgo-highlight-code-token-atrule:#ffa07a;--deckgo-highlight-code-token-comment:#606060;--deckgo-highlight-code-token-comment-rgb:#d4d0ab;--deckgo-highlight-code-token-function:#00e0e0;--deckgo-highlight-code-token-operator:#abe338;--deckgo-highlight-code-token-property:#00e0e0;--deckgo-highlight-code-token-punctuation:gold;--deckgo-highlight-code-token-regex:#f8f8f2;--deckgo-highlight-code-token-selector:#f8f8f2;background-color:#2b2b2b!important}body[data-theme=aquamarine] *{background-color:#0e3e38;color:#99eae1}body[data-theme=aquamarine] a,body[data-theme=aquamarine] a:link,body[data-theme=aquamarine] a:visited,body[data-theme=aquamarine] p{color:#99eae1}body[data-theme=aquamarine] input[type=range]{background-color:#99eae1}body[data-theme=aquamarine] input[type=range]::-webkit-slider-thumb{background-color:#99eae1}body[data-theme=aquamarine] deckgo-highlight-code{--deckgo-highlight-code-carbon-background:#2b2b2b;--deckgo-highlight-code-carbon-color:#f8f8f2;--deckgo-highlight-code-token-atrule:#ffa07a;--deckgo-highlight-code-token-comment:#606060;--deckgo-highlight-code-token-comment-rgb:#d4d0ab;--deckgo-highlight-code-token-function:#00e0e0;--deckgo-highlight-code-token-operator:#abe338;--deckgo-highlight-code-token-property:#00e0e0;--deckgo-highlight-code-token-punctuation:gold;--deckgo-highlight-code-token-regex:#f8f8f2;--deckgo-highlight-code-token-selector:#f8f8f2;background-color:#2b2b2b!important}body[data-theme=lemon] *{background-color:#340e39;color:#d1ce4c}body[data-theme=lemon] a,body[data-theme=lemon] a:link,body[data-theme=lemon] a:visited,body[data-theme=lemon] p{color:#d1ce4c}body[data-theme=lemon] input[type=range]{background-color:#d1ce4c}body[data-theme=lemon] input[type=range]::-webkit-slider-thumb{background-color:#d1ce4c}body[data-theme=lemon] deckgo-highlight-code{--deckgo-highlight-code-carbon-background:#2b2b2b;--deckgo-highlight-code-carbon-color:#f8f8f2;--deckgo-highlight-code-token-atrule:#ffa07a;--deckgo-highlight-code-token-comment:#606060;--deckgo-highlight-code-token-comment-rgb:#d4d0ab;--deckgo-highlight-code-token-function:#00e0e0;--deckgo-highlight-code-token-operator:#abe338;--deckgo-highlight-code-token-property:#00e0e0;--deckgo-highlight-code-token-punctuation:gold;--deckgo-highlight-code-token-regex:#f8f8f2;--deckgo-highlight-code-token-selector:#f8f8f2;background-color:#2b2b2b!important}body[data-theme=mahogany] *{background-color:#eaedc4;color:#c9263c}body[data-theme=mahogany] a,body[data-theme=mahogany] a:link,body[data-theme=mahogany] a:visited,body[data-theme=mahogany] p{color:#c9263c}body[data-theme=mahogany] input[type=range]{background-color:#c9263c}body[data-theme=mahogany] input[type=range]::-webkit-slider-thumb{background-color:#c9263c}body[data-theme=mahogany] deckgo-highlight-code{--deckgo-highlight-code-carbon-background:#2b2b2b;--deckgo-highlight-code-carbon-color:#f8f8f2;--deckgo-highlight-code-token-atrule:#ffa07a;--deckgo-highlight-code-token-comment:#606060;--deckgo-highlight-code-token-comment-rgb:#d4d0ab;--deckgo-highlight-code-token-function:#00e0e0;--deckgo-highlight-code-token-operator:#abe338;--deckgo-highlight-code-token-property:#00e0e0;--deckgo-highlight-code-token-punctuation:gold;--deckgo-highlight-code-token-regex:#f8f8f2;--deckgo-highlight-code-token-selector:#f8f8f2;background-color:#2b2b2b!important}</style><title data-gatsby-head="true">김맥스 블로그 | 스크롤에 따른 DOM 요소의 좌표 얻는 법</title><style>.gatsby-image-wrapper{position:relative;overflow:hidden}.gatsby-image-wrapper picture.object-fit-polyfill{position:static!important}.gatsby-image-wrapper img{bottom:0;height:100%;left:0;margin:0;max-width:none;padding:0;position:absolute;right:0;top:0;width:100%;object-fit:cover}.gatsby-image-wrapper [data-main-image]{opacity:0;transform:translateZ(0);transition:opacity .25s linear;will-change:opacity}.gatsby-image-wrapper-constrained{display:inline-block;vertical-align:top}</style><noscript><style>.gatsby-image-wrapper noscript [data-main-image]{opacity:1!important}.gatsby-image-wrapper [data-placeholder-image]{opacity:0!important}</style></noscript><script type="module">const e="undefined"!=typeof HTMLImageElement&&"loading"in HTMLImageElement.prototype;e&&document.body.addEventListener("load",(function(e){const t=e.target;if(void 0===t.dataset.mainImage)return;if(void 0===t.dataset.gatsbyImageSsr)return;let a=null,n=t;for(;null===a&&n;)void 0!==n.parentNode.dataset.gatsbyImageWrapper&&(a=n.parentNode),n=n.parentNode;const o=a.querySelector("[data-placeholder-image]"),r=new Image;r.src=t.currentSrc,r.decode().catch((()=>{})).then((()=>{t.style.opacity=1,o&&(o.style.opacity=0,o.style.transition="opacity 500ms linear")}))}),!0);</script><link rel="sitemap" type="application/xml" href="/sitemap/sitemap-index.xml"/><link rel="preconnect" href="https://www.google-analytics.com"/><link rel="dns-prefetch" href="https://www.google-analytics.com"/><style type="text/css">
+    .anchor.before {
+      position: absolute;
+      top: 0;
+      left: 0;
+      transform: translateX(-100%);
+      padding-right: 4px;
+    }
+    .anchor.after {
+      display: inline-block;
+      padding-left: 4px;
+    }
+    h1 .anchor svg,
+    h2 .anchor svg,
+    h3 .anchor svg,
+    h4 .anchor svg,
+    h5 .anchor svg,
+    h6 .anchor svg {
+      visibility: hidden;
+    }
+    h1:hover .anchor svg,
+    h2:hover .anchor svg,
+    h3:hover .anchor svg,
+    h4:hover .anchor svg,
+    h5:hover .anchor svg,
+    h6:hover .anchor svg,
+    h1 .anchor:focus svg,
+    h2 .anchor:focus svg,
+    h3 .anchor:focus svg,
+    h4 .anchor:focus svg,
+    h5 .anchor:focus svg,
+    h6 .anchor:focus svg {
+      visibility: visible;
+    }
+  </style><script>
+    document.addEventListener("DOMContentLoaded", function(event) {
+      var hash = window.decodeURI(location.hash.replace('#', ''))
+      if (hash !== '') {
+        var element = document.getElementById(hash)
+        if (element) {
+          var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
+          var clientTop = document.documentElement.clientTop || document.body.clientTop || 0
+          var offset = element.getBoundingClientRect().top + scrollTop - clientTop
+          // Wait for the browser to finish rendering before scrolling.
+          setTimeout((function() {
+            window.scrollTo(0, offset - 0)
+          }), 0)
+        }
+      }
+    })
+  </script><style id="stitches">--sxs{--sxs:0 t-juXrtP}@media{:root,.t-juXrtP{--fonts-system:system-ui;--colors-black:#000000;--colors-dark:#232323;--colors-white:#ffffff;--colors-orange:#ffb566;--colors-turquoise:#8cffd6;--colors-pink:#ffa5e4;--fontSizes-mainTitle:30px;--fontSizes-title:28px;--fontSizes-subTitle:24px;--fontSizes-mobileTitle:20px;--fontSizes-description:14px;--fontSizes-mobileDescription:10px;--fontSizes-heading1:32px;--fontSizes-heading2:28px;--fontSizes-heading3:24px;--fontSizes-heading4:20px;--fontSizes-body1:18px;--fontSizes-body2:16px;--fontSizes-body3:14px;--fontSizes-body4:12px;--fontWeights-extraBold:700;--fontWeights-bold:550;--fontWeights-regular:500;--fontWeights-thin:300}}--sxs{--sxs:1 lhZdba fiFvXz}@media{*{font-family:Pretendard}p,body{margin:0;padding:0;font-size:var(--fontSizes-body1)}a{text-decoration:none}a:link{color:var(--colors-black)}a:visited{color:var(--colors-black)}img{width:100%;height:auto}ol{list-style-type:none;margin-block-start:0;margin-block-end:0;margin-inline-start:0;margin-inline-end:0;padding-inline-start:0}h1{font-size:var(--fontSizes-heading1);font-weight:var(--fontWeights-bold)}h2{font-size:var(--fontSizes-heading2);font-weight:var(--fontWeights-bold)}h3{font-size:var(--fontSizes-heading3);font-weight:var(--fontWeights-bold)}h4{font-size:var(--fontSizes-heading4);font-weight:var(--fontWeights-bold)}h5{font-size:var(--fontSizes-heading5);font-weight:var(--fontWeights-bold)}p{margin-bottom:24px;word-wrap:break-word;line-height:1.6;word-break:all}h1{margin-top:48px;margin-bottom:36px}h2{margin:32px 0}h3{margin:28px 0}h4{margin:24px 0}h5{margin:20px 0}p a{text-decoration:underline;text-underline-position:under}p > code{padding:2px 8px;border-radius:8px;font-size:16px}blockquote{border-left:3px solid var(--colors-black);padding-left:10px;margin:20px 0;font-style:italic}@media (max-width: 730px){deckgo-highlight-code{font-size:var(--fontSizes-body2)}}deckgo-highlight-code{--deckgo-highlight-code-white-space:pre;--deckgo-highlight-code-margin:12px 0 16px 0;--deckgo-highlight-code-scroll:none;--deckgo-highlight-code-carbon-margin:28px 0;--deckgo-highlight-code-carbon-box-shadow:none}li{line-height:1.8}li > a{text-decoration:underline;text-underline-position:under}}--sxs{--sxs:2 c-feMWly c-llJfQk c-dVNheE c-bkUmzp c-PJLV c-jMkcPK c-kdYLWQ c-iEaapN c-enMnGJ c-gHothk c-kcUpuv c-zOevm c-iDjjYv c-fVALJv c-inPSka c-hLbyMm c-kINvOu c-inYmSa c-gAHJmZ c-eqDGAL c-kxdqJo c-jPqceB}@media{.c-feMWly ol{list-style-type:decimal;margin-block-start:1em;margin-block-end:1em;margin-inline-start:2em}.c-llJfQk{width:100vw;min-height:100vh;display:flex;justify-content:center}.c-dVNheE{padding:24px 18px 0px 18px;box-sizing:border-box;width:920px}@media (max-width: 730px){.c-dVNheE{width:100%}}@media (max-width: 730px){.c-dVNheE p,.c-dVNheE ul,.c-dVNheE li{font-size:var(--fontSizes-body2)}}@media (max-width: 730px){.c-dVNheE h1{font-size:var(--fontSizes-heading2)}}@media (max-width: 730px){.c-dVNheE h2{font-size:var(--fontSizes-heading3)}}@media (max-width: 730px){.c-dVNheE h3{font-size:var(--fontSizes-heading4)}}@media (max-width: 730px){.c-dVNheE h4{font-size:body1}}.c-bkUmzp{display:flex;justify-content:space-between;margin-bottom:82px}.c-jMkcPK{font-size:var(--fontSizes-mainTitle);font-weight:var(--fontWeights-bold)}@media (max-width: 730px){.c-jMkcPK{font-size:var(--fontSizes-subTitle)}}.c-kdYLWQ{display:flex;align-items:center}.c-kdYLWQ >div{margin-left:25px}@media (max-width: 730px){.c-kdYLWQ{font-size:var(--fontSizes-body3)}}.c-iEaapN{position:relative;cursor:pointer}.c-enMnGJ{min-height:700px}.c-gHothk{margin-bottom:60px}.c-kcUpuv{margin:28px 0}.c-zOevm{font-size:var(--fontSizes-body2);margin-bottom:6px}.c-iDjjYv{font-size:var(--fontSizes-description)}.c-fVALJv{font-size:var(--fontSizes-description);margin-right:12px;text-decoration:underline}.c-inPSka{width:100%;background-color:var(--colors-black);height:1px;margin:50px 0}.c-hLbyMm{display:flex;justify-content:space-between;font-size:var(--fontSizes-description)}.c-kINvOu{display:flex;justify-content:space-between}.c-kINvOu a{margin-left:20px}.c-kINvOu a:hover{text-decoration:underline;text-underline-position:under}.c-inYmSa{margin-top:20px;display:flex;font-size:var(--fontSizes-description)}.c-inYmSa div{margin-right:18px}.c-inYmSa div:hover{text-decoration:underline;text-underline-position:under}.c-inYmSa div{cursor:pointer}.c-gAHJmZ{margin:20px 0 60px 0;display:flex;justify-content:space-between;font-size:var(--fontSizes-description)}.c-gAHJmZ a:hover{text-decoration:underline;text-underline-position:under}.c-eqDGAL a{margin-left:20px}.c-kxdqJo .utterances{max-width:none}.c-kxdqJo iframe main.timeline{padding:0}.c-jPqceB{margin-top:32px;display:flex;height:32px;align-items:center;justify-content:space-between;bottom:0;z-index:10}.c-jPqceB div{font-size:10px}.c-jPqceB a{text-decoration:underline;font-size:10px}@media (max-width: 730px){.c-jPqceB{font-size:var(--fontSizes-mobileDescription)}}}</style></head><body><script>
+    const savedTheme = localStorage.getItem('maxkim-blog-theme');
+    const theme = savedTheme || 'light';
+    
+    window.__theme = theme;
+    window.__setTheme = (newTheme) => {
+      document.body.setAttribute("data-theme", newTheme);
+      localStorage.setItem('maxkim-blog-theme', newTheme);
+    };
+
+    window.__setTheme(theme);
+  </script><div id="___gatsby"><div style="outline:none" tabindex="-1" id="gatsby-focus-wrapper"><div class="c-llJfQk"><div class="c-dVNheE"><header><div class="c-bkUmzp"><div class="c-PJLV"><a href="/"><div class="c-jMkcPK">김맥스 블로그</div></a></div><div class="c-kdYLWQ"><div class="c-iEaapN"><div><div>color</div></div></div><div><a href="/gallery">gallery</a></div><div><a href="/about">about</a></div></div></div></header><main class="c-enMnGJ"><div class="c-gHothk"><h1 class="c-kcUpuv">스크롤에 따른 DOM 요소의 좌표 얻는 법</h1><div class="c-zOevm">DOM 좌표찍기</div><div class="c-iDjjYv"><a class="c-fVALJv" href="/tags/?tag=dom">#<!-- -->dom</a><a class="c-fVALJv" href="/tags/?tag=javascript">#<!-- -->javascript</a></div></div><div class="c-feMWly"><p>이 포스팅에서는 DOM요소의 수직 좌표를 얻는 법에 대해 알아보겠습니다. 프론트엔드 라이브러리를 사용하여 앱을 만들다 보니, DOM을 자꾸 잊어버리는 것 같아 복습 중입니다. 앱의 기능을 구현하면서 특정 이벤트가 발생하면 스크롤바를 특정 엘리멘트의 위치로 이동시켜야 할 때가 있는데요. 좌표 구하는 법을 외우지 못해서 관련 기능을 만들 때 마다 구글링을 하는 것 같아 아예 포스팅을 작성해보려 합니다.</p><h2 id="수직상의-위치" style="position:relative"><a href="#%EC%88%98%EC%A7%81%EC%83%81%EC%9D%98-%EC%9C%84%EC%B9%98" aria-label="수직상의 위치 permalink" class="anchor before"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>수직상의 위치</h2><p>수평 스크롤과 요소의 x축 좌표는   개발에 쓰이는 일이 많지는 않습니다. 유저가 화면을 아래로 스크롤하며 웹과 상호작용하는 것이 보통이기 때문이죠. 따라서 아래로 스크롤할 때마다 달라지는, 혹은 달라지지 않는 DOM 요소의 y축 좌표에 대해 이야기해보고자 합니다. 간단한 마크업부터 작성해보겠습니다.</p><deckgo-highlight-code language="html" theme="a11y-dark">
+          <code slot="code">&lt;!DOCTYPE html&gt;
+
+&lt;html lang=&quot;en&quot;&gt;
+  &lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot; /&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot; /&gt;
+    &lt;title&gt;스크롤과 위치&lt;/title&gt;
+    &lt;style&gt;
+      body {
+        margin: 0;
+        padding: 0;
+      }
+      .parent {
+        background-color: #ececec;
+        width: 200px;
+        height: 200px;
+        margin: 0 auto;
+        margin-top: 100px;
+        position: relative;
+      }
+
+      .child {
+        position: absolute;
+        top: 25%;
+        left: 25%;
+        background-color: green;
+        width: 100px;
+        height: 100px;
+      }
+      /* 스크롤을 만들기 위해 높이를 길게 지정했습니다 */
+      .scroll {
+        height: 1200px;
+      }
+    &lt;/style&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;div class=&quot;parent&quot;&gt;
+      &lt;div class=&quot;child&quot;&gt;&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;scroll&quot;&gt;&lt;/div&gt;
+    &lt;script src=&quot;./index.js&quot;&gt;&lt;/script&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</code>
+        </deckgo-highlight-code><p>이렇게 작성하면 다음과 같이 화면이 나옵니다. 녹색 사각형이 child 요소이고, 회색 사각형이 parent 요소입니다.
+<span class="gatsby-resp-image-wrapper" style="position:relative;display:block;margin-left:auto;margin-right:auto;max-width:1200px">
+      <a class="gatsby-resp-image-link" href="/static/96ae3c14b6430a43fb79b2de2dc0ae0b/d9ed5/html.png" style="display:block" target="_blank" rel="noopener">
+    <span class="gatsby-resp-image-background-image" style="padding-bottom:54.666666666666664%;position:relative;bottom:0;left:0;background-image:url(&#x27;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAALCAYAAAB/Ca1DAAAACXBIWXMAABYlAAAWJQFJUiTwAAAAhElEQVQoz+WRwQ2AIAxF3UR31JszuIhnDy7hJiQKHiAp9BuIGg8GFI82NJ805aW/FIgEM7+qaa1RpGDGGEgloVYFa+0t9BHQsQsqZoGyq1APzVnPAh5Ni1zQji36qQfYH84DYn9z2Ax398HydRJiOlcQ+xS/76Rlr9eMTUhEEcsv4ufADURgZOgrzrsaAAAAAElFTkSuQmCC&#x27;);background-size:cover;display:block"></span>
+  <img class="gatsby-resp-image-image" alt="마크업" title="마크업" src="/static/96ae3c14b6430a43fb79b2de2dc0ae0b/c1b63/html.png" srcSet="/static/96ae3c14b6430a43fb79b2de2dc0ae0b/5a46d/html.png 300w,/static/96ae3c14b6430a43fb79b2de2dc0ae0b/0a47e/html.png 600w,/static/96ae3c14b6430a43fb79b2de2dc0ae0b/c1b63/html.png 1200w,/static/96ae3c14b6430a43fb79b2de2dc0ae0b/d61c2/html.png 1800w,/static/96ae3c14b6430a43fb79b2de2dc0ae0b/97a96/html.png 2400w,/static/96ae3c14b6430a43fb79b2de2dc0ae0b/d9ed5/html.png 2880w" sizes="(max-width: 1200px) 100vw, 1200px" style="width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0" loading="lazy" decoding="async"/>
+  </a>
+    </span></p><p>녹색 사각형의 y좌표를 구해볼텐데요. 구하는 방식이 기준에 따라 다릅니다. 그림으로 설명해 보겠습니다.
+<span class="gatsby-resp-image-wrapper" style="position:relative;display:block;margin-left:auto;margin-right:auto;max-width:980px">
+      <a class="gatsby-resp-image-link" href="/static/804cb788383a3289f71f4059fa84ebed/d30ee/viewport.png" style="display:block" target="_blank" rel="noopener">
+    <span class="gatsby-resp-image-background-image" style="padding-bottom:83.33333333333334%;position:relative;bottom:0;left:0;background-image:url(&#x27;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAARCAYAAADdRIy+AAAACXBIWXMAAAsTAAALEwEAmpwYAAACOklEQVQ4y6WUzW7TQBSFveySDe/Aig0SK1TgPZBgRQUSQuLnGSoBAgEbXqFISGypiqhK05IqbYObiWecBJXUcezYjlM1deJk5h7kaVKlEP7aKx0fa67P5/GMNcZS7r0smgXYwiZWLmM1v4Xl9U18Witgeb2ApVwBq2YNGzsVrJlV5L5WkTOr2GY2OLdgcQ4+IUNwW2Y3lmWRZVkauPg5jw8reSyu5DU8g5mMo8gEtktCe6msM7/IKDFTsvIOhBBUrVRQ3/2GvQmtb5rYKNngwoItOIT2TCLLwLbtE27UGiXa9SxIOaT2fheVPV+r6rRQa7RQdUI4Bwm8JEKz34bXjxENDiCJIJWClFKLiJAkCQwcFWWXbpLCCTpww33UvQi1ehO1eoDvnUNEcYgDz0fHa6Lr+xh0OiApMVmDwQCGUooIlL2BTjTTFO0oQNES+FKroMw3URdleI0GunEMlaYgpfRMxtE0TTXwaIqkoTjCA4fJIaIwxt1XVzH7aAbXH8/gzssraIUB+ml6/Fnj3FTgpGfrkQHnXlzGrflzmHt6HrefX4Lne+j1elMzfwW2oxg3n1zE7AMD1x4auDF/AX7LPz0wDCK8W36D52/v49nCPSx8fI2gFejefwN7/R468T78wMOWtYKiyCGMAj2W9f4EpNEgjRd4UorU8c5P60/blDGIfvewUlLrn4CTP/ZZazgcwnBdV7muC9d1aeSnUrPZhOM4MBhjQ8YYGGM08jPJ4JzL0VlG/Kez7TT6AUeX5w4SV8ZMAAAAAElFTkSuQmCC&#x27;);background-size:cover;display:block"></span>
+  <img class="gatsby-resp-image-image" alt="마크업2" title="마크업2" src="/static/804cb788383a3289f71f4059fa84ebed/d30ee/viewport.png" srcSet="/static/804cb788383a3289f71f4059fa84ebed/5a46d/viewport.png 300w,/static/804cb788383a3289f71f4059fa84ebed/0a47e/viewport.png 600w,/static/804cb788383a3289f71f4059fa84ebed/d30ee/viewport.png 980w" sizes="(max-width: 980px) 100vw, 980px" style="width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0" loading="lazy" decoding="async"/>
+  </a>
+    </span>
+뷰포트는 브라우저에서 사용자에게 화면을 보여주는 범위입니다. 보여주는 HTML 전체는 뷰포트보다 클 수 있습니다. 스크롤을 하면 웹페이지의 일부가 뷰포트 밖으로 사라지니까요. 따라서 child 요소는 좌표값을 여러개 갖습니다. HTML시작점 기준, 뷰포트의 시작점 기준, 부묘 요소의 시작점 기준으로 요소의 y좌표를 구할 수 있습니다.</p><h3 id="관련-api" style="position:relative"><a href="#%EA%B4%80%EB%A0%A8-api" aria-label="관련 api permalink" class="anchor before"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>관련 API</h3><p>좌표를 얻기 위해 사용할 DOM API는 다음과 같이 2가지입니다.</p><ul><li><code>element.getBoundingClientRect()</code> : 뷰포트를 이루는 가장자리와 element와의 거리 정보를 가지고 있는 객체를 리턴하는 메소드입니다. 반환하는 객체에는 top, bottom, left, right 프로퍼티가 있는데 이게 각각 뷰포트와의 방향별 거리 를 의미합니다.</li><li><code>window.pageYOffset</code> : 수직 방향으로 얼마나 스크롤했는지 픽셀 단위로 알려주는 window의 속성입니다. <code>window.scrollY</code>와 같은 값을 가집니다.</li></ul><h2 id="위치-시작점에-따른-거리-구하기" style="position:relative"><a href="#%EC%9C%84%EC%B9%98-%EC%8B%9C%EC%9E%91%EC%A0%90%EC%97%90-%EB%94%B0%EB%A5%B8-%EA%B1%B0%EB%A6%AC-%EA%B5%AC%ED%95%98%EA%B8%B0" aria-label="위치 시작점에 따른 거리 구하기 permalink" class="anchor before"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>위치 시작점에 따른 거리 구하기</h2><h3 id="1-html-시작점" style="position:relative"><a href="#1-html-%EC%8B%9C%EC%9E%91%EC%A0%90" aria-label="1 html 시작점 permalink" class="anchor before"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>1. HTML 시작점</h3><deckgo-highlight-code language="javascript" theme="a11y-dark">
+          <code slot="code">// 수직으로 스크롤한 정도 + 뷰포트와의 거리
+const distanceFromHtml = child.getBoundingClientRect().top + window.pageYOffset;</code>
+        </deckgo-highlight-code><h3 id="2-뷰포트" style="position:relative"><a href="#2-%EB%B7%B0%ED%8F%AC%ED%8A%B8" aria-label="2 뷰포트 permalink" class="anchor before"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>2. 뷰포트</h3><deckgo-highlight-code language="javascript" theme="a11y-dark">
+          <code slot="code">// 뷰포트와의 거리
+const distanceFromViewport = child.getBoundingClientRect().top;</code>
+        </deckgo-highlight-code><h3 id="3-부모-요소" style="position:relative"><a href="#3-%EB%B6%80%EB%AA%A8-%EC%9A%94%EC%86%8C" aria-label="3 부모 요소 permalink" class="anchor before"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>3. 부모 요소</h3><deckgo-highlight-code language="javascript" theme="a11y-dark">
+          <code slot="code">// 부모요소 뷰포트까지의 거리 - 자식요소 뷰포트까지의 거리
+// 이 값은 스크롤에 상관없이 항상 같습니다.
+const distanceBetweenParentAndChild =
+  child.getBoundingClientRect().top - parent.getBoundingClientRect().top;</code>
+        </deckgo-highlight-code><h3 id="결과-확인하기" style="position:relative"><a href="#%EA%B2%B0%EA%B3%BC-%ED%99%95%EC%9D%B8%ED%95%98%EA%B8%B0" aria-label="결과 확인하기 permalink" class="anchor before"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>결과 확인하기</h3><p>같은 디렉토리에 index.js를 만들고, 다음과 같이 코드를 작성한 후 저장해줍니다.</p><deckgo-highlight-code language="javascript" theme="a11y-dark">
+          <code slot="code">window.onload = () =&gt; {
+  const parent = document.querySelector(&#x27;.parent&#x27;);
+  const child = document.querySelector(&#x27;.child&#x27;);
+
+  // 스크롤 이벤트를 감지하는 이벤트 리스너를 만들어줍니다.
+  window.addEventListener(&#x27;scroll&#x27;, function () {
+    console.log(&#x27;스크롤 이벤트 감지!!&#x27;);
+
+    // 뷰포트 시작점과의 거리
+    const distanceFromHtml = child.getBoundingClientRect().top + window.pageYOffset;
+
+    // HTML 시작점으로부터의 거리
+    const distanceFromViewport = child.getBoundingClientRect().top;
+
+    // 부모 요소와의 거리
+    const distanceBetweenParentAndChild =
+      child.getBoundingClientRect().top - parent.getBoundingClientRect().top;
+
+    console.log(&#x27;뷰포트 시작점으로부터의 거리&#x27;, distanceFromViewport);
+    console.log(&#x27;HTML 시작점으로부터의 거리&#x27;, distanceFromHtml);
+    console.log(&#x27;부모 요소와의 거리&#x27;, distanceBetweenParentAndChild);
+  });
+};</code>
+        </deckgo-highlight-code><p><span class="gatsby-resp-image-wrapper" style="position:relative;display:block;margin-left:auto;margin-right:auto;max-width:1143px">
+      <a class="gatsby-resp-image-link" href="/static/943cb65033c4b35b47c88d92b8a45e7a/22c86/console.png" style="display:block" target="_blank" rel="noopener">
+    <span class="gatsby-resp-image-background-image" style="padding-bottom:44.99999999999999%;position:relative;bottom:0;left:0;background-image:url(&#x27;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAJCAYAAAAywQxIAAAACXBIWXMAABYlAAAWJQFJUiTwAAABHElEQVQoz4WRWW6EMBBEuQvGbcAsA5jFNqAkk+X+F6qoO4w0yoTJR6s/DM+vXIm1FnHdsPiAEFdcLh2INIzJQUTQWoP0z74fPsuyDM45eO8xDAOMMUiapkUQYMT1/VPg07LA9S8gKqFUCqUyKKUeJk1TzPOMGCOmaZKLkqqqMS9e7NhydBFFYZEbKwZZpo799zAshCBgAZbWHoa3yIN8yIf/AdlwHEeB8uZnSJq2lZgMu358Yd13LCFg7F9BupDIz4D3kQVoq0oi+xAx8+P2HkQ5SBv5SZ0Y8hueRo5HKby7zslNRAzUp8DzyNxyXMXwjVveGO4fIv9u+AbkqGzIQDGs6wazD/BHy27YYEwpsdnwWcM8+75j2zaBsuE3WUMT6Tog/gAAAAAASUVORK5CYII=&#x27;);background-size:cover;display:block"></span>
+  <img class="gatsby-resp-image-image" alt="마크업2" title="마크업2" src="/static/943cb65033c4b35b47c88d92b8a45e7a/22c86/console.png" srcSet="/static/943cb65033c4b35b47c88d92b8a45e7a/5a46d/console.png 300w,/static/943cb65033c4b35b47c88d92b8a45e7a/0a47e/console.png 600w,/static/943cb65033c4b35b47c88d92b8a45e7a/22c86/console.png 1143w" sizes="(max-width: 1143px) 100vw, 1143px" style="width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0" loading="lazy" decoding="async"/>
+  </a>
+    </span>
+스크롤바를 밑으로 내림에 따라 child요소의 y좌표와 변하지 않는 부모 요소와의 거리가 픽셀 단위로 콘솔에 찍히는 모습을 볼 수 있습니다.</p><h2 id="스크롤-api" style="position:relative"><a href="#%EC%8A%A4%ED%81%AC%EB%A1%A4-api" aria-label="스크롤 api permalink" class="anchor before"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>스크롤 API</h2><p>DOM 요소의 수직 위치를 알아내는 방법을 알아봤습니다. 그렇다면 그 위치를 토대로 스크롤바를 움직이고 싶다면 어떻게 할까요? 크게는 scrollTo와 scrollBy 정도를 알고 있으면 될 것 같습니다.</p><ul><li>window.scrollTo(x좌표, y좌표) : 문서의 지정된 위치로 스크롤</li><li>window.scrollBy(x좌표, y좌표) : 현재 스크롤 위치에서 x, y 만큼 더 스크롤</li></ul><h2 id="refernce" style="position:relative"><a href="#refernce" aria-label="refernce permalink" class="anchor before"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Refernce</h2><ul><li><a href="https://mommoo.tistory.com/85">개발자로 홀로 서기 - 요소의 상대좌표 절대좌표 구하기</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect">MDN - element.getBoundingClientRect()</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect">MDN - window.scroll()</a></li></ul></div><div><div class="c-inPSka"></div><div class="c-hLbyMm"><div>Written by 김맥스</div><div class="c-kINvOu"><a href="https://twitter.com/max_kim_dev">twitter</a><a href="https://github.com/MaxKim-J">github</a><a href="https://www.linkedin.com/in/%EC%A2%85%ED%98%81-%EA%B9%80-903967177/">linkedin</a></div></div><div class="c-inYmSa"><div>트위터에 공유하기</div><div>링크 복사하기</div></div><div class="c-gAHJmZ"><a href="/">글 목록으로 돌아가기</a><div class="c-eqDGAL"><a href="/posts/vue-comp-test">이전글</a><a href="/posts/function-props-vuejs">다음글</a><a href="/posts/frontend-infrastructure">랜덤</a></div></div><div class="c-kxdqJo"></div></div></main><footer><div class="c-jPqceB"><div>김맥스 블로그ⓒ김종혁, 2022</div><div>Powered By <a href="https://www.gatsbyjs.com/">gatsby</a> /<a href="">gh-pages</a></div></div></footer></div></div></div><div id="gatsby-announcer" style="position:absolute;top:0;width:1px;height:1px;padding:0;overflow:hidden;clip:rect(0, 0, 0, 0);white-space:nowrap;border:0" aria-live="assertive" aria-atomic="true"></div></div><script>
+  
+  
+  if(true) {
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  }
+  if (typeof ga === "function") {
+    ga('create', 'UA-132859535-2', 'auto', {});
+      
+      
+      
+      
+      
+      }</script><script id="gatsby-script-loader">/*<![CDATA[*/window.pagePath="/posts/dom-pos-scroll/";window.___webpackCompilationHash="f7f20b5de3cdf5517536";/*]]>*/</script><script id="gatsby-chunk-mapping">/*<![CDATA[*/window.___chunkMapping={"polyfill":["/polyfill-f012ba4a76c3d692158a.js"],"app":["/app-7f2c0c62411c10d2f3b4.js"],"component---src-pages-404-tsx":["/component---src-pages-404-tsx-ce4bbd1696f109b5d64d.js"],"component---src-pages-about-index-tsx":["/component---src-pages-about-index-tsx-be1f1648f88061779477.js"],"component---src-pages-gallery-index-tsx":["/component---src-pages-gallery-index-tsx-0a570cc011ebe9b221fc.js"],"component---src-pages-index-tsx":["/component---src-pages-index-tsx-4842ac9a19fcb9d09583.js"],"component---src-pages-posts-mdx-slug-tsx":["/component---src-pages-posts-mdx-slug-tsx-2fb801dfa34de5e91c02.js"],"component---src-pages-tags-index-tsx":["/component---src-pages-tags-index-tsx-a9c51cc3342289b54b71.js"]};/*]]>*/</script><script src="/polyfill-f012ba4a76c3d692158a.js" nomodule=""></script><script src="/app-7f2c0c62411c10d2f3b4.js" async=""></script><script src="/framework-0ea894b592cd5d21d3c6.js" async=""></script><script src="/webpack-runtime-0d799acc24fa3839e683.js" async=""></script></body></html>
