@@ -1,4 +1,5 @@
 import React, { useLayoutEffect } from 'react';
+import Helmet from 'react-helmet';
 import { graphql } from 'gatsby';
 import { MDXRenderer } from 'gatsby-plugin-mdx';
 
@@ -60,6 +61,8 @@ export default function GalleryPage({ data }: Props) {
 
   return (
     <MainLayout header={<Header />} footer={<Footer />}>
+      <Helmet title={`김맥스 블로그 | gallery`} defer={false} />
+      <meta name="description" content="찍은 사진들" />
       <StyledName>{title}</StyledName>
       <MDXRenderer>{body}</MDXRenderer>
     </MainLayout>

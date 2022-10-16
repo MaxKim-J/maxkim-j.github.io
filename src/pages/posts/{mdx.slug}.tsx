@@ -4,6 +4,8 @@ import React from 'react';
 import { defineCustomElements as deckDeckGoHighlightElement } from '@deckdeckgo/highlight-code/dist/loader';
 import Helmet from 'react-helmet';
 
+import { css } from '../../styles/stitches';
+
 import Footer from '../../components/@layout/Footer';
 import Header from '../../components/@layout/Header/Header';
 
@@ -49,14 +51,24 @@ export default function PostPage({ data: { post, postSlugList } }: Props) {
   return (
     <MainLayout header={<Header />} footer={<Footer />}>
       <Helmet title={`김맥스 블로그 | ${title}`} defer={false} />
+      <meta name="description" content={description} />
       <PostTitle title={title} date={date} description={description} tags={tags} />
-      <div>
+      <div className={postStyle()}>
         <MDXRenderer>{body}</MDXRenderer>
       </div>
       <ByLine postSlugs={postSlugs} currentSlug={slug} title={title} />
     </MainLayout>
   );
 }
+
+const postStyle = css({
+  ol: {
+    listStyleType: 'decimal',
+    marginBlockStart: '1em',
+    marginBlockEnd: '1em',
+    marginInlineStart: '2em',
+  },
+});
 
 export const query = graphql`
   query ($slug: String) {

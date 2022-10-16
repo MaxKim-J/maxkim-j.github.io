@@ -1,4 +1,5 @@
 import React from 'react';
+import Helmet from 'react-helmet';
 
 import ProfileImage from '../../images/profile.jpeg';
 
@@ -16,6 +17,8 @@ export default function AboutPage() {
 
   return (
     <MainLayout header={<Header />} footer={<Footer />}>
+      <Helmet title={`김맥스 블로그 | about`} defer={false} />
+      <meta name="description" content="저에용" />
       <StyledName>김종혁</StyledName>
       <img src={ProfileImage} />
       <StyledParagraph>
@@ -40,12 +43,10 @@ export default function AboutPage() {
         <StyledLabel>
           <StyledLabelTitle>Currently</StyledLabelTitle>
           <StyledLabelContent>
-            <p>
-              <strong>
-                <Link to="https://flex.team">flex.team</Link>
-              </strong>{' '}
-              Product Engineer(FE)
-            </p>
+            <strong>
+              <Link to="https://flex.team">flex.team</Link>
+            </strong>{' '}
+            Product Engineer(FE)
           </StyledLabelContent>
         </StyledLabel>
         <StyledLabel>
