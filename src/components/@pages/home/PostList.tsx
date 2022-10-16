@@ -67,7 +67,7 @@ const ListItemDescription = styled('span', {
   fontSize: '$description',
   marginTop: '6px',
   '@mobile': {
-    fontSize: '$mobileDescription',
+    fontSize: '12px',
   },
 });
 
