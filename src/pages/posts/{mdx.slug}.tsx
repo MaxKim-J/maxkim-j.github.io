@@ -2,7 +2,6 @@ import { graphql } from 'gatsby';
 import { MDXRenderer } from 'gatsby-plugin-mdx';
 import React from 'react';
 import { defineCustomElements as deckDeckGoHighlightElement } from '@deckdeckgo/highlight-code/dist/loader';
-import Helmet from 'react-helmet';
 
 import { css } from '../../styles/stitches';
 
@@ -14,6 +13,7 @@ import PostTitle from '../../components/@pages/posts/postTitle';
 import globalStyle from '../../styles/global';
 import postStyles from '../../styles/post';
 import ByLine from '../../components/@pages/posts/ByLine';
+import MetaHead from '../../components/@fundamentals/MetaHead';
 
 interface Props {
   data: {
@@ -50,8 +50,6 @@ export default function PostPage({ data: { post, postSlugList } }: Props) {
 
   return (
     <MainLayout header={<Header />} footer={<Footer />}>
-      <Helmet title={`김맥스 블로그 | ${title}`} defer={false} />
-      <meta name="description" content={description} />
       <PostTitle title={title} date={date} description={description} tags={tags} />
       <div className={postStyle()}>
         <MDXRenderer>{body}</MDXRenderer>
@@ -90,3 +88,9 @@ export const query = graphql`
     }
   }
 `;
+
+export const Head = (data) => {
+  const { title, description } = data.data.post.frontmatter;
+
+  return <MetaHead title={`김맥스 블로그 | ${title}`} description={description} />;
+};

@@ -1,24 +1,19 @@
 import React from 'react';
-import Helmet from 'react-helmet';
+import { Link } from 'gatsby';
 
 import ProfileImage from '../../images/profile.jpeg';
-
 import { styled } from '../../styles/stitches';
-
 import Footer from '../../components/@layout/Footer';
 import Header from '../../components/@layout/Header/Header';
-
 import MainLayout from '../../components/@layout/MainLayout';
 import globalStyle from '../../styles/global';
-import { Link } from 'gatsby';
+import MetaHead from '../../components/@fundamentals/MetaHead';
 
 export default function AboutPage() {
   globalStyle();
 
   return (
     <MainLayout header={<Header />} footer={<Footer />}>
-      <Helmet title={`김맥스 블로그 | about`} defer={false} />
-      <meta name="description" content="저에용" />
       <StyledName>김종혁</StyledName>
       <img src={ProfileImage} />
       <StyledParagraph>
@@ -121,3 +116,7 @@ const StyledLabelContent = styled('div', {
     hoverUnderline: 'true',
   },
 });
+
+export const Head = () => {
+  return <MetaHead title="김맥스 블로그 | about" description="안녕하세요 김종혁입니다." />;
+};

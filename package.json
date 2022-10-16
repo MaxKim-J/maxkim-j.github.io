@@ -27,7 +27,6 @@
     "gatsby-plugin-image": "^2.19.0",
     "gatsby-plugin-mdx": "^3.19.0",
     "gatsby-plugin-pnpm": "^1.2.10",
-    "gatsby-plugin-react-helmet": "^5.19.0",
     "gatsby-plugin-sharp": "^4.19.0",
     "gatsby-plugin-sitemap": "^5.19.0",
     "gatsby-remark-autolink-headers": "^5.24.0",
@@ -43,8 +42,7 @@
     "prismjs": "^1.29.0",
     "query-string": "^7.1.1",
     "react": "^18.1.0",
-    "react-dom": "^18.1.0",
-    "react-helmet": "^6.1.0"
+    "react-dom": "^18.1.0"
   },
   "devDependencies": {
     "@types/node": "^17.0.45",

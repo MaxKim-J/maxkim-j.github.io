@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { graphql, Link } from 'gatsby';
-import Helmet from 'react-helmet';
+import { graphql } from 'gatsby';
 
 import MainLayout from '../components/@layout/MainLayout';
 import MainHeader from '../components/@layout/Header/MainHeader';
 import Footer from '../components/@layout/Footer';
 import PostList from '../components/@pages/home/PostList';
+import MetaHead from '../components/@fundamentals/MetaHead';
 export interface Props {
   data: {
     allMdx: {
@@ -25,7 +25,6 @@ export interface Props {
 const IndexPage = ({ data }: Props) => {
   return (
     <MainLayout header={<MainHeader />} footer={<Footer />}>
-      <Helmet title="김맥스 블로그" defer={false} />
       <PostList postList={data} />
     </MainLayout>
   );
@@ -50,3 +49,7 @@ export const query = graphql`
     }
   }
 `;
+
+export const Head = () => {
+  return <MetaHead />;
+};

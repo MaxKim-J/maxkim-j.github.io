@@ -8,6 +8,7 @@ import Header from '../../components/@layout/Header/Header';
 import MainLayout from '../../components/@layout/MainLayout';
 import PostList from '../../components/@pages/tags/PostList';
 import globalStyle from '../../styles/global';
+import MetaHead from '../../components/@fundamentals/MetaHead';
 
 export interface Props {
   data: {
@@ -55,3 +56,7 @@ export const query = graphql`
     }
   }
 `;
+
+export const Head = () => {
+  return <MetaHead title="김맥스 블로그 | 태그 모아보기" />;
+};
