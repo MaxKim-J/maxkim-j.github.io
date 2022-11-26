@@ -13,8 +13,7 @@
     "build": "gatsby build",
     "serve": "gatsby serve",
     "clean": "gatsby clean",
-    "typecheck": "tsc --noEmit",
-    "deploy": "gatsby build && gatsby serve"
+    "deploy-gh": "gatsby build && gh-pages -d public -b v2-deploy"
   },
   "dependencies": {
     "@babel/core": "^7.18.9",
@@ -55,6 +54,7 @@
     "@typescript-eslint/parser": "^5.12.0",
     "eslint": "^8.19.0",
     "eslint-plugin-react": "^7.30.1",
+    "gh-pages": "^4.0.0",
     "prettier": "^2.7.1",
     "typescript": "^4.7.4"
   }
