@@ -1,39 +1,25 @@
 import React from 'react';
-import { Link } from 'gatsby';
+import { Link, graphql } from 'gatsby';
+import { MDXRenderer } from 'gatsby-plugin-mdx';
 
-import ProfileImage from '../../images/profile.jpeg';
-import { styled } from '../../styles/stitches';
+import { styled, css } from '../../styles/stitches';
 import Footer from '../../components/@layout/Footer';
 import Header from '../../components/@layout/Header/Header';
 import MainLayout from '../../components/@layout/MainLayout';
 import globalStyle from '../../styles/global';
+import postStyles from '../../styles/post';
 import MetaHead from '../../components/@fundamentals/MetaHead';
 
-export default function AboutPage() {
+export default function AboutPage({ data }: Props) {
   globalStyle();
+  postStyles();
+
+  const { body } = data.mdx;
 
   return (
     <MainLayout header={<Header />} footer={<Footer />}>
       <StyledName>김종혁</StyledName>
-      <img src={ProfileImage} />
-      <StyledParagraph>
-        <p>
-          소프트웨어 개발로 생계를 꾸리고 있습니다. 복잡하고 중요한 유저의 문제를 쉽고 slick하게
-          풀어내는 UI를 좋아합니다. 팀의 생산성을 향상시키는 플랫폼과 DX에 관심이 많습니다. 문제
-          해결에 필요한 엔지니어링이라면 무엇이든 학습하고 실행에 옮깁니다.
-        </p>
-      </StyledParagraph>
-      <StyledParagraph>
-        <p>
-          개발을 시작하기 전에는 글쓰기로 생계를 꾸려볼까 했는데 잘 안 되었습니다. 삶과 일의
-          복잡함을 개인의 차원에서 잘 다뤄내는 방법을 찾고 있습니다. 어떻게 하면 지속적으로 멋있고
-          새로운 것을 만들 수 있을지 고민합니다. 공동체에 기여하는 삶을 추구하고, 약자가 죽지 않아도
-          되는 세상을 원합니다.
-        </p>
-      </StyledParagraph>
-      <StyledParagraph>
-        <p>이 블로그는 기술 블로그가 아닙니다.</p>
-      </StyledParagraph>
+      <MDXRenderer css={StyledMdxRenderer()}>{body}</MDXRenderer>
       <StyledLabelSection>
         <StyledLabel>
           <StyledLabelTitle>Currently</StyledLabelTitle>
@@ -80,19 +66,15 @@ const StyledName = styled('h1', {
   fontSize: '48px',
 });
 
-const StyledParagraph = styled('div', {
-  margin: '24px 0',
-  p: {
-    lineHeight: 1.4,
-    '@mobile': {
-      fontSize: '$body3',
-    },
-  },
-});
-
 const StyledLabelSection = styled('div', {
   marginTop: '42px',
   marginBottom: '250px',
+});
+
+const StyledMdxRenderer = css({
+  'p span': {
+    marginLeft: 0,
+  },
 });
 
 const StyledLabel = styled('div', {
@@ -116,6 +98,20 @@ const StyledLabelContent = styled('div', {
     hoverUnderline: 'true',
   },
 });
+
+export const query = graphql`
+  query ABOUT_QUERY {
+    mdx(frontmatter: { title: { eq: "about" } }) {
+      id
+      slug
+      body
+      frontmatter {
+        title
+        description
+      }
+    }
+  }
+`;
 
 export const Head = () => {
   return <MetaHead title="김맥스 블로그 | about" description="안녕하세요 김종혁입니다." />;
