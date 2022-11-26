@@ -5,15 +5,15 @@ import { categoryContext } from '../../../context/categoryContext';
 enum CategoryRange {
   'all' = 0,
   'tech' = 50,
-  'name' = 100,
-  'story' = 150,
+  'essay' = 100,
+  'creative' = 150,
 }
 
 const categoryMap: { [key: string]: CategoryRange } = {
   '0': 'all',
   '50': 'tech',
   '100': 'essay',
-  '150': 'story',
+  '150': 'creative',
 };
 
 function CategoryRangeInput() {
@@ -87,7 +87,7 @@ const StyledMarkerDescription = styled('div', {
         left: 118,
       },
       3: {
-        left: 180,
+        left: 174,
       },
     },
   },
