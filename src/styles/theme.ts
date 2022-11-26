@@ -36,7 +36,7 @@ export const dark = css({
     color: '$white',
   },
   'p > code': {
-    backgroundColor: '#6b6b6b',
+    backgroundColor: '#6b6b6b !important',
   },
   'input[type=range]': {
     backgroundColor: '$white',
@@ -96,7 +96,7 @@ export const turquoise = css({
     color: '$black',
   },
   'p > code': {
-    backgroundColor: '#a8ffef',
+    backgroundColor: '#a8ffef !important',
   },
   'deckgo-highlight-code': {
     '--deckgo-highlight-code-carbon-background': '#2b2b2b',
