@@ -1,7 +1,7 @@
 import React, { ReactChildren } from 'react';
 import { styled } from '../../styles/stitches';
 
-import '../../styles/font.css';
+// import '../../styles/font.css';
 import '../../styles/theme.scss';
 import { CategoryContextProvider } from '../../context/categoryContext';
 
