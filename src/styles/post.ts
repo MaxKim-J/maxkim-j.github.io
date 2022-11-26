@@ -27,6 +27,9 @@ const postStyles = globalCss({
     padding: '2px 8px',
     borderRadius: '8px',
     fontSize: '16px',
+    '@mobile': {
+      fontSize: '14px',
+    },
   },
   blockquote: {
     borderLeft: '3px solid $black',
