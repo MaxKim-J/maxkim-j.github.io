@@ -75,27 +75,26 @@ import someHooks from '@moye-kr/hooks/someHooks';
 ```typescript
 // releaseModeScript.js
 fs.readFile(
-'node_modules/@moye-kr/api/index.ts',
-'utf8',
-(err, data) => {
-if (err) {
-return;
-}
+  'node_modules/@moye-kr/api/index.ts',
+  'utf8',
+  (err, data) => {
+    if (err) {
+    return;
+  }
 
-    const result = data
-      .replace(
-        /process.env\['BASE_URL_PATH'\]/g,
-        '"https://api.base.url"', // 프로덕션의 API Base Url
-      )
-    ...
-
-}
+  const result = data
+    .replace(
+      /process.env\['BASE_URL_PATH'\]/g,
+      '"https://api.base.url"', // 프로덕션의 API Base Url
+    )
+...
+  }
 )
 ```
 
 ```json
 "scripts": {
-"mode:release": "node ./scripts/releaseMode.js",
+  "mode:release": "node ./scripts/releaseMode.js",
 },
 
 ```
@@ -121,7 +120,7 @@ IOS, Android 프로젝트를 모두 포함하고 있는 React Native 프로젝�
 
 ## 2. Code Push 사용시의 문제점
 
-![appcenter](/images/react-native-ci-cd/appcenter.png)
+![appcenter](../images/react-native-ci-cd/appcenter.png)
 
 Code Push는 스토어를 거치치 않고 앱을 업데이트할 수 있는 클라우드 서비스입니다. 약간 뜬금없게(?)도 마소가 서비스합니다.
 
@@ -161,7 +160,7 @@ Code Push를 통해 App Center에 JS 번들을 업로드하면 현재 네이티�
 
 > **Code Push로 배포할지 Store를 통해 배포할지 판단하고 Draft Release를 만듭니다.**
 
-![step1](/images/react-native-ci-cd/step1.png)
+![step1](../images/react-native-ci-cd/step1.png)
 
 프론트엔드 팀은 git flow를 사용해 개발을 진행하고 있어, feature 브랜치 위에서 작업한 기능들을 develop 브랜치에 한데 모아 master로 옮깁니다. 매번의 릴리즈에 반영되는 수정들은 develop에서 master로 보내는 PR의 변경점과 같습니다.
 
@@ -200,21 +199,21 @@ echo "ENV_IS_REVIEW_RELEASE=$IS_REVIEW_RELEASE" >> $GITHUB_ENV
 
 draft release 까지만 만듭니다. draft release를 만들면 입력한 태그나 릴리즈가 아직 publish되지는 않은 채로 릴리즈가 만들어지게 됩니다.
 
-![draft](/images/react-native-ci-cd/draft.png)
+![draft](../images/react-native-ci-cd/draft.png)
 
 ## 2. Release를 Publish할 때
 
 > **버전 이름을 평가하여 적합한 방식으로 Staging 환경으로 배포합니다.**
 
-![step2](/images/react-native-ci-cd/step2.png)
+![step2](../images/react-native-ci-cd/step2.png)
 
 다음과 같이 draft 상태인 릴리즈에 내용을 작성하여 publish하게 되면 또 다른 Action이 실행됩니다.
 
-![publish](/images/react-native-ci-cd/publish.png)
+![publish](../images/react-native-ci-cd/publish.png)
 
 이 Action에서는 publish로 전환된 최신 릴리즈의 태그를 평가하여 맨 뒤에 알파벳이 붙어있을 경우 Staging Track으로의 Code Push 배포를, 그렇지 않을 경우 내부 테스트로의(internal test, testflight) 배포를 준비합니다. 배포가 완료되었을 때 사내 Slack 채널로 메시지를 전송합니다.
 
-![slack](/images/react-native-ci-cd/slack.png)
+![slack](../images/react-native-ci-cd/slack.png)
 
 여기까지 QA를 할 수 있는 Staging 환경으로의 배포가 완료되었습니다. 이 단계의 Action에서 fastlane 관련 로직을 작성할 때 ios의 코드 사이닝과 인증이 정확한 단계를 거치도록 작성해야 testflight으로의 배포가 잘 진행될 수 있었습니다. 삽질을 많이 했었는데요. [이 포스팅](https://dev-yakuza.posstree.com/ko/react-native/github-actions-fastlane/)이 도움이 많이 되었습니다.
 
@@ -222,7 +221,7 @@ draft release 까지만 만듭니다. draft release를 만들면 입력한 태�
 
 > **Staging Release한 프로덕트를 바탕으로 QA진행 후 수동으로 Production 전환합니다.**
 
-![step3](/images/react-native-ci-cd/step3.png)
+![step3](../images/react-native-ci-cd/step3.png)
 
 거의 다 왔습니다. Staging QA 진행 후 별다른 문제가 없을 경우 수동으로 프로덕션 릴리즈로 전환합니다.
 
@@ -240,7 +239,7 @@ Code Push 릴리즈의 경우 먼저 Staging Track으로 배포한 후 이전 �
 
 ## 비싸고 느린 github actions macos 이미지
 
-![10배](/images/react-native-ci-cd/macprice.png)
+![10배](../images/react-native-ci-cd/macprice.png)
 
 github actions의 macos이미지는 기존 linux 이미지보다 **10배가 비쌉니다.** 리눅스 이미지를 사용할때 10분을 사용했다면 github actions 사용 가능 시간(기본 매달 2000분)에서 10분이 그대로 가감되지만, 맥 이미지는 100분이 가감됩니다(...)
 

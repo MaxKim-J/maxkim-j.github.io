@@ -22,24 +22,24 @@ tags:
 
 ```javascript
 semesterInfos: {
-// 현재 학기
-current: {
-act: "종강",
-id: "2020-1",
-due: Date(...), // 현재학기 종강 날짜
-},
-// 다음 학기
-next: {
-act: "개강",
-id: "2020-2",
-due: Date(...), // 현재학기 개강 날짜
-},
-// 다음 계절학기
-seasonal: {
-act: "종강",
-id: "2020 여름",
-due: Date(...), // 다음 계절학기 종강 날짜
-},
+  // 현재 학기
+  current: {
+    act: "종강",
+    id: "2020-1",
+    due: Date(...), // 현재학기 종강 날짜
+  },
+  // 다음 학기
+  next: {
+    act: "개강",
+    id: "2020-2",
+    due: Date(...), // 현재학기 개강 날짜
+  },
+  // 다음 계절학기
+  seasonal: {
+    act: "종강",
+    id: "2020 여름",
+    due: Date(...), // 다음 계절학기 종강 날짜
+  },
 },
 ```
 
@@ -113,31 +113,31 @@ const month = now.getMonth();
 
 describe("현재 시간이 현재 학기(current) 종강일 이전일 때", () => {
 const state = {
-semesterInfos: {
-current: {
-act: "종강",
-id: "2020-1",
-// 현재 시간 + 1달 : 현재 시간이 current 학기 종강일 보다 이전!
-due: now.setMonth(month + 1),
-},
-next: {
-act: "개강",
-id: "2020-2",
-// 현재 시간 + 3달
-due: now.setMonth(month + 3),
-},
-seasonal: {
-act: "종강",
-id: "2020 여름",
-// 현재시간 + 2달
-due: now.setMonth(month + 2),
-},
-},
+  semesterInfos: {
+    current: {
+      act: "종강",
+      id: "2020-1",
+      // 현재 시간 + 1달 : 현재 시간이 current 학기 종강일 보다 이전!
+      due: now.setMonth(month + 1),
+    },
+    next: {
+      act: "개강",
+      id: "2020-2",
+      // 현재 시간 + 3달
+      due: now.setMonth(month + 3),
+    },
+    seasonal: {
+      act: "종강",
+      id: "2020 여름",
+      // 현재시간 + 2달
+      due: now.setMonth(month + 2),
+    },
+  },
 };
 
 // 가상의 스토어를 구성함
 const store = new Vuex.Store({
-state,
+  state,
 });
 
 // 구성한 스토어를 마운트함
@@ -145,7 +145,7 @@ const cmp = mount(MainClock, { store, localVue });
 
 // 테스트 코드(it)들 들어갈 자리
 ...
-});
+
 ```
 
 ### 3. 테스트 케이스 작성하기

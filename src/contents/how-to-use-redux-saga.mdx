@@ -221,17 +221,17 @@ export default dataReducer;
 ```typescript
 // 2. saga
 
-function\* getDataSaga(action) {
-try {
-const { data } = fetchData()
-yield put(getDataSuccess({ data }));
-} catch(error) {
-yield put(getDataFail({ error }));
-}
+function getDataSaga(action) {
+  try {
+    const { data } = fetchData();
+    yield put(getDataSuccess({ data }));
+  } catch (error) {
+    yield put(getDataFail({ error }));
+  }
 }
 
-export function\* dataSaga() {
-yield takeEvery(GET_DATA, getDataSaga);
+export function dataSaga() {
+  yield takeEvery(GET_DATA, getDataSaga);
 }
 ```
 
@@ -259,27 +259,26 @@ Saga 타이핑 줄이는 방법을 적용하는 실제 예제는 포스팅이 �
 ```typescript
 // 비동기 요청 관련 로직만 모여있는 Saga
 // fetchEntity 패턴 등 패턴화하여 사용하기도 좋습니다
-function\* getDataPureSaga(action) {
-try {
-const { data } = fetchData()
-yield put(getDataSuccess({ data }));
-} catch(error) {
-yield put(getDataFail({ error }));
-}
+function getDataPureSaga(action) {
+  try {
+    const { data } = fetchData();
+    yield put(getDataSuccess({ data }));
+  } catch (error) {
+    yield put(getDataFail({ error }));
+  }
 }
 
 // 비동기 요청 로직과 더불어 여러 다른 로직들이 포함되어있는 Saga
-function\* getDataImpureSaga(action) {
+function getDataImpureSaga(action) {
   try {
     const { data } = fetchData();
     Cookie.set(data.id); // 쿠키를 건든다던가
     const processedData = nomalizeData(data); // 데이터를 가공한다거나
     yield put(getDataSuccess({ data: processedData }));
-  } catch(error) {
+  } catch (error) {
     yield put(getDataFail({ error }));
   }
 }
-
 ```
 
 Redux의 Reducer는 순수함수여야 합니다. 하지만 Saga는 Side Effect Manager로 다양한 불순 로직들을 처리하기 위해 존재하는 라이브러리입니다. 따라서 비동기 요청 말고도 다양한 양상의 로직들을 넣어 프로그래밍이 가능합니다.

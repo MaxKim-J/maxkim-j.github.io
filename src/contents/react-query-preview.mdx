@@ -155,11 +155,11 @@ function fetchTodoList({ queryKey }) {
 
 ```javascript
 function App () {
-// 이렇게 주루륵 있을 때 걍 다 병렬로 처리된다 => 어떻게 구현한거지... redux batch update 같넹
-const usersQuery = useQuery('users', fetchUsers)
-const teamsQuery = useQuery('teams', fetchTeams)
-const projectsQuery = useQuery('projects', fetchProjects)
-...
+  // 이렇게 주루륵 있을 때 걍 다 병렬로 처리된다
+  const usersQuery = useQuery('users', fetchUsers)
+  const teamsQuery = useQuery('teams', fetchTeams)
+  const projectsQuery = useQuery('projects', fetchProjects)
+  ...
 }
 ```
 
