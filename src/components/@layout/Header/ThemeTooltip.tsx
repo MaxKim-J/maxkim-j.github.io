@@ -5,7 +5,7 @@ const STORAGE_KEY_THEME = 'maxkim-blog-theme';
 function ThemeTooltip() {
   const setBlogTheme = (theme: Theme) => {
     localStorage.setItem(STORAGE_KEY_THEME, theme);
-    typeof window !== 'undefined' && window.location.reload();
+    typeof window !== 'undefined' && window.__setTheme(theme);
   };
   return (
     <>
