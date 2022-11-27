@@ -6,6 +6,7 @@ const globalStyles = globalCss({
     fontFamily: 'Pretendard',
   },
   'p, body': { margin: 0, padding: 0, fontSize: '$body1' },
+  strong: { fontWeight: '$bold' },
   a: {
     textDecoration: 'none',
     '&:link': {
