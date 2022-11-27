@@ -38,6 +38,10 @@ body[data-theme='dark'] {
     color: white;
   }
 
+  blockquote {
+    border-left: 3px solid white;
+  }
+
   p > code {
     background-color: #6b6b6b;
   }
@@ -70,32 +74,36 @@ body[data-theme='dark'] {
   }
 }
 
-body[data-theme='aquamarine'] {
+body[data-theme='mincho'] {
   * {
-    color: #99eae1;
-    background-color: #0e3e38;
+    color: #b0e8f7;
+    background-color: #2f201b;
   }
 
   a,
   a:link,
   a:visited {
-    color: #99eae1;
+    color: #b0e8f7;
   }
 
   p {
-    color: #99eae1;
+    color: #b0e8f7;
   }
 
   p > code {
-    background-color: #128174;
+    background-color: #5e4138;
   }
 
   input[type='range'] {
-    background-color: #99eae1;
+    background-color: #b0e8f7;
   }
 
   input[type='range']::-webkit-slider-thumb {
-    background-color: #99eae1;
+    background-color: #b0e8f7;
+  }
+
+  blockquote {
+    border-left: 3px solid #b0e8f7;
   }
 
   deckgo-highlight-code {
@@ -126,6 +134,10 @@ body[data-theme='lemon'] {
     color: #d1ce4c;
   }
 
+  blockquote {
+    border-left: 3px solid #d1ce4c;
+  }
+
   p {
     color: #d1ce4c;
   }
@@ -144,51 +156,6 @@ body[data-theme='lemon'] {
 
   deckgo-highlight-code {
     background-color: #2e042d !important;
-    --deckgo-highlight-code-carbon-background: #2b2b2b;
-    --deckgo-highlight-code-carbon-color: #f8f8f2;
-    --deckgo-highlight-code-token-atrule: #ffa07a;
-    --deckgo-highlight-code-token-comment: #606060;
-    --deckgo-highlight-code-token-comment-rgb: rgb(212, 208, 171);
-    --deckgo-highlight-code-token-function: #00e0e0;
-    --deckgo-highlight-code-token-operator: #abe338;
-    --deckgo-highlight-code-token-property: #00e0e0;
-    --deckgo-highlight-code-token-punctuation: #ffd700;
-    --deckgo-highlight-code-token-regex: #f8f8f2;
-    --deckgo-highlight-code-token-selector: #f8f8f2;
-  }
-}
-
-body[data-theme='mahogany'] {
-  * {
-    color: #c9263c;
-    background-color: #eaedc4;
-  }
-
-  a,
-  a:link,
-  a:visited {
-    color: #c9263c;
-  }
-
-  p {
-    color: #c9263c;
-  }
-
-  p > code {
-    background-color: #ffda60;
-  }
-
-  input[type='range'] {
-    background-color: #c9263c;
-  }
-
-  input[type='range']::-webkit-slider-thumb {
-    background-color: #c9263c;
-  }
-
-  deckgo-highlight-code {
-    color: #ffb68f;
-    background-color: #333329 !important;
     --deckgo-highlight-code-carbon-background: #2b2b2b;
     --deckgo-highlight-code-carbon-color: #f8f8f2;
     --deckgo-highlight-code-token-atrule: #ffa07a;

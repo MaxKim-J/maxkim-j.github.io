@@ -10,21 +10,7 @@ function ThemeTooltip() {
   return (
     <>
       <ThemeWrapper>
-        {['light', 'dark', 'mahogany'].map((theme) => {
-          return (
-            <ThemeText
-              key={theme}
-              onClick={() => {
-                setBlogTheme(theme);
-              }}
-            >
-              {theme}
-            </ThemeText>
-          );
-        })}
-      </ThemeWrapper>
-      <ThemeWrapper>
-        {['aquamarine', 'lemon'].map((theme) => {
+        {['light', 'dark', 'mincho', 'lemon'].map((theme) => {
           return (
             <ThemeText
               key={theme}

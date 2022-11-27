@@ -23,7 +23,7 @@ function MainHeader() {
       <NavSection>
         <LeftSide>
           <Tooltip tooltip={<ThemeTooltip />}>
-            <div>color</div>
+            <div>theme</div>
           </Tooltip>
           <div>
             <Link to="/gallery">gallery</Link>
@@ -33,7 +33,7 @@ function MainHeader() {
           </div>
         </LeftSide>
         <RightSide>
-          <CategoryNotice>↔︎</CategoryNotice>
+          <CategoryNotice>swipe ↔</CategoryNotice>
           <CategoryRangeInput />
         </RightSide>
       </NavSection>
