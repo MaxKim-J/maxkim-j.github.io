@@ -43,7 +43,14 @@ function ByLine({ postSlugs, currentSlug, title }: Props) {
         >
           트위터에 공유하기
         </div>
-        <div>링크 복사하기</div>
+        <div
+          onClick={async () => {
+            await navigator.clipboard.writeText(window.location.href);
+            alert('지금 보고 계시는 포스트의 URL이 클립보드에 복사되었습니다.');
+          }}
+        >
+          링크 복사하기
+        </div>
       </SharedSection>
       <NavSection>
         <Link to="/">글 목록으로 돌아가기</Link>
