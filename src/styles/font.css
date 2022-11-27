@@ -1,13 +1,13 @@
-@font-face{
-  font-family: "Pretendard";
-  src: url("../assets/Pretendard-Regular.woff2") format("woff2");
+@font-face {
+  font-family: 'Pretendard';
+  src: url('../assets/Pretendard-Regular.woff2') format('woff2');
   font-style: normal;
   font-weight: 500;
 }
 
-@font-face{
-  font-family: "Pretendard";
-  src: url("../assets/Pretendard-SemiBold.woff2") format("woff2");
+@font-face {
+  font-family: 'Pretendard';
+  src: url('../assets/Pretendard-SemiBold.woff2') format('woff2');
   font-style: normal;
-  font-weight: 550;
+  font-weight: 600;
 }

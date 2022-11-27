@@ -31,7 +31,7 @@ export const { styled, css, getCssText, globalCss, createTheme } = createStitche
     },
     fontWeights: {
       extraBold: '700',
-      bold: '550',
+      bold: '600',
       regular: '500',
       thin: '300',
     },
