@@ -3,15 +3,15 @@ import type { GatsbyConfig } from 'gatsby';
 const config: GatsbyConfig = {
   siteMetadata: {
     title: '김맥스 블로그',
-    siteUrl: 'https://maxkim-j.github.io',
+    siteUrl: `https://maxkim-j.github.io`,
     twitterUsername: `@max_kim_dev`,
     image: '/thumbnail.png',
   },
   graphqlTypegen: true,
   plugins: [
+    'gatsby-plugin-sitemap',
     'gatsby-plugin-image',
     'gatsby-plugin-pnpm',
-    'gatsby-plugin-sitemap',
     'gatsby-plugin-sharp',
     'gatsby-plugin-sass',
     'gatsby-transformer-sharp',

@@ -16,7 +16,6 @@ const globalStyles = globalCss({
       color: '$black',
     },
   },
-
   img: { width: '100%', height: 'auto' },
   ol: {
     listStyleType: 'none',
