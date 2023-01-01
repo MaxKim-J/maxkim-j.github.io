@@ -13,7 +13,7 @@ const categoryMap: { [key: string]: CategoryRange } = {
   '0': 'all',
   '50': 'tech',
   '100': 'essay',
-  '150': 'creative',
+  '150': 'review',
 };
 
 function CategoryRangeInput() {
