@@ -6,7 +6,7 @@ enum CategoryRange {
   'all' = 0,
   'tech' = 50,
   'essay' = 100,
-  'creative' = 150,
+  'review' = 150,
 }
 
 const categoryMap: { [key: string]: CategoryRange } = {

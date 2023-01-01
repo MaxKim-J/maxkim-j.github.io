@@ -1,7 +1,7 @@
 import React, { createContext, useState } from 'react';
 import { parse } from 'query-string';
 
-type Category = 'all' | 'tech' | 'essay' | 'creative';
+type Category = 'all' | 'tech' | 'essay' | 'review';
 
 export interface CategoryContextState {
   category: Category;
