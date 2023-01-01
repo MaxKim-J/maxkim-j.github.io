@@ -87,7 +87,7 @@ const StyledMarkerDescription = styled('div', {
         left: 118,
       },
       3: {
-        left: 174,
+        left: 178,
       },
     },
   },
