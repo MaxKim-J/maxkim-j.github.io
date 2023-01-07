@@ -92,5 +92,5 @@ export const query = graphql`
 export const Head = (data) => {
   const { title, description } = data.data.post.frontmatter;
 
-  return <MetaHead title={`김맥스 블로그 | ${title}`} description={description} />;
+  return <MetaHead title={title} description={description} />;
 };
