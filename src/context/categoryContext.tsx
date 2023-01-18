@@ -1,4 +1,4 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useState, ReactNode } from 'react';
 import { parse } from 'query-string';
 
 type Category = 'all' | 'tech' | 'essay' | 'review';
@@ -9,15 +9,15 @@ export interface CategoryContextState {
 }
 
 export const categoryContext = createContext<CategoryContextState>({
-  category: 'tech',
+  category: 'all',
   setCategory: () => {
     return;
   },
 });
 
-export const CategoryContextProvider = ({ children }: { children: ReactChildren }) => {
+export const CategoryContextProvider = ({ children }: { children: ReactNode }) => {
   const parsed = typeof window !== 'undefined' ? parse(location.search) : {};
-  const [category, setCategoryRaw] = useState<Category>(parsed.category ?? 'tech');
+  const [category, setCategoryRaw] = useState<Category>(parsed.category ?? 'all');
 
   const setCategory = (category: Category) => {
     setCategoryRaw(category);
