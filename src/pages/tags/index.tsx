@@ -46,7 +46,7 @@ export const query = graphql`
         id
         frontmatter {
           title
-          date(formatString: "YYYY월 MM월 DD일")
+          date(formatString: "YYYY년 MM월 DD일")
           description
           tags
           category
