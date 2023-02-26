@@ -9,7 +9,7 @@ import Footer from '../../components/@layout/Footer';
 import Header from '../../components/@layout/Header/Header';
 
 import MainLayout from '../../components/@layout/MainLayout';
-import PostTitle from '../../components/@pages/posts/postTitle';
+import PostTitle from '../../components/@pages/posts/PostTitle';
 import globalStyle from '../../styles/global';
 import postStyles from '../../styles/post';
 import ByLine from '../../components/@pages/posts/ByLine';

@@ -1,4 +1,4 @@
-import React, { ReactChildren } from 'react';
+import React, { ReactNode } from 'react';
 import { styled } from '../../styles/stitches';
 
 // import '../../styles/font.css';
@@ -6,9 +6,9 @@ import '../../styles/theme.scss';
 import { CategoryContextProvider } from '../../context/categoryContext';
 
 interface Props {
-  header: ReactChildren;
-  children: ReactChildren;
-  footer: ReactChildren;
+  header: ReactNode;
+  children: ReactNode;
+  footer: ReactNode;
 }
 
 function MainLayout({ children, header, footer }: Props) {

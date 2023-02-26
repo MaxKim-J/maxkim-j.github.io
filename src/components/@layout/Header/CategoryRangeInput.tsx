@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { styled, css } from '../../../styles/stitches';
 import { categoryContext } from '../../../context/categoryContext';
+import { useStaticQuery, graphql } from 'gatsby';
 
 enum CategoryRange {
   'all' = 0,
@@ -19,6 +20,18 @@ const categoryMap: { [key: string]: CategoryRange } = {
 function CategoryRangeInput() {
   const { setCategory, category } = useContext(categoryContext);
   const [rangeValue, setRangeValue] = useState(CategoryRange[category]);
+
+  const data = useStaticQuery(graphql`
+    query HeaderQuery {
+      site {
+        siteMetadata {
+          siteUrl
+        }
+      }
+    }
+  `);
+
+  console.info(data);
 
   return (
     <CategoryRangeInputWrapper>
