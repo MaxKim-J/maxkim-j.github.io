@@ -15,7 +15,7 @@ function Header() {
       </LeftSide>
       <RightSide>
         <Tooltip tooltip={<ThemeTooltip />}>
-          <div>color</div>
+          <div>theme</div>
         </Tooltip>
         <div>
           <Link to="/gallery">gallery</Link>

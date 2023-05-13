@@ -5,6 +5,7 @@ const globalStyles = globalCss({
   '*': {
     fontFamily: 'Pretendard',
   },
+  'body': { overflowX: 'hidden' },
   'p, body': { margin: 0, padding: 0, fontSize: '$body1' },
   strong: { fontWeight: '$bold' },
   a: {
