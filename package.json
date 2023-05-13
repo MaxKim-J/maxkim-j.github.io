@@ -23,6 +23,8 @@
     "@stitches/react": "^1.2.8",
     "babel-eslint": "^10.1.0",
     "gatsby": "^4.19.2",
+    "gatsby-plugin-feed": "^5.9.0",
+    "gatsby-plugin-feed-mdx": "^1.1.0",
     "gatsby-plugin-google-analytics": "^4.19.0",
     "gatsby-plugin-image": "^2.19.0",
     "gatsby-plugin-mdx": "^3.19.0",

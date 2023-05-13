@@ -16,6 +16,60 @@ const config: GatsbyConfig = {
     'gatsby-plugin-sass',
     'gatsby-transformer-sharp',
     {
+      resolve: `gatsby-plugin-feed`,
+      options: {
+        query: `
+          {
+            site {
+              siteMetadata {
+                title
+                description
+                siteUrl
+                site_url: siteUrl
+              }
+            }
+          }
+        `,
+        feeds: [
+          {
+            output: "/rss.xml",
+            title: "Max Kim Blog RSS Feed",
+            match: "^/posts/",
+            link: "https://feeds.feedburner.com/gatsby/blog",
+            query: `
+              {
+                allMdx(
+                  sort: { order: DESC, fields: [frontmatter___date] },
+                  filter: { frontmatter: { category: { ne: null } } }
+                ) {
+                  nodes {
+                    id
+                    fields { slug }
+                    slug
+                    frontmatter {
+                      title
+                      description
+                      date
+                      category
+                    }
+                  }
+                }
+              }
+            `,
+            serialize: ({ query: { site, allMdx } }:any) => {
+              return allMdx.nodes.map((node:any) => ({
+                  title: node.frontmatter.title,
+                  description: node.frontmatter.description,
+                  date: node.frontmatter.date,
+                  url:  encodeURI(site.siteMetadata.siteUrl + '/posts' + node.fields.slug),
+                  guid: encodeURI(site.siteMetadata.siteUrl + '/posts' + node.fields.slug),
+              }))
+            },
+          },
+        ],
+      },
+    },
+    {
       resolve: 'gatsby-plugin-google-analytics',
       options: {
         trackingId: 'UA-132859535-2',

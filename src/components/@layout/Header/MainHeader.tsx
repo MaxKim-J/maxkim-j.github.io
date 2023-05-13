@@ -31,6 +31,9 @@ function MainHeader() {
           <div>
             <Link to="/about">about</Link>
           </div>
+          <div>
+            <Link to="/rss.xml">rss</Link>
+          </div>
         </LeftSide>
         <RightSide>
           <CategoryNotice>swipe ↔</CategoryNotice>
