@@ -44,7 +44,6 @@ const config: GatsbyConfig = {
                 ) {
                   nodes {
                     id
-                    fields { slug }
                     slug
                     frontmatter {
                       title
@@ -61,8 +60,8 @@ const config: GatsbyConfig = {
                   title: node.frontmatter.title,
                   description: node.frontmatter.description,
                   date: node.frontmatter.date,
-                  url:  encodeURI(site.siteMetadata.siteUrl + '/posts' + node.fields.slug),
-                  guid: encodeURI(site.siteMetadata.siteUrl + '/posts' + node.fields.slug),
+                  url:  encodeURI(site.siteMetadata.siteUrl + '/posts/' + node.slug),
+                  guid: encodeURI(site.siteMetadata.siteUrl + '/posts/' + node.slug),
               }))
             },
           },
