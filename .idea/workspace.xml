@@ -6,12 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="869974c0-27f8-47a2-b2f9-1a5b07fef7e6" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/@layout/Header/CategoryRangeInput.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/@layout/Header/CategoryRangeInput.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/@layout/Header/Header.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/@layout/Header/Header.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/@layout/Header/MainHeader.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/@layout/Header/MainHeader.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/contents/_photos.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/src/contents/_photos.mdx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/gallery/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/pic/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/styles/stitches.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/stitches.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/context/categoryContext.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/context/categoryContext.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/index.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,7 +53,7 @@
       <option name="presentableId" value="Default" />
       <updated>1673765102358</updated>
       <workItem from="1673765104839" duration="150000" />
-      <workItem from="1684575219358" duration="875000" />
+      <workItem from="1684575219358" duration="1619000" />
     </task>
     <servers />
   </component>

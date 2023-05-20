@@ -26,6 +26,7 @@ export interface Props {
 
 const IndexPage = ({ data }: Props) => {
   globalStyle();
+
   return (
     <MainLayout header={<MainHeader />} footer={<Footer />}>
       <PostList postList={data} />
