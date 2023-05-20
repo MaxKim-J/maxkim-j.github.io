@@ -56,9 +56,6 @@ const Title = styled('div', {
   '@mobile': {
     fontSize: '$subTitle',
   },
-  '@mobileMini': {
-    fontSize: '20px',
-  },
 });
 
 export default Header;
