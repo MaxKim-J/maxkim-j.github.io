@@ -1,7 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="869974c0-27f8-47a2-b2f9-1a5b07fef7e6" name="Changes" comment="" />
+    <list default="true" id="869974c0-27f8-47a2-b2f9-1a5b07fef7e6" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/@layout/Header/CategoryRangeInput.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/@layout/Header/CategoryRangeInput.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/@layout/Header/Header.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/@layout/Header/Header.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/@layout/Header/MainHeader.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/@layout/Header/MainHeader.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/contents/_photos.mdx" beforeDir="false" afterPath="$PROJECT_DIR$/src/contents/_photos.mdx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/gallery/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/pic/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/stitches.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/stitches.ts" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -28,9 +39,12 @@
     "WebServerToolWindowFactoryState": "false",
     "last_opened_file_path": "/Users/jonghyukkim/dev/max-kim-tech-blog",
     "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "pnpm",
     "prettierjs.PrettierConfiguration.Package": "/Users/jonghyukkim/dev/max-kim-tech-blog/node_modules/prettier",
+    "ts.external.directory.path": "/Users/jonghyukkim/dev/max-kim-tech-blog/node_modules/typescript/lib",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -43,6 +57,7 @@
       <option name="presentableId" value="Default" />
       <updated>1673765102358</updated>
       <workItem from="1673765104839" duration="150000" />
+      <workItem from="1684575219358" duration="875000" />
     </task>
     <servers />
   </component>

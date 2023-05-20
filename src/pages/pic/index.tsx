@@ -69,7 +69,7 @@ export default function GalleryPage({ data }: Props) {
 
 export const query = graphql`
   query PHOTOS_QUERY {
-    mdx(frontmatter: { title: { eq: "gallery" } }) {
+    mdx(frontmatter: { title: { eq: "pic" } }) {
       id
       slug
       body

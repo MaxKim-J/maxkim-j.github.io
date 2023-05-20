@@ -18,7 +18,7 @@ function Header() {
           <div>theme</div>
         </Tooltip>
         <div>
-          <Link to="/gallery">gallery</Link>
+          <Link to="/pic">pic</Link>
         </div>
         <div>
           <Link to="/about">about</Link>
@@ -37,10 +37,10 @@ const RightSide = styled('div', {
   display: 'flex',
   alignItems: 'center',
   '& >div': {
-    marginLeft: '25px',
+    marginLeft: '15px',
   },
   '@mobile': {
-    fontSize: '$body3',
+    fontSize: '12px'
   },
 });
 
@@ -55,6 +55,9 @@ const Title = styled('div', {
   fontWeight: '$bold',
   '@mobile': {
     fontSize: '$subTitle',
+  },
+  '@mobileMini': {
+    fontSize: '20px',
   },
 });
 

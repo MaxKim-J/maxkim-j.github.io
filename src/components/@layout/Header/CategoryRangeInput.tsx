@@ -31,7 +31,6 @@ function CategoryRangeInput() {
     }
   `);
 
-  console.info(data);
 
   return (
     <CategoryRangeInputWrapper>

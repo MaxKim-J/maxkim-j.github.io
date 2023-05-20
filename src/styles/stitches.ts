@@ -50,5 +50,6 @@ export const { styled, css, getCssText, globalCss, createTheme } = createStitche
   media: {
     tablet: '(max-width: 920px)',
     mobile: '(max-width: 730px)',
+    mobileMini: '(max-width: 320px)',
   },
 });
