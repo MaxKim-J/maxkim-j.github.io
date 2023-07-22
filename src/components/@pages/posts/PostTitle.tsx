@@ -8,11 +8,11 @@ type Props = Pick<Post['frontmatter'], 'title' | 'description' | 'tags' | 'date'
 function PostTitle({ title, description, tags }: Props) {
   return (
     <PostTitleWrapper>
-      <PostTitleHeading>{title}</PostTitleHeading>
-      <PostTitleDescription>{description}</PostTitleDescription>
+      <PostTitleHeading aria-label={`포스트 제목`}>{title}</PostTitleHeading>
+      <PostTitleDescription aria-label={`포스트 부제목`}>{description}</PostTitleDescription>
       <PostTitleTagWrapper>
         {(tags ?? []).map((tag) => (
-          <PostTitleTag key={tag} to={`/tags/?tag=${tag}`}>
+          <PostTitleTag aria-label={`태그${tag}`} key={tag} to={`/tags/?tag=${tag}`}>
             #{tag}
           </PostTitleTag>
         ))}
@@ -25,7 +25,7 @@ const PostTitleHeading = styled('h1', {
   margin: '28px 0',
 });
 
-const PostTitleWrapper = styled('div', {
+const PostTitleWrapper = styled('article', {
   marginBottom: '60px',
 });
 

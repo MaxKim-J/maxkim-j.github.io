@@ -10,11 +10,11 @@ function MainHeader() {
     <MainHeaderWrapper>
       <TitleSection>
         <Link to="/">
-          <TitleWrapper>
+          <TitleWrapper aria-label="블로그 타이틀">
             <div>김맥스 블로그</div>
           </TitleWrapper>
         </Link>
-        <SubTitleWrapper>
+        <SubTitleWrapper aria-label="블로그 서브 타이틀">
           <div>그때그때 필요한 엔지니어링</div>
           <div>기록이 필요한 생각과 경험들</div>
         </SubTitleWrapper>
@@ -39,7 +39,7 @@ function MainHeader() {
         </LeftSide>
         <RightSide>
           <div>theme</div>
-          <ThemeSelect />
+          <ThemeSelect pos="main" />
           <div>filter</div>
           <CategorySelect />
         </RightSide>
@@ -52,7 +52,7 @@ const MainHeaderWrapper = styled('div', {
   marginBottom: '70px',
 });
 
-const TitleSection = styled('div', {});
+const TitleSection = styled('section', {});
 
 const TitleWrapper = styled('div', {
   marginBottom: '16px',

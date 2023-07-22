@@ -7,7 +7,7 @@ const STORAGE_KEY_THEME = 'maxkim-blog-theme';
 
 const themes: Theme[] = ['light', 'dark', 'mincho', 'lemon'];
 
-function ThemeSelect() {
+function ThemeSelect({ pos = 'main' }: { pos: 'main' | 'sub' }) {
   const [themeValue, setThemeValue] = useState(() => localStorage.getItem(STORAGE_KEY_THEME));
 
   const setBlogTheme = (theme: Theme) => {
@@ -22,6 +22,18 @@ function ThemeSelect() {
 
   return (
     <StyledSelect
+      css={
+        pos === 'main'
+          ? {}
+          : {
+              marginLeft: '4px',
+              marginRight: 0,
+              '@mobile': {
+                fontSize: '10px',
+                marginRight: '0px',
+              },
+            }
+      }
       aria-label="블로그의 색깔 테마를 바꿀 수 있어요"
       name="theme"
       value={themeValue ?? 'light'}
@@ -43,10 +55,6 @@ const StyledSelect = styled('select', {
   cursor: 'pointer',
   marginRight: '12px',
   fontSize: '14px',
-  '@mobile': {
-    fontSize: '10px',
-    marginRight: '0px',
-  },
 });
 
 export default ThemeSelect;

@@ -20,7 +20,7 @@ function PostList({ postList }: Props) {
   });
 
   return (
-    <ListItemRoot>
+    <ListItemRoot aria-label="포스트 목록">
       {refinedPostList.length ? (
         refinedPostList.map(({ id, frontmatter, slug }) => (
           <Link to={`/posts/${slug}`} key={id}>
@@ -51,7 +51,7 @@ const ListItemRoot = styled('ol', {
 });
 
 const ListItem = styled('li', {
-  marginBottom: '48px',
+  margin: '24px 0',
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'flex-end',
