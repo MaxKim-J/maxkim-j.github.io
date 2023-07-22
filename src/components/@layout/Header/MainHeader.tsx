@@ -2,9 +2,8 @@ import React from 'react';
 import { Link } from 'gatsby';
 import { styled } from '../../../styles/stitches';
 
-import Tooltip from '../../@fundamentals/Tooltip';
-import ThemeTooltip from './ThemeTooltip';
-import CategoryRangeInput from './CategoryRangeInput';
+import ThemeSelect from './ThemeSelect';
+import CategorySelect from './CategorySelect';
 
 function MainHeader() {
   return (
@@ -22,22 +21,27 @@ function MainHeader() {
       </TitleSection>
       <NavSection>
         <LeftSide>
-          <Tooltip tooltip={<ThemeTooltip />}>
-            <div>theme</div>
-          </Tooltip>
           <div>
-            <Link to="/pic">pic</Link>
+            <Link to="/pic" aria-label="제가 찍은 사진들이 있는 페이지로 이동해요">
+              pic
+            </Link>
           </div>
           <div>
-            <Link to="/about">about</Link>
+            <Link to="/about" aria-label="제가 누구인지 보실 수 있는 페이지로 이동해요">
+              about
+            </Link>
           </div>
           <div>
-            <Link to="/rss.xml">rss</Link>
+            <Link to="/rss.xml" aria-label="rss 페이지로 이동해요">
+              rss
+            </Link>
           </div>
         </LeftSide>
         <RightSide>
-          <CategoryNotice>swipe ↔</CategoryNotice>
-          <CategoryRangeInput />
+          <div>theme</div>
+          <ThemeSelect />
+          <div>filter</div>
+          <CategorySelect />
         </RightSide>
       </NavSection>
     </MainHeaderWrapper>
@@ -49,10 +53,6 @@ const MainHeaderWrapper = styled('div', {
 });
 
 const TitleSection = styled('div', {});
-
-const CategoryNotice = styled('span', {
-  fontSize: '$description',
-});
 
 const TitleWrapper = styled('div', {
   marginBottom: '16px',
@@ -70,7 +70,7 @@ const SubTitleWrapper = styled(TitleWrapper, {
   marginBottom: '38px',
 });
 
-const NavSection = styled('div', {
+const NavSection = styled('nav', {
   display: 'flex',
   justifyContent: 'space-between',
   '@mobile': {
@@ -78,19 +78,23 @@ const NavSection = styled('div', {
   },
 });
 
-const LeftSide = styled('div', {
+const LeftSide = styled('section', {
   display: 'flex',
-  alignItems: 'center',
   minWidth: '180px',
   '&>div': {
     marginRight: '20px',
   },
 });
 
-const RightSide = styled('div', {
+const RightSide = styled('section', {
   marginBottom: '28px',
+  display: 'flex',
+  '&>div': {
+    marginRight: '4px',
+  },
+
   '@mobile': {
-    marginTop: '50px',
+    marginTop: '12px',
     marginBottom: 0,
   },
 });

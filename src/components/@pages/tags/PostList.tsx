@@ -5,7 +5,7 @@ import PostLink from '../../@fundamentals/PostList';
 import { styled } from '../../../styles/stitches';
 import { PostList } from '../../../types';
 
-function PostList({ postList }: { postList: PostList }) {
+function PostListView({ postList }: { postList: PostList }) {
   const parsed = typeof window !== 'undefined' ? parse(location.search) : {};
   const tag = parsed.tag as string;
 
@@ -36,4 +36,4 @@ const ListItemRoot = styled('ol', {
   },
 });
 
-export default PostList;
+export default PostListView;
