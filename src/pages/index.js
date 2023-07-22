@@ -1,35 +1,18 @@
 import * as React from 'react';
 import { graphql } from 'gatsby';
 import globalStyle from '../styles/global';
-
 import MainLayout from '../components/@layout/MainLayout';
 import MainHeader from '../components/@layout/Header/MainHeader';
 import Footer from '../components/@layout/Footer';
 import PostListView from '../components/@pages/home/PostList';
 import MetaHead from '../components/@fundamentals/MetaHead';
-import { type PostList } from '../types';
-
-export interface Props {
-  data: {
-    allMdx: {
-      nodes: PostList;
-    };
-  };
-}
-
-const IndexPage = ({ data }: Props) => {
-  globalStyle();
-
-  return (
-    <MainLayout header={<MainHeader />} footer={<Footer />}>
-      <PostListView postList={data.allMdx.nodes} />
-    </MainLayout>
-  );
+const IndexPage = ({ data }) => {
+    globalStyle();
+    return (React.createElement(MainLayout, { header: React.createElement(MainHeader, null), footer: React.createElement(Footer, null) },
+        React.createElement(PostListView, { postList: data.allMdx.nodes })));
 };
-
 export default IndexPage;
-
-export const query = graphql`
+export const query = graphql `
   query SITE_INDEX_QUERY {
     allMdx(sort: { fields: [frontmatter___date], order: DESC }) {
       nodes {
@@ -46,7 +29,6 @@ export const query = graphql`
     }
   }
 `;
-
 export const Head = () => {
-  return <MetaHead />;
+    return React.createElement(MetaHead, null);
 };

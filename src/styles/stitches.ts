@@ -37,7 +37,7 @@ export const { styled, css, getCssText, globalCss, createTheme } = createStitche
     },
   },
   utils: {
-    hoverUnderline: (value: boolean) =>
+    hoverUnderline: ((value: boolean) =>
       value
         ? {
             '&:hover': {
@@ -45,7 +45,7 @@ export const { styled, css, getCssText, globalCss, createTheme } = createStitche
               textUnderlinePosition: 'under',
             },
           }
-        : null,
+        : null) as any,
   },
   media: {
     tablet: '(max-width: 920px)',

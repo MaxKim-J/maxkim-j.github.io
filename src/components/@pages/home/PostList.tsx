@@ -1,14 +1,18 @@
 import React, { useContext } from 'react';
 import { Link } from 'gatsby';
 
-import { Props } from '../../../pages/index';
 import { styled } from '../../../styles/stitches';
 import { categoryContext } from '../../../context/categoryContext';
+import { type PostList as PostListType } from '../../../types';
 
-function PostList({ postList }: Props['data']) {
+interface Props {
+  postList: PostListType;
+}
+
+function PostList({ postList }: Props) {
   const { category } = useContext(categoryContext);
 
-  const refinedPostList = postList.allMdx.nodes.filter(({ frontmatter }) => {
+  const refinedPostList = postList.filter(({ frontmatter }) => {
     if (category === 'all') {
       return frontmatter.category !== null;
     }
@@ -20,12 +24,14 @@ function PostList({ postList }: Props['data']) {
       {refinedPostList.length ? (
         refinedPostList.map(({ id, frontmatter, slug }) => (
           <Link to={`/posts/${slug}`} key={id}>
-            <ListItem>
-              <ListItemTitle>{frontmatter.title}</ListItemTitle>
-              <ListItemDescription>
-                {frontmatter.date} - {frontmatter.description}
-              </ListItemDescription>
-            </ListItem>
+            <section>
+              <ListItem>
+                <ListItemTitle>{frontmatter.title}</ListItemTitle>
+                <ListItemDescription>
+                  {frontmatter.date} - {frontmatter.description}
+                </ListItemDescription>
+              </ListItem>
+            </section>
           </Link>
         ))
       ) : (

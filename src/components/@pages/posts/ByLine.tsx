@@ -3,11 +3,12 @@ import { Link } from 'gatsby';
 
 import { styled } from '../../../styles/stitches';
 import Utterances from './Utterance';
+import { Post } from '../../../types';
 
 interface Props {
-  postSlugs: string[];
-  currentSlug: string;
-  title: string;
+  postSlugs: Post['slug'][];
+  currentSlug: Post['slug'];
+  title: Post['frontmatter']['title'];
 }
 
 function ByLine({ postSlugs, currentSlug, title }: Props) {
@@ -33,12 +34,12 @@ function ByLine({ postSlugs, currentSlug, title }: Props) {
       <SharedSection>
         <div
           onClick={() => {
-            window
-              .open(
+            if (window) {
+              window.open(
                 `https://twitter.com/intent/tweet?text=${title}&url=https://maxkim-j.github.io/posts/${currentSlug}`,
                 '_blank'
-              )
-              .focus();
+              );
+            }
           }}
         >
           트위터에 공유하기

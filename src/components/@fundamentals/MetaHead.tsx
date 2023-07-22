@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React from 'react';
 import { graphql, useStaticQuery } from 'gatsby';
 
 export const useSiteMetadata = () => {
@@ -22,10 +22,9 @@ export const useSiteMetadata = () => {
 interface Props {
   title?: string;
   description?: string;
-  children: ReactElement;
 }
 
-const MetaHead = ({ title, description, children }: Props) => {
+const MetaHead = ({ title, description }: Props) => {
   const {
     title: defaultTitle,
     description: defaultDescription,
@@ -51,7 +50,6 @@ const MetaHead = ({ title, description, children }: Props) => {
       <meta name="twitter:description" content={seo.description} />
       <meta name="twitter:image" content={seo.image} />
       <meta name="twitter:creator" content={seo.twitterUsername} />
-      {children}
     </>
   );
 };

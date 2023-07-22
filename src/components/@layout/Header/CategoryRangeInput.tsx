@@ -1,7 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { styled, css } from '../../../styles/stitches';
 import { categoryContext } from '../../../context/categoryContext';
-import { useStaticQuery, graphql } from 'gatsby';
 
 enum CategoryRange {
   'all' = 0,
@@ -10,7 +9,7 @@ enum CategoryRange {
   'review' = 150,
 }
 
-const categoryMap: { [key: string]: CategoryRange } = {
+const categoryMap = {
   '0': 'all',
   '50': 'tech',
   '100': 'essay',
@@ -21,34 +20,27 @@ function CategoryRangeInput() {
   const { setCategory, category } = useContext(categoryContext);
   const [rangeValue, setRangeValue] = useState(CategoryRange[category]);
 
-  const data = useStaticQuery(graphql`
-    query HeaderQuery {
-      site {
-        siteMetadata {
-          siteUrl
-        }
-      }
-    }
-  `);
-
-
   return (
     <CategoryRangeInputWrapper>
       <StyledRangeInput
         className={rangeInputStyle()}
+        aria-label="슬라이드하면 블로그 글 목록 카테고리를 바꿀 수 있습니다."
         type="range"
         min="0"
         max="150"
         step="50"
         value={rangeValue}
         onChange={(e) => {
-          setRangeValue(e.target.value);
-          setCategory(categoryMap[e.target.value]);
+          const value = e.target.value as unknown as CategoryRange;
+          setRangeValue(value);
+          setCategory(categoryMap[value] as any);
         }}
       />
       {Object.values(categoryMap).map((category, index) => (
         <MarkerWrapper key={category}>
-          <StyledMarkerDescription index={index}>{category}</StyledMarkerDescription>
+          <StyledMarkerDescription role="button" index={index as any}>
+            {category}
+          </StyledMarkerDescription>
         </MarkerWrapper>
       ))}
     </CategoryRangeInputWrapper>

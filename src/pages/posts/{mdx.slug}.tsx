@@ -4,33 +4,20 @@ import React from 'react';
 import { defineCustomElements as deckDeckGoHighlightElement } from '@deckdeckgo/highlight-code/dist/loader';
 
 import { css } from '../../styles/stitches';
-
 import Footer from '../../components/@layout/Footer';
 import Header from '../../components/@layout/Header/Header';
-
 import MainLayout from '../../components/@layout/MainLayout';
 import PostTitle from '../../components/@pages/posts/PostTitle';
 import globalStyle from '../../styles/global';
 import postStyles from '../../styles/post';
 import ByLine from '../../components/@pages/posts/ByLine';
 import MetaHead from '../../components/@fundamentals/MetaHead';
+import { Post, PostSlugList } from '../../types';
 
 interface Props {
   data: {
-    post: {
-      id: string;
-      slug: string;
-      body: string;
-      frontmatter: {
-        date: string;
-        title: string;
-        description: string;
-        tags: string[];
-      };
-    };
-    postSlugList: {
-      nodes: { slug: string }[];
-    };
+    post: Post;
+    postSlugList: PostSlugList;
   };
 }
 
@@ -45,28 +32,24 @@ export default function PostPage({ data: { post, postSlugList } }: Props) {
     frontmatter: { title, date, description, tags },
   } = post;
 
-  const { nodes } = postSlugList;
-  const postSlugs = nodes.map((node) => node.slug);
+  const postSlugs = postSlugList.nodes.map((node) => node.slug);
 
   return (
     <MainLayout header={<Header />} footer={<Footer />}>
-      <PostTitle title={title} date={date} description={description} tags={tags} />
+      <PostTitle title={title} date={date} description={description} tags={tags as string[]} />
       <div className={postStyle()}>
-        <MDXRenderer>{body}</MDXRenderer>
+        <MDXRenderer>{body as string}</MDXRenderer>
       </div>
       <ByLine postSlugs={postSlugs} currentSlug={slug} title={title} />
     </MainLayout>
   );
 }
 
-const postStyle = css({
-  ol: {
-    listStyleType: 'decimal',
-    marginBlockStart: '1em',
-    marginBlockEnd: '1em',
-    marginInlineStart: '2em',
-  },
-});
+export const Head = (data: Props) => {
+  const { title, description } = data.data.post.frontmatter;
+
+  return <MetaHead title={title} description={description} />;
+};
 
 export const query = graphql`
   query ($slug: String) {
@@ -89,8 +72,11 @@ export const query = graphql`
   }
 `;
 
-export const Head = (data) => {
-  const { title, description } = data.data.post.frontmatter;
-
-  return <MetaHead title={title} description={description} />;
-};
+const postStyle = css({
+  ol: {
+    listStyleType: 'decimal',
+    marginBlockStart: '1em',
+    marginBlockEnd: '1em',
+    marginInlineStart: '2em',
+  },
+});

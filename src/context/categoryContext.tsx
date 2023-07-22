@@ -17,7 +17,8 @@ export const categoryContext = createContext<CategoryContextState>({
 
 export const CategoryContextProvider = ({ children }: { children: ReactNode }) => {
   const parsed = typeof window !== 'undefined' ? parse(location.search) : {};
-  const [category, setCategoryRaw] = useState<Category>(parsed.category ?? 'all');
+
+  const [category, setCategoryRaw] = useState<Category>((parsed.category as Category) ?? 'all');
 
   const setCategory = (category: Category) => {
     setCategoryRaw(category);

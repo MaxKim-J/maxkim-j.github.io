@@ -10,7 +10,7 @@ import globalStyle from '../../styles/global';
 import postStyles from '../../styles/post';
 import MetaHead from '../../components/@fundamentals/MetaHead';
 
-export default function AboutPage({ data }: Props) {
+export default function AboutPage({ data }: { data: { mdx: { body: string } } }) {
   globalStyle();
   postStyles();
 

@@ -1,15 +1,11 @@
 import React from 'react';
 import { styled } from '../../../styles/stitches';
 import { Link } from 'gatsby';
+import { Post } from '../../../types';
 
-interface Props {
-  title: string;
-  date: string;
-  description: string;
-  tags: string[];
-}
+type Props = Pick<Post['frontmatter'], 'title' | 'description' | 'tags' | 'date'>;
 
-function PostTitle({ title, date, description, tags }: Props) {
+function PostTitle({ title, description, tags }: Props) {
   return (
     <PostTitleWrapper>
       <PostTitleHeading>{title}</PostTitleHeading>

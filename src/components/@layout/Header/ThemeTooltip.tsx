@@ -1,16 +1,26 @@
 import React from 'react';
 import { styled } from '../../../styles/stitches';
+
+import { Theme } from '../../../types';
+
 const STORAGE_KEY_THEME = 'maxkim-blog-theme';
+
+const themes: Theme[] = ['light', 'dark', 'mincho', 'lemon'];
 
 function ThemeTooltip() {
   const setBlogTheme = (theme: Theme) => {
     localStorage.setItem(STORAGE_KEY_THEME, theme);
-    typeof window !== 'undefined' && window.__setTheme(theme);
+
+    if (typeof window !== 'undefined') {
+      //TODO window 타이핑하기
+      (window as any).__setTheme(theme);
+    }
   };
+
   return (
     <>
       <ThemeWrapper>
-        {['light', 'dark', 'mincho', 'lemon'].map((theme) => {
+        {themes.map((theme) => {
           return (
             <ThemeText
               key={theme}
@@ -29,7 +39,6 @@ function ThemeTooltip() {
 
 const ThemeWrapper = styled('div', {
   display: 'flex',
-  // flexDirection: 'column',
 });
 
 const ThemeText = styled('div', {

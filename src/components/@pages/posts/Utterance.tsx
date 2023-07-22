@@ -20,7 +20,9 @@ function Utterances() {
       utterances.setAttribute(key, value);
     });
 
-    containerRef.current.appendChild(utterances);
+    if (containerRef.current) {
+      containerRef.current.appendChild(utterances);
+    }
   }, [containerRef]);
 
   return <div className={utteranceStyle()} ref={containerRef} />;
