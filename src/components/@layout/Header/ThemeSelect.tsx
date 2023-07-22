@@ -8,13 +8,18 @@ const STORAGE_KEY_THEME = 'maxkim-blog-theme';
 const themes: Theme[] = ['light', 'dark', 'mincho', 'lemon'];
 
 function ThemeSelect({ pos = 'main' }: { pos: 'main' | 'sub' }) {
-  const [themeValue, setThemeValue] = useState(() => localStorage.getItem(STORAGE_KEY_THEME));
+  const [themeValue, setThemeValue] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return window.localStorage.getItem(STORAGE_KEY_THEME);
+    }
+    return 'light';
+  });
 
   const setBlogTheme = (theme: Theme) => {
     setThemeValue(theme);
-    localStorage.setItem(STORAGE_KEY_THEME, theme);
 
     if (typeof window !== 'undefined') {
+      window.localStorage.setItem(STORAGE_KEY_THEME, theme);
       //TODO window 타이핑하기
       (window as any).__setTheme(theme);
     }
