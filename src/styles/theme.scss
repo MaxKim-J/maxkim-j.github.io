@@ -7,8 +7,10 @@ body[data-theme='light'] {
     color: '$black';
   }
 
+  li > code,
   p > code {
     background-color: #efefef;
+    line-break: anywhere;
   }
 
   deckgo-highlight-code {

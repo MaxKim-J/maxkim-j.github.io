@@ -29,22 +29,37 @@ const globalStyles = globalCss({
   h1: {
     fontSize: '$heading1',
     fontWeight: '$bold',
+    a: {
+      textDecoration: 'underline',
+    }
   },
   h2: {
     fontSize: '$heading2',
     fontWeight: '$bold',
+    a: {
+      textDecoration: 'underline',
+    }
   },
   h3: {
     fontSize: '$heading3',
     fontWeight: '$bold',
+    a: {
+      textDecoration: 'underline',
+    }
   },
   h4: {
     fontSize: '$heading4',
     fontWeight: '$bold',
+    a: {
+      textDecoration: 'underline',
+    }
   },
   h5: {
     fontSize: '$heading5',
     fontWeight: '$bold',
+    a: {
+      textDecoration: 'underline',
+    }
   },
 });
 
