@@ -1,9 +1,9 @@
 import React from 'react';
-import { styled } from '../../../styles/stitches';
+import { styled } from '../../styles/stitches';
 import { Link } from 'gatsby';
-import { Post } from '../../../types';
+import { BlogPost } from '../../types';
 
-type Props = Pick<Post['frontmatter'], 'title' | 'description' | 'tags' | 'date'>;
+type Props = Pick<BlogPost['frontmatter'], 'title' | 'description' | 'tags' | 'date'>;
 
 function PostTitle({ title, description, tags }: Props) {
   return (

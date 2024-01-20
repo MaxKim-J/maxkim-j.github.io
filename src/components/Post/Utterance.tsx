@@ -1,5 +1,4 @@
 import React, { createRef, useLayoutEffect } from 'react';
-import { css } from '../../../styles/stitches';
 
 function Utterances() {
   const containerRef = createRef<HTMLDivElement>();
@@ -25,16 +24,7 @@ function Utterances() {
     }
   }, [containerRef]);
 
-  return <div className={utteranceStyle()} ref={containerRef} />;
+  return <div ref={containerRef} />;
 }
-
-const utteranceStyle = css({
-  '.utterances': {
-    maxWidth: 'none',
-  },
-  'iframe main.timeline': {
-    padding: 0,
-  },
-});
 
 export default Utterances;

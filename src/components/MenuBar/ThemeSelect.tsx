@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { styled } from '../../../styles/stitches';
+import { styled } from '../../styles/stitches';
 
-import { Theme } from '../../../types';
+import { Theme } from '../../types';
 
 const STORAGE_KEY_THEME = 'maxkim-blog-theme';
 

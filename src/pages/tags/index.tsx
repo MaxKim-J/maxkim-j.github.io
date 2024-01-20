@@ -2,33 +2,30 @@ import { graphql } from 'gatsby';
 import React from 'react';
 import { parse } from 'query-string';
 
-import Footer from '../../components/@layout/Footer';
-import Header from '../../components/@layout/Header/Header';
-
-import MainLayout from '../../components/@layout/MainLayout';
-import PostListView from '../../components/@pages/tags/PostList';
-import globalStyle from '../../styles/global';
-import MetaHead from '../../components/@fundamentals/MetaHead';
-import { PostList } from '../../types';
+import Footer from '../../components/Footer';
+import Header from '../../components/Header';
+import Layout from '../../components/Layout';
+import PostList from '../../components/PostList';
+import CustomHead from '../../components/Head';
+import { BlogPosts } from '../../types';
+import MenuBar from '../../components/MenuBar';
 
 export interface Props {
   data: {
     allMdx: {
-      nodes: PostList;
+      nodes: BlogPosts;
     };
   };
 }
 
 export default function TagPage({ data }: Props) {
-  globalStyle();
-
   const parsed = typeof window !== 'undefined' ? parse(location.search) : {};
 
   return (
-    <MainLayout header={<Header />} footer={<Footer />}>
+    <Layout header={<Header />} nav={<MenuBar />} footer={<Footer />}>
       <h1>태그 모아보기 - #{parsed.tag}</h1>
-      <PostListView postList={data.allMdx.nodes} />
-    </MainLayout>
+      <PostList postList={data.allMdx.nodes} />
+    </Layout>
   );
 }
 
@@ -51,5 +48,5 @@ export const query = graphql`
 `;
 
 export const Head = () => {
-  return <MetaHead title="김맥스 블로그 | 태그모아보기" />;
+  return <CustomHead title="김맥스 블로그 | 태그모아보기" />;
 };

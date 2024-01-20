@@ -2,22 +2,18 @@ import React from 'react';
 import { Link, graphql } from 'gatsby';
 import { MDXRenderer } from 'gatsby-plugin-mdx';
 
+import Footer from '../../components/Footer';
+import Header from '../../components/Header';
+import Layout from '../../components/Layout';
+import MetaHead from '../../components/Head';
+import MenuBar from '../../components/MenuBar';
 import { styled, css } from '../../styles/stitches';
-import Footer from '../../components/@layout/Footer';
-import Header from '../../components/@layout/Header/Header';
-import MainLayout from '../../components/@layout/MainLayout';
-import globalStyle from '../../styles/global';
-import postStyles from '../../styles/post';
-import MetaHead from '../../components/@fundamentals/MetaHead';
 
 export default function AboutPage({ data }: { data: { mdx: { body: string } } }) {
-  globalStyle();
-  postStyles();
-
   const { body } = data.mdx;
 
   return (
-    <MainLayout header={<Header />} footer={<Footer />}>
+    <Layout header={<Header />} footer={<Footer />} nav={<MenuBar />}>
       <StyledName>김종혁</StyledName>
       <MDXRenderer css={StyledMdxRenderer()}>{body}</MDXRenderer>
       <StyledLabelSection>
@@ -58,7 +54,7 @@ export default function AboutPage({ data }: { data: { mdx: { body: string } } })
           </StyledLabelContent>
         </StyledLabel>
       </StyledLabelSection>
-    </MainLayout>
+    </Layout>
   );
 }
 

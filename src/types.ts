@@ -1,4 +1,4 @@
-export interface Post {
+export interface BlogPost {
   id: string;
   slug: string;
   excerpt: string;
@@ -12,6 +12,8 @@ export interface Post {
     tags?: string[];
   };
 }
+
+export type BlogPosts = BlogPost[];
 
 export interface PostSlugList {
   nodes: {
@@ -28,5 +30,3 @@ export interface PicPost {
 }
 
 export type Theme = 'light' | 'dark' | 'mincho' | 'lemon';
-
-export type PostList = Post[];

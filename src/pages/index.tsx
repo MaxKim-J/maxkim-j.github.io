@@ -1,33 +1,29 @@
 import * as React from 'react';
 import { graphql } from 'gatsby';
-import globalStyle from '../styles/global';
 
-import MainLayout from '../components/@layout/MainLayout';
-import MainHeader from '../components/@layout/Header/MainHeader';
-import Footer from '../components/@layout/Footer';
-import PostListView from '../components/@pages/home/PostList';
-import MetaHead from '../components/@fundamentals/MetaHead';
-import { type PostList } from '../types';
+import Layout from '../components/Layout';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
+import PostList from '../components/PostList';
+import CustomHead from '../components/Head';
+import { type BlogPosts } from '../types';
+import MenuBar from '../components/MenuBar';
 
 export interface Props {
   data: {
     allMdx: {
-      nodes: PostList;
+      nodes: BlogPosts;
     };
   };
 }
 
 const IndexPage = ({ data }: Props) => {
-  globalStyle();
-
   return (
-    <MainLayout header={<MainHeader />} footer={<Footer />}>
-      <PostListView postList={data.allMdx.nodes} />
-    </MainLayout>
+    <Layout header={<Header />} nav={<MenuBar />} footer={<Footer />}>
+      <PostList postList={data.allMdx.nodes} />
+    </Layout>
   );
 };
-
-export default IndexPage;
 
 export const query = graphql`
   query SITE_INDEX_QUERY {
@@ -48,5 +44,7 @@ export const query = graphql`
 `;
 
 export const Head = () => {
-  return <MetaHead />;
+  return <CustomHead />;
 };
+
+export default IndexPage;

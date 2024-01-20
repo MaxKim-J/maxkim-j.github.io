@@ -1,9 +1,9 @@
 import React from 'react';
 import { Link } from 'gatsby';
 
-import { styled } from '../../../styles/stitches';
+import { styled } from '../../styles/stitches';
 import Utterances from './Utterance';
-import { Post } from '../../../types';
+import { Post } from '../../types';
 
 interface Props {
   postSlugs: Post['slug'][];

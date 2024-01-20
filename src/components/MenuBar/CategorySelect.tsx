@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
-import { styled } from '../../../styles/stitches';
-import { categoryContext } from '../../../context/categoryContext';
+import { styled } from '../../styles/stitches';
+import { categoryContext } from '../../context/categoryContext';
 
 const categories = ['all', 'tech', 'essay', 'review'];
 

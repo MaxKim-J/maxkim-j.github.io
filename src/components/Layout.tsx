@@ -1,22 +1,22 @@
 import React, { ReactNode } from 'react';
-import { styled } from '../../styles/stitches';
+import { styled } from '../styles/stitches';
 
-// import '../../styles/font.css';
-import '../../styles/theme.scss';
-import { CategoryContextProvider } from '../../context/categoryContext';
+import { CategoryContextProvider } from '../context/categoryContext';
 
 interface Props {
   header: ReactNode;
   children: ReactNode;
   footer: ReactNode;
+  nav: ReactNode;
 }
 
-function MainLayout({ children, header, footer }: Props) {
+function MainLayout({ children, nav, header, footer }: Props) {
   return (
     <CategoryContextProvider>
       <ContainerWrapper>
         <ResponsiveContainer>
           <header>{header}</header>
+          <nav>{nav}</nav>
           <Main>{children}</Main>
           <footer>{footer}</footer>
         </ResponsiveContainer>

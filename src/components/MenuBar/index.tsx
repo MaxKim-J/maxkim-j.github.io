@@ -1,18 +1,13 @@
-import { Link } from 'gatsby';
 import React from 'react';
-import { styled } from '../../../styles/stitches';
-
+import { Link } from 'gatsby';
+import { styled } from '../../styles/stitches';
 import ThemeSelect from './ThemeSelect';
+import CategorySelect from './CategorySelect';
 
-function Header() {
+function MenuBar() {
   return (
-    <HeaderWrapper>
+    <NavSection>
       <LeftSide>
-        <Link to="/">
-          <Title>김맥스 블로그</Title>
-        </Link>
-      </LeftSide>
-      <RightSide>
         <div>
           <Link to="/pic" aria-label="제가 찍은 사진들이 있는 페이지로 이동해요">
             pic
@@ -28,11 +23,24 @@ function Header() {
             rss
           </Link>
         </div>
-        <ThemeSelect pos="sub" />
+      </LeftSide>
+      <RightSide>
+        <div>theme</div>
+        <ThemeSelect pos="main" />
+        <div>filter</div>
+        <CategorySelect />
       </RightSide>
-    </HeaderWrapper>
+    </NavSection>
   );
 }
+
+const NavSection = styled('nav', {
+  display: 'flex',
+  justifyContent: 'space-between',
+  '@mobile': {
+    display: 'block',
+  },
+});
 
 const LeftSide = styled('div', {});
 
@@ -47,18 +55,4 @@ const RightSide = styled('div', {
   },
 });
 
-const HeaderWrapper = styled('div', {
-  display: 'flex',
-  justifyContent: 'space-between',
-  marginBottom: '82px',
-});
-
-const Title = styled('div', {
-  fontSize: '$mainTitle',
-  fontWeight: '$bold',
-  '@mobile': {
-    fontSize: '$subTitle',
-  },
-});
-
-export default Header;
+export default MenuBar;

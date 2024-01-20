@@ -3,13 +3,14 @@ import { graphql } from 'gatsby';
 import { MDXRenderer } from 'gatsby-plugin-mdx';
 
 import { styled } from '../../styles/stitches';
-import galleryStyle from '../../styles/gallery';
 
-import Footer from '../../components/@layout/Footer';
-import Header from '../../components/@layout/Header/Header';
-import MainLayout from '../../components/@layout/MainLayout';
-import MetaHead from '../../components/@fundamentals/MetaHead';
-import { PicPost } from '../../types';
+import Footer from '../../components/Footer';
+import Header from '../../components/Header';
+import Layout from '../../components/Layout';
+import MetaHead from '../../components/Head';
+import MenuBar from '../../components/MenuBar';
+
+import type { PicPost } from '../../types';
 
 interface Props {
   data: {
@@ -18,15 +19,14 @@ interface Props {
 }
 
 export default function GalleryPage({ data }: Props) {
-  galleryStyle();
   const { body } = data.mdx;
   const { title } = data.mdx.frontmatter;
 
   return (
-    <MainLayout header={<Header />} footer={<Footer />}>
+    <Layout header={<Header />} nav={<MenuBar />} footer={<Footer />}>
       <StyledName>{title}</StyledName>
       <MDXRenderer>{body}</MDXRenderer>
-    </MainLayout>
+    </Layout>
   );
 }
 

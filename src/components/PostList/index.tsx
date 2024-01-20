@@ -1,12 +1,12 @@
 import React, { useContext } from 'react';
 import { Link } from 'gatsby';
 
-import { styled } from '../../../styles/stitches';
-import { categoryContext } from '../../../context/categoryContext';
-import { type PostList as PostListType } from '../../../types';
+import { styled } from '../../styles/stitches';
+import { categoryContext } from '../../context/categoryContext';
+import { type BlogPosts } from '../../types';
 
 interface Props {
-  postList: PostListType;
+  postList: BlogPosts;
 }
 
 function PostList({ postList }: Props) {

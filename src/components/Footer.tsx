@@ -1,5 +1,5 @@
 import React from 'react';
-import { styled } from '../../styles/stitches';
+import { styled } from '../styles/stitches';
 
 function Footer() {
   return (

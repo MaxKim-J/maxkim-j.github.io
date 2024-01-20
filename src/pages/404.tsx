@@ -1,21 +1,20 @@
 import * as React from 'react';
-import MetaHead from '../components/@fundamentals/MetaHead';
-import MainLayout from '../components/@layout/MainLayout';
-import Footer from '../components/@layout/Footer';
-import Header from '../components/@layout/Header/Header';
-import globalStyle from '../styles/global';
+import CustomHead from '../components/Head';
+import Layout from '../components/Layout';
+import Footer from '../components/Footer';
+import Header from '../components/Header';
+import MenuBar from '../components/MenuBar';
 
 const NotFoundPage = () => {
-  globalStyle();
   return (
-    <MainLayout header={<Header />} footer={<Footer />}>
+    <Layout header={<Header />} nav={<MenuBar />} footer={<Footer />}>
       404 Not Found
-    </MainLayout>
+    </Layout>
   );
 };
 
 export const Head = () => {
-  return <MetaHead />;
+  return <CustomHead />;
 };
 
 export default NotFoundPage;
