@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunkmax_kim_tech_blog=self.webpackChunkmax_kim_tech_blog||[]).push([[218],{6395:function(e,n,t){t.r(n),t.d(n,{Head:function(){return m}});var l=t(959),u=t(1730),r=t(121),a=t(2919),c=t(7939),o=t(2421),m=function(){return l.createElement(u.Z,null)};n.default=function(){return l.createElement(r.Z,{header:l.createElement(c.Z,null),nav:l.createElement(o.Z,null),footer:l.createElement(a.Z,null)},"404 Not Found")}}}]);
+//# sourceMappingURL=component---src-pages-404-tsx-8931a057478ba62e5591.js.map
