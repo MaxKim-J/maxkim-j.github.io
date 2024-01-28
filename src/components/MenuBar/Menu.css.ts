@@ -6,7 +6,7 @@ export const menuLinkStyle = style({
   fontSize: sVar.fontSize.$4,
   '@media': {
     [sVar.media.mobile]: {
-      fontSize: sVar.fontSize.$6,
+      fontSize: sVar.fontSize.$5,
     },
   },
 });

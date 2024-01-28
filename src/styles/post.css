@@ -38,7 +38,7 @@
   font-weight: 500;
   margin: 34px 0;
   @media (max-width: 750px) {
-    font-size: 16px;
+    font-size: 17px;
   }
 }
 
@@ -50,7 +50,7 @@
   word-break: 'break-word';
   letter-spacing: 0.3px;
   @media (max-width: 750px) {
-    font-size: 16px;
+    font-size: 17px;
   }
 }
 
@@ -73,6 +73,9 @@
   list-style: inside;
   font-size: 18px;
   line-height: 1.8;
+  @media (max-width: 750px) {
+    font-size: 17px;
+  }
 }
 
 .mdx-post ol {
@@ -81,6 +84,9 @@
   list-style-type: decimal;
   font-size: 18px;
   line-height: 1.8;
+  @media (max-width: 750px) {
+    font-size: 17px;
+  }
 }
 
 .mdx-post ol ol,
@@ -106,6 +112,7 @@ p code {
   padding: 2px 6px;
   font-weight: 350;
   letter-spacing: 1.3px;
+  word-break: break-all;
 }
 
 .mdx-post blockquote {
@@ -114,11 +121,15 @@ p code {
   padding: 0px 18px;
   border-left: 3px solid var(--code-quote-blockquote-border-color);
   font-style: oblique 20deg;
+  word-break: break-all;
 }
 
 .mdx-post blockquote p {
   font-size: 19px;
   margin: 35px 0;
+  @media (max-width: 750px) {
+    font-size: 18px;
+  }
 }
 
 .mdx-post .pic-description {
@@ -126,11 +137,6 @@ p code {
   margin-bottom: 60px;
 }
 
-.deckgo-highlight-code-carbon {
-  font-size: 16px;
-  line-height: 1.4;
-}
-
-div.container {
-  border: 1px solid black;
+deckgo-highlight-code > div.container {
+  font-size: 200px;
 }

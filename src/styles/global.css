@@ -18,6 +18,18 @@ body[data-theme='dark'] {
   --code-quote-blockquote-border-color: #ffffff;
 }
 
+deckgo-highlight-code {
+  --deckgo-highlight-code-white-space: pre;
+
+  font-size: 16px;
+  line-height: 1.5;
+  white-space: nowrap;
+  letter-spacing: 0.5px;
+  @media (max-width: 750px) {
+    font-size: 15px;
+  }
+}
+
 body[data-theme='light'] deckgo-highlight-code {
   --deckgo-highlight-code-carbon-background: #fafafa;
   --deckgo-highlight-code-carbon-color: rgb(56, 58, 66);
@@ -53,6 +65,7 @@ body {
 
 select {
   background: none;
+  border: 1px solid var(--font-color);
   color: var(--font-color);
 }
 
