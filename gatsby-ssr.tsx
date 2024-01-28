@@ -1,7 +1,6 @@
 import * as React from 'react';
-import { getCssText } from './src/styles/stitches';
 
-export const onRenderBody = ({ setHeadComponents, setPreBodyComponents }) => {
+export const onRenderBody = ({ setPreBodyComponents }) => {
   const script = `
     const savedTheme = localStorage.getItem('maxkim-blog-theme');
     const theme = savedTheme || 'light';
@@ -16,14 +15,4 @@ export const onRenderBody = ({ setHeadComponents, setPreBodyComponents }) => {
   `;
 
   setPreBodyComponents(<script dangerouslySetInnerHTML={{ __html: script }} />);
-
-  setHeadComponents([
-    <style
-      key="stitches"
-      id="stitches"
-      dangerouslySetInnerHTML={{
-        __html: getCssText(),
-      }}
-    />,
-  ]);
 };

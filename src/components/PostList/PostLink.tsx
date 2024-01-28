@@ -1,53 +1,27 @@
 import React from 'react';
 import { Link } from 'gatsby';
-import { styled } from '../../styles/stitches';
+import { BlogPost } from '../../types';
+import { listItemStyle, listItemTitleStyle, listItemDescriptionStyle } from './PostLink.css';
 
 interface Props {
   id: string;
   slug: string;
-  title: string;
-  date: string;
-  description: string;
+  frontmatter: BlogPost['frontmatter'];
 }
 
-function PostLink({ id, slug, title, date, description }: Props) {
+function PostLink({ id, slug, frontmatter }: Props) {
+  const { title, date, description } = frontmatter;
+
   return (
-    <Link to={`/posts/${slug}`} key={id}>
-      <ListItem>
-        <ListItemTitle>{title}</ListItemTitle>
-        <ListItemDescription>
+    <li className={listItemStyle}>
+      <Link to={`/posts/${slug}`} key={id}>
+        <span className={listItemTitleStyle}>{title}</span>
+        <span className={listItemDescriptionStyle}>
           {date} - {description}
-        </ListItemDescription>
-      </ListItem>
-    </Link>
+        </span>
+      </Link>
+    </li>
   );
 }
-
-const ListItemTitle = styled('span', {
-  fontSize: '$subTitle',
-  fontWeight: '$bold',
-  '@mobile': {
-    fontSize: '$mobileTitle',
-  },
-});
-
-const ListItem = styled('li', {
-  marginBottom: '48px',
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'flex-end',
-  lineHeight: 1.2,
-  '@mobile': {
-    alignItems: 'flex-start',
-  },
-});
-
-const ListItemDescription = styled('span', {
-  fontSize: '$description',
-  marginTop: '6px',
-  '@mobile': {
-    fontSize: '$mobileDescription',
-  },
-});
 
 export default PostLink;

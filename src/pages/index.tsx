@@ -4,10 +4,10 @@ import { graphql } from 'gatsby';
 import Layout from '../components/Layout';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import PostList from '../components/PostList';
+import PostList from '../components/PostList/PostList';
 import CustomHead from '../components/Head';
 import { type BlogPosts } from '../types';
-import MenuBar from '../components/MenuBar';
+import MenuBar from '../components/MenuBar/MenuBar';
 
 export interface Props {
   data: {
@@ -19,7 +19,7 @@ export interface Props {
 
 const IndexPage = ({ data }: Props) => {
   return (
-    <Layout header={<Header />} nav={<MenuBar />} footer={<Footer />}>
+    <Layout header={<Header />} nav={<MenuBar showCategory />} footer={<Footer />}>
       <PostList postList={data.allMdx.nodes} />
     </Layout>
   );

@@ -21,8 +21,10 @@
     "@deckdeckgo/highlight-code": "^4.4.0",
     "@mdx-js/mdx": "^1.6.22",
     "@mdx-js/react": "^1.6.22",
-    "@stitches/react": "^1.2.8",
+    "@vanilla-extract/css": "^1.14.0",
+    "@vanilla-extract/webpack-plugin": "^2.3.2",
     "babel-eslint": "^10.1.0",
+    "fastq": "^1.17.0",
     "gatsby": "^4.19.2",
     "gatsby-plugin-feed": "^5.9.0",
     "gatsby-plugin-feed-mdx": "^1.1.0",
@@ -33,6 +35,7 @@
     "gatsby-plugin-sass": "^5.24.0",
     "gatsby-plugin-sharp": "^4.19.0",
     "gatsby-plugin-sitemap": "^5.19.0",
+    "gatsby-plugin-vanilla-extract": "^4.0.2",
     "gatsby-remark-autolink-headers": "^5.24.0",
     "gatsby-remark-gifs": "^1.1.0",
     "gatsby-remark-highlight-code": "^3.2.0",
@@ -46,8 +49,7 @@
     "prismjs": "^1.29.0",
     "query-string": "^7.1.1",
     "react": "^18.1.0",
-    "react-dom": "^18.1.0",
-    "sass": "^1.55.0"
+    "react-dom": "^18.1.0"
   },
   "devDependencies": {
     "@types/node": "^17.0.45",

@@ -1,0 +1,136 @@
+.mdx-post h1 {
+  font-size: 30px;
+  font-weight: 600;
+  margin: 50px 0;
+  @media (max-width: 750px) {
+    font-size: 28px;
+  }
+}
+
+.mdx-post h2 {
+  font-size: 26px;
+  font-weight: 600;
+  margin: 46px 0;
+  @media (max-width: 750px) {
+    font-size: 24px;
+  }
+}
+.mdx-post h3 {
+  font-size: 22px;
+  font-weight: 600;
+  margin: 42px 0;
+  @media (max-width: 750px) {
+    font-size: 20px;
+  }
+}
+
+.mdx-post h4 {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 38px 0;
+  @media (max-width: 750px) {
+    font-size: 18px;
+  }
+}
+
+.mdx-post h5 {
+  font-size: 18px;
+  font-weight: 500;
+  margin: 34px 0;
+  @media (max-width: 750px) {
+    font-size: 16px;
+  }
+}
+
+.mdx-post p {
+  font-size: 18px;
+  font-weight: 400;
+  margin: 26px 0;
+  line-height: 1.9;
+  word-break: 'break-word';
+  letter-spacing: 0.3px;
+  @media (max-width: 750px) {
+    font-size: 16px;
+  }
+}
+
+.mdx-post a {
+  text-decoration: underline;
+  text-underline-offset: 8px;
+}
+
+.mdx-post img {
+  width: 100%;
+  height: auto;
+}
+
+.mdx-post strong {
+  font-weight: 600;
+}
+
+.mdx-post ul {
+  padding: 12px;
+  list-style: inside;
+  font-size: 18px;
+  line-height: 1.8;
+}
+
+.mdx-post ol {
+  padding: 12px;
+  list-style: inside;
+  list-style-type: decimal;
+  font-size: 18px;
+  line-height: 1.8;
+}
+
+.mdx-post ol ol,
+ul ol,
+ul ul,
+li ul,
+li ol,
+ul ol {
+  padding: 0 !important;
+  margin-left: 30px;
+  border: none !important;
+}
+
+.mdx-post li {
+  margin: 6px 0;
+}
+
+.mdx-post li code,
+p code {
+  background-color: var(--code-quote-background-color);
+  border-radius: 5px;
+  font-size: 16px;
+  padding: 2px 6px;
+  font-weight: 350;
+  letter-spacing: 1.3px;
+}
+
+.mdx-post blockquote {
+  margin: 30px 0;
+  font-size: 30px;
+  padding: 0px 18px;
+  border-left: 3px solid var(--code-quote-blockquote-border-color);
+  font-style: oblique 20deg;
+}
+
+.mdx-post blockquote p {
+  font-size: 19px;
+  margin: 35px 0;
+}
+
+.mdx-post .pic-description {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.deckgo-highlight-code-carbon {
+  font-size: 16px;
+  line-height: 1.4;
+}
+
+div.container {
+  border: 1px solid black;
+}

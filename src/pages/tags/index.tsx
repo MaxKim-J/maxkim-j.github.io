@@ -5,10 +5,11 @@ import { parse } from 'query-string';
 import Footer from '../../components/Footer';
 import Header from '../../components/Header';
 import Layout from '../../components/Layout';
-import PostList from '../../components/PostList';
+import PostList from '../../components/PostList/PostList';
 import CustomHead from '../../components/Head';
 import { BlogPosts } from '../../types';
-import MenuBar from '../../components/MenuBar';
+import MenuBar from '../../components/MenuBar/MenuBar';
+import { TagTitle } from '../../components/TagTitle';
 
 export interface Props {
   data: {
@@ -19,12 +20,17 @@ export interface Props {
 }
 
 export default function TagPage({ data }: Props) {
-  const parsed = typeof window !== 'undefined' ? parse(location.search) : {};
+  const parsed = typeof window !== 'undefined' ? parse(location.search) : ({} as string);
+  const tag = (parsed as any).tag;
+
+  const posts = data.allMdx.nodes.filter((node) =>
+    (node.frontmatter?.tags ?? []).includes(tag ?? '')
+  );
 
   return (
     <Layout header={<Header />} nav={<MenuBar />} footer={<Footer />}>
-      <h1>태그 모아보기 - #{parsed.tag}</h1>
-      <PostList postList={data.allMdx.nodes} />
+      <TagTitle tag={tag} count={posts.length} />
+      <PostList postList={posts} />
     </Layout>
   );
 }

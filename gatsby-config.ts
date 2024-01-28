@@ -15,6 +15,7 @@ const config: GatsbyConfig = {
     'gatsby-plugin-sharp',
     'gatsby-plugin-sass',
     'gatsby-transformer-sharp',
+    `gatsby-plugin-vanilla-extract`,
     {
       resolve: `gatsby-plugin-feed`,
       options: {
@@ -32,10 +33,10 @@ const config: GatsbyConfig = {
         `,
         feeds: [
           {
-            output: "/rss.xml",
-            title: "Max Kim Blog RSS Feed",
-            match: "^/posts/",
-            link: "https://feeds.feedburner.com/gatsby/blog",
+            output: '/rss.xml',
+            title: 'Max Kim Blog RSS Feed',
+            match: '^/posts/',
+            link: 'https://feeds.feedburner.com/gatsby/blog',
             query: `
               {
                 allMdx(
@@ -55,14 +56,14 @@ const config: GatsbyConfig = {
                 }
               }
             `,
-            serialize: ({ query: { site, allMdx } }:any) => {
-              return allMdx.nodes.map((node:any) => ({
-                  title: node.frontmatter.title,
-                  description: node.frontmatter.description,
-                  date: node.frontmatter.date,
-                  url:  encodeURI(site.siteMetadata.siteUrl + '/posts/' + node.slug),
-                  guid: encodeURI(site.siteMetadata.siteUrl + '/posts/' + node.slug),
-              }))
+            serialize: ({ query: { site, allMdx } }: any) => {
+              return allMdx.nodes.map((node: any) => ({
+                title: node.frontmatter.title,
+                description: node.frontmatter.description,
+                date: node.frontmatter.date,
+                url: encodeURI(site.siteMetadata.siteUrl + '/posts/' + node.slug),
+                guid: encodeURI(site.siteMetadata.siteUrl + '/posts/' + node.slug),
+              }));
             },
           },
         ],
@@ -89,7 +90,7 @@ const config: GatsbyConfig = {
           {
             resolve: `gatsby-remark-highlight-code`,
             options: {
-              theme: 'a11y-dark',
+              theme: 'one-light',
             },
           },
         ],

@@ -1,14 +1,13 @@
 import React from 'react';
 import { graphql } from 'gatsby';
-import { MDXRenderer } from 'gatsby-plugin-mdx';
-
-import { styled } from '../../styles/stitches';
 
 import Footer from '../../components/Footer';
 import Header from '../../components/Header';
 import Layout from '../../components/Layout';
 import MetaHead from '../../components/Head';
-import MenuBar from '../../components/MenuBar';
+import MenuBar from '../../components/MenuBar/MenuBar';
+
+import { Pic } from '../../components/Pic';
 
 import type { PicPost } from '../../types';
 
@@ -20,12 +19,10 @@ interface Props {
 
 export default function GalleryPage({ data }: Props) {
   const { body } = data.mdx;
-  const { title } = data.mdx.frontmatter;
 
   return (
     <Layout header={<Header />} nav={<MenuBar />} footer={<Footer />}>
-      <StyledName>{title}</StyledName>
-      <MDXRenderer>{body}</MDXRenderer>
+      <Pic body={body} />
     </Layout>
   );
 }
@@ -47,7 +44,3 @@ export const query = graphql`
     }
   }
 `;
-
-const StyledName = styled('h1', {
-  fontSize: '48px',
-});

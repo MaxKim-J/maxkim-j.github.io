@@ -19,11 +19,13 @@ function Post({ post, postSlugList }: Props) {
   const postSlugs = postSlugList.nodes.map((node) => node.slug);
 
   return (
-    <>
+    <article>
       <PostTitle title={title} date={date} description={description} tags={tags as string[]} />
-      <MDXRenderer>{body as string}</MDXRenderer>
+      <section className="mdx-post">
+        <MDXRenderer>{body as string}</MDXRenderer>
+      </section>
       <ByLine postSlugs={postSlugs} currentSlug={slug} title={title} />
-    </>
+    </article>
   );
 }
 

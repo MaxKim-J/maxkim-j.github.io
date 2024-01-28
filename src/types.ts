@@ -29,4 +29,4 @@ export interface PicPost {
   };
 }
 
-export type Theme = 'light' | 'dark' | 'mincho' | 'lemon';
+export type Theme = 'light' | 'dark';

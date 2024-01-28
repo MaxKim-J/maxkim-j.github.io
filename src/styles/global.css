@@ -1,0 +1,63 @@
+* {
+  font-family: Pretendard;
+}
+
+body[data-theme='light'] {
+  --font-color: #000000;
+  --line-color: #000000;
+  --background-color: #ffffff;
+  --code-quote-background-color: #f2f2f2;
+  --code-quote-blockquote-border-color: #000000;
+}
+
+body[data-theme='dark'] {
+  --font-color: #ffffff;
+  --line-color: #ffffff;
+  --background-color: #232323;
+  --code-quote-background-color: #6b6b6b;
+  --code-quote-blockquote-border-color: #ffffff;
+}
+
+body[data-theme='light'] deckgo-highlight-code {
+  --deckgo-highlight-code-carbon-background: #fafafa;
+  --deckgo-highlight-code-carbon-color: rgb(56, 58, 66);
+  --deckgo-highlight-code-token-atrule: #a626a4;
+  --deckgo-highlight-code-token-comment: #65737e;
+  --deckgo-highlight-code-token-comment-rgb: 101, 115, 126;
+  --deckgo-highlight-code-token-function: #4078f2;
+  --deckgo-highlight-code-token-operator: #0184bc;
+  --deckgo-highlight-code-token-property: #4078f2;
+  --deckgo-highlight-code-token-punctuation: rgb(56, 58, 66);
+  --deckgo-highlight-code-token-regex: rgb(80, 161, 79);
+  --deckgo-highlight-code-token-selector: #e45649;
+}
+
+body[data-theme='dark'] deckgo-highlight-code {
+  --deckgo-highlight-code-carbon-background: #2b2b2b;
+  --deckgo-highlight-code-carbon-color: #f8f8f2;
+  --deckgo-highlight-code-token-atrule: #ffa07a;
+  --deckgo-highlight-code-token-comment: #d4d0ab;
+  --deckgo-highlight-code-token-comment-rgb: 212, 208, 171;
+  --deckgo-highlight-code-token-function: #00e0e0;
+  --deckgo-highlight-code-token-property: #abe338;
+  --deckgo-highlight-code-token-punctuation: #f8f8f2;
+  --deckgo-highlight-code-token-regex: #ffd700;
+  --deckgo-highlight-code-token-selector: #f8f8f2;
+  --deckgo-highlight-code-token-operator: #f8f8f2;
+}
+
+body {
+  color: var(--font-color);
+  background-color: var(--background-color);
+}
+
+select {
+  background: none;
+  color: var(--font-color);
+}
+
+hr {
+  background-color: var(--line-color);
+  height: 1px;
+  margin: 80px 0;
+}

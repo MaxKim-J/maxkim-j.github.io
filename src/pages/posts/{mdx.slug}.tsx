@@ -1,13 +1,16 @@
 import { graphql } from 'gatsby';
 import React from 'react';
+import { defineCustomElements as deckDeckGoHighlightElement } from '@deckdeckgo/highlight-code/dist/loader';
 
 import Footer from '../../components/Footer';
 import Header from '../../components/Header';
-import Post from '../../components/Post';
+import Post from '../../components/Post/Post';
 import MetaHead from '../../components/Head';
 import Layout from '../../components/Layout';
+import MenuBar from '../../components/MenuBar/MenuBar';
 import type { BlogPost, PostSlugList } from '../../types';
-import MenuBar from '../../components/MenuBar';
+
+deckDeckGoHighlightElement();
 
 interface Props {
   data: {
