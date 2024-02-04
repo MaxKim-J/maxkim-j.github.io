@@ -46,13 +46,6 @@ export const query = graphql`
         date(formatString: "YYYY년 MM월 DD일")
         description
         tags
-        thumbnail {
-          childImageSharp {
-            fluid(maxWidth: 400) {
-              src
-            }
-          }
-        }
       }
     }
     postSlugList: allMdx(sort: { fields: [frontmatter___date], order: DESC }) {
