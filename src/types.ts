@@ -10,6 +10,13 @@ export interface BlogPost {
     date: string;
     description: string;
     tags?: string[];
+    thumbnail?: {
+      childImageSharp: {
+        fluid: {
+          src: string;
+        };
+      };
+    };
   };
 }
 

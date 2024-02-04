@@ -5,6 +5,9 @@ export const personalSectionStyle = style({
   display: 'flex',
   justifyContent: 'space-between',
   fontSize: sVar.fontSize.$6,
+  '@media': {
+    [sVar.media.mobile]: { fontSize: sVar.fontSize.$7 },
+  },
 });
 
 export const socialMediaSectionStyle = style({
@@ -25,6 +28,9 @@ export const sharedSectionStyle = style({
   marginTop: '20px',
   display: 'flex',
   fontSize: sVar.fontSize.$6,
+  '@media': {
+    [sVar.media.mobile]: { fontSize: sVar.fontSize.$7 },
+  },
 });
 
 export const sharedSectionActionButtonStyle = style({
@@ -42,6 +48,9 @@ export const bottomNavSectionStyle = style({
   display: 'flex',
   justifyContent: 'space-between',
   fontSize: sVar.fontSize.$6,
+  '@media': {
+    [sVar.media.mobile]: { fontSize: sVar.fontSize.$7 },
+  },
 });
 
 export const bottomNavLinkStyle = style({

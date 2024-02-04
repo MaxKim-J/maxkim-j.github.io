@@ -28,9 +28,11 @@ export default function PostPage({ data: { post, postSlugList } }: Props) {
 }
 
 export const Head = (data: Props) => {
+  console.info(data.data.post.frontmatter);
   const { title, description } = data.data.post.frontmatter;
+  const thumbnail = data.data.post.frontmatter?.thumbnail?.childImageSharp.fluid.src ?? undefined;
 
-  return <MetaHead title={title} description={description} />;
+  return <MetaHead title={title} description={description} thumbnail={thumbnail} />;
 };
 
 export const query = graphql`
@@ -44,6 +46,13 @@ export const query = graphql`
         date(formatString: "YYYY년 MM월 DD일")
         description
         tags
+        thumbnail {
+          childImageSharp {
+            fluid(maxWidth: 400) {
+              src
+            }
+          }
+        }
       }
     }
     postSlugList: allMdx(sort: { fields: [frontmatter___date], order: DESC }) {

@@ -56,7 +56,7 @@
 
 .mdx-post a {
   text-decoration: underline;
-  text-underline-offset: 8px;
+  text-underline-offset: 4px;
 }
 
 .mdx-post img {
@@ -102,6 +102,9 @@ ul ol {
 
 .mdx-post li {
   margin: 6px 0;
+  @media (max-width: 750px) {
+    font-size: 17px;
+  }
 }
 
 .mdx-post li code,

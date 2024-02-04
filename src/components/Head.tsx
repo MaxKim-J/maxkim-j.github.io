@@ -22,9 +22,10 @@ export const useSiteMetadata = () => {
 interface Props {
   title?: string;
   description?: string;
+  thumbnail?: string;
 }
 
-const MetaHead = ({ title, description }: Props) => {
+const MetaHead = ({ title, description, thumbnail }: Props) => {
   const {
     title: defaultTitle,
     description: defaultDescription,
@@ -44,11 +45,11 @@ const MetaHead = ({ title, description }: Props) => {
     <>
       <title>{seo.title}</title>
       <meta name="description" content={seo.description} />
-      <meta name="image" content={seo.image} />
+      <meta name="image" content={thumbnail ?? seo.image} />
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content={seo.title} />
       <meta name="twitter:description" content={seo.description} />
-      <meta name="twitter:image" content={seo.image} />
+      <meta name="twitter:image" content={thumbnail ?? seo.image} />
       <meta name="twitter:creator" content={seo.twitterUsername} />
     </>
   );
