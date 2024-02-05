@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import { PostCategory } from '../types';
 import { parse } from 'query-string';
 
-export const CATEGORY_LIST: PostCategory[] = ['all', 'tech', 'essay', 'review'];
+export const CATEGORY_LIST: PostCategory[] = ['all', 'tech', 'essay', 'culture'];
 
 const isPostCategory = (category: any): category is PostCategory =>
   CATEGORY_LIST.includes(category);
