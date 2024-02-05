@@ -37,3 +37,5 @@ export interface PicPost {
 }
 
 export type Theme = 'light' | 'dark';
+
+export type PostCategory = 'all' | 'tech' | 'essay' | 'review';

@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'gatsby';
 
-import Utterances from './Utterance';
 import { BlogPost } from '../../types';
 import {
   personalSectionStyle,
@@ -87,7 +86,6 @@ function ByLine({ postSlugs, currentSlug, title }: Props) {
           </Link>
         </div>
       </div>
-      <Utterances />
     </div>
   );
 }

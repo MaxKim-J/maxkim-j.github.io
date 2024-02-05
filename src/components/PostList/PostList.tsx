@@ -1,18 +1,17 @@
-import React, { useContext } from 'react';
-import { Link } from 'gatsby';
+import React from 'react';
 
-import { categoryContext } from '../../context/categoryContext';
 import { type BlogPosts } from '../../types';
 import PostLink from './PostLink';
 
 import { orderedListStyle } from './PostList.css';
+import { useCategoryStore } from '../../store/categoryStore';
 
 interface Props {
   postList: BlogPosts;
 }
 
 function PostList({ postList }: Props) {
-  const { category } = useContext(categoryContext);
+  const category = useCategoryStore((state) => state.category);
 
   const refinedPostList = postList.filter(({ frontmatter }) => {
     if (category === 'all') {
