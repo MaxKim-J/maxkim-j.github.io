@@ -8,3 +8,4 @@ V2
 - vanilla-extract
 - css
 - mdx
+- zustand
