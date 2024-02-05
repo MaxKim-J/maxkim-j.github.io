@@ -28,7 +28,6 @@ export default function PostPage({ data: { post, postSlugList } }: Props) {
 }
 
 export const Head = (data: Props) => {
-  console.info(data.data.post.frontmatter);
   const { title, description } = data.data.post.frontmatter;
   const thumbnail = data.data.post.frontmatter?.thumbnail?.childImageSharp.fluid.src ?? undefined;
 
