@@ -43,7 +43,7 @@ webpack loader는 특정 확장자를 명시하고 이에 대해 필요한 로�
 
 [두 가지 경우에 결과가 같습니다.](https://stackoverflow.com/questions/32234329/what-is-the-loader-order-for-webpack) 수직으로 로더 전체 배열 안에 나열하면 아래 오는게 먼저 적용되고, 수평으로 test와 함께 있는 loaders 배열에 적용하면 뒤에 오는게 먼저 적용됩니다.
 
-함수를 연달아 감싼다고 이해하면 쉽습니다. `ts-loader(babel-loder(bundle))` 이런 식으로요. 그래서 SCSS로 스타일링을 할 경우 로더로 처리할 때 `css-loader` `sass-loader` 이 순서로 둡니다.
+함수를 연달아 감싼다고 이해하면 쉽습니다. `babel-loader(ts-loder(bundle))` 이런 식으로요. 그래서 SCSS로 스타일링을 할 경우 로더로 처리할 때 `css-loader` `sass-loader` 이 순서로 둡니다.
 
 두번째 방법이 더 깔끔하다는 생각이 들었습니다. 프로젝트에 어떤 자원을 어떻게 처리할 것인지를 한 객체 안에 더 잘 표현하는 방식인 것 같기도 하고요.
 

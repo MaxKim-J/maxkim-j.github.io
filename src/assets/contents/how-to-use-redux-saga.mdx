@@ -18,11 +18,9 @@ Redux에서의 비동기 로직 작성을 가능하게 해주는 Redux Saga가 *
 
 ## Saga를 쓰는/쓰지 않는 이유
 
-```plain
-store 만들기 => action 선언하기 => action, payload 리턴하는 함수 만들기 => reducer 함수 만들기
-=> 비동기 로직이라면 이 과정 \* 3(fetch,success,failure) => store에 비동기 데이터 저장하는 Saga 작성하기
-=> 컴포넌트에서 사용하기
-```
+> `store 만들기` => `action 선언하기` => `action, payload 리턴하는 함수 만들기` => `reducer 함수 만들기`
+> => `비동기 로직이라면 이 과정 3번 반복(fetch,success,failure)` => `store에 비동기 데이터 저장하는 Saga 작성하기`
+> => `컴포넌트에서 사용하기`
 
 솔직히 말하면 이 과정이 쓸데없는 낭비라고 생각했던 적이 있습니다. **꼭 나중에 또 쓸 것도 아닌데 비동기 데이터를 전부 redux store에 모아두는 거지?** 그냥 컴포넌트단에서 async await 하면 되는데... 타이핑은 왜 이렇게 많지?
 

@@ -22,7 +22,7 @@ tags:
 
 서버에서 데이터를 빌려(borrow)서 가장 최신의 버전을 보여주는 책임만이 클라이언트에 존재한다는 말로, 데이터 소유권에 따른 책임을 명확히 하고 있습니다. 이 구분이 라이브러리 존재의 시작점이 되기도 하고, 개발의 로드맵이 어디에 집중할지도 명시가 되는 것 같습니다.
 
-<br/>
+<br />
 
 > (Don't use the queryCache as a local state manager) If you tamper with the queryCache (`queryClient.setQueryData`), it should only be for optimistic updates or for writing data that you receive from the backend after a mutation. Remember that every background refetch might override that data, so [use](https://reactjs.org/docs/hooks-state.html) [something](https://zustand.surge.sh/) [else](https://redux.js.org/) for local state.
 
@@ -38,20 +38,17 @@ tags:
 
 어떤 데이터 변경(transform)들은 백엔드에서 하는게 더 맞을 때도 있습니다. 또한 데이터를 빌리는 클라이언트가 여러개라면 백엔드에서 단일성을 보장하는게 더 좋을 때도 있습니다. 백엔드의 데이터를 변경하는 로직이 클라이언트에 많이 들어있을수록 어디서 뭔 일이 일어나는지 판단하기 항상 어려워졌습니다.
 
-<br/>
-
+<br />
 
 > But if you pass a selector, you are now only subscribed to the result of the selector function. This is quite powerful,
 
 selector는 query가 watch해야할 변경점을 좁히는 역할도 같이 합니다.
 
-<br/>
-
----
+<br />
 
 사실 이 글에는 데이터를 변경하는 장소(backend, queryFn, render function, select) 이렇게 보여주고 `select`가 가장 단점이 적어 보이지만
 
-경험상 백엔드의 응답을 query의 결과값에 그대로 넣어야 좋은 상황이 꽤 많았습니다. query와 특정 백엔드 데이터를 1:1로 대응시키는게 더 단순한 멘탈 모델이고, 여러 작업자가 문서화 등으로 데이터의 생김새를 쉽게 알 수 있는 백엔드의 응답값이라는 공동의 이해 위에서 작업을 하는게 더 나았어요. `select`는 쉽게 암묵지가 되거나 `select`가 설정된 query로는 특정 기능에서 원하는 데이터를 가져올 수가 없어서 중복 패칭을 유발할 수도 있었습니다.
+경험상 백엔드의 응답을 query의 결과값에 그대로 넣어야 좋은 상황이 꽤 많았습니다. query와 특정 백엔드 데이터를 1:1로 대응시키는게 더 단순한 멘탈 모델이고, 여러 작업자가 문서화 등으로 데이터의 생김새를 쉽게 알 수 있는 백엔드의 응답값이라는 공동의 이해 위에서 작업을 하는게 더 나았어요. `select`는 쉽게 암묵지가 되거나 `select`가 설정된 query를 훅으로 말아서 사용하면 특정 기능에서 원하는 데이터를 가져올 수가 없어서 중복 패칭을 유발할 수도 있었습니다.
 
 그래서 결국 백엔드의 응답을 query에 살려두고, 이 query에서 나온 응답을 `select`해주는 경우가 확장성이 더 나을 수도 있다는 생각은 들었습니다. 이런 전제라면 원래의 query에서 나온 응답을 `select`하기 위해 또 query를 쓰는게 오버킬처럼 느껴질 수도 있어서 render function에서의 데이터 transform도 빈번하게 이뤄질 수 있을 것 같네요.
 
@@ -63,7 +60,7 @@ selector는 query가 watch해야할 변경점을 좁히는 역할도 같이 합�
 
 React와 관련된 최적화 썰에서 항상 "최적화를 하자"와 "발적화를 하지말자"는 항상 같이 나오는 말인 것 같습니다. [Kent Dodds의 좋은 글도 레퍼런스](https://kentcdodds.com/blog/fix-the-slow-render-before-you-fix-the-re-render)를 걸어놨습니다.
 
-<br/>
+<br />
 
 > I'm quite proud of this feature, given that it was my first major contribution to the library. If you set `notifyOnChangeProps` to `'tracked'`, React Query will keep track of the fields you are using during render, and will use this to compute the list.
 
@@ -73,8 +70,7 @@ v4부터 기본으로 적용되었던 tracked query는 정말 잘 만든 기능�
 
 요런 특성의 기능들을 잘 파악해서 라이브러리 안으로 깔끔하게 가져오는 것이 라이브러리 구현 관점의 미덕이 아닌가... 하는 생각이 듭니다.
 
-<br/>
-
+<br />
 
 > - If you use [object rest destructuring](https://github.com/tc39/proposal-object-rest-spread/blob/6ee4ce3cdda246746fc46fb149bb8b43c28e704d/Rest.md), you are effectively observing all fields. Normal destructuring is fine, just don't do this:
 
@@ -88,7 +84,7 @@ v4부터 기본으로 적용되었던 tracked query는 정말 잘 만든 기능�
 
 `status`에 대한 설명입니다. v4부터 바뀌었던 [`status` 와 `fetchStatus` 의 분화로 설명하기 좋아진 것 같습니다.](https://maxkim-j.github.io/posts/tanstack-query-v4-preview#the-idle-state-has-been-removed) `status`는 `data`의 유무를 기준으로 하기에 멘탈 모델이 단순합니다. v5부터는 `loading`이 `pending`으로 이름이 바뀌었습니다. 주로 pending이 데이터가 없음을 더 잘 나타내는 네이밍이라는 [이유라서 그런 듯 합니다.](https://github.com/TanStack/query/discussions/4252) promise의 pending 상태를 생각해보면 말이 됩니다.
 
-<br/>
+<br />
 
 > This is even more relevant when we take into account that React Query will retry failed queries three times per default with exponential backoff, so it might take a couple of seconds until the stale data is replaced with the error screen. If you also have no background fetching indicator, this can be really perplexing. This is why I usually check for data-availability first:
 
@@ -115,19 +111,19 @@ return 'Loading...';
 
 백엔드 API를 모킹할 수 있는 좋은 방식을 설명하고 그 다음에 RQ에 한정된 부분을 설명하는 글 전개 방식이 명확해서 좋았습니다. 그리고 테스트 꿀팁들이 있어요.
 
-<br/>
+<br />
 
 > It's one of the most common "gotchas" with React Query and testing: The library defaults to three retries with exponential backoff, which means that your tests are likely to timeout if you want to test an erroneous query. The easiest way to turn retries off is, again, via the `QueryClientProvider`.
 
 테스트용 `QueryClient` 는 `retry` 옵션을 끄자는 말입니다.
 
-<br/>
+<br />
 
 > The best advice I can give you for this problem is: Don't set these options on `useQuery` directly. Try to use and override the defaults as much as possible, and if you really need to change something for specific queries, use [queryClient.setQueryDefaults](https://react-query.tanstack.com/reference/QueryClient#queryclientsetquerydefaults).
 
 테스트의 상황에 맞게 특정 query의 옵션을 바꿔줄 수 있는 API인 `setQueryDefaults` 가 있습니다. 이건 테스트가 아닌 애플리케이션에서 바로 사용하면 설정값이 어디서 들어왔는지 모르게 되서 작업자의 뇌정지를 유발할 수도 있을 것 같다는 생각이 들었습니다.
 
-<br/>
+<br />
 
 > Since React Query is async by nature, when running the hook, you won't immediately get a result. It usually will be in loading state and without data to check
 
@@ -141,7 +137,7 @@ return 'Loading...';
 
 타입 추론을 최대한 이용하려면 `queryFn`에 들어가는 함수에 리턴 타입을 주고, 에러 타입은 제네릭을 주지 않으면 타입을 알 수 없으니(`unknown`) 직접 핸들하는 방식으로 사용해야 합니다.
 
-<br/>
+<br />
 
 > It will further help TypeScript to narrow types when using the status field or one of the status booleans, which it cannot do if you use destructuring:
 
@@ -153,7 +149,7 @@ return 'Loading...';
 
 React Query가 명시적으로 웹소켓을 지원하기위한 특정 구현을 가지고 있지 않음을 말하는데, promise 기반으로만 동작시켜주면 되기 때문입니다. 사실 이런 컨셉 때문에 데이터를 어디에서 어떻게 받아오든 상관이 없겠죠. 요걸 짚어준게 좋았습니다.
 
-<br/>
+<br />
 
 > This goal overlaps a lot with WebSockets, which update your data in real-time. Why would I need to refetch at all if I just manually *invalidated* because the server just told me to do so via a dedicated message?
 
@@ -167,8 +163,7 @@ React Query가 명시적으로 웹소켓을 지원하기위한 특정 구현을 
 
 query를 선언적으로 작성하고 다루는데 필요한 사용 방식으로 이해됩니다. [Treat the query key like a dependency array](https://tkdodo.eu/blog/practical-react-query#treat-the-query-key-like-a-dependency-array) 에서 이야기 했던 설명과 이어지기도 합니다.
 
-<br/>
-
+<br />
 
 > Manual Interactions with the Query Cache are where the structure of your Query Keys is most important. Many of those interaction methods, like [invalidateQueries](https://react-query.tanstack.com/reference/QueryClient#queryclientinvalidatequeries) or [setQueriesData](https://react-query.tanstack.com/reference/QueryClient#queryclientsetqueriesdata) support [Query Filters](https://react-query.tanstack.com/guides/filters#query-filters), which allow you to fuzzily match your Query Keys.
 
@@ -176,35 +171,31 @@ query를 선언적으로 작성하고 다루는데 필요한 사용 방식으로
 
 그런데 뭔가 실제 개발할때 많이 (혹은 엄밀하게) 써보질 않았습니다. 앱 내에서 `queryKey`를 제대로 관리하지 못하는 경우, 혹은 뭉뚱그려서 그냥 이것저것 다 invalidate 시켰던 경우가 생각났습니다. 그만큼 사용자 경험을 저하시켰을 텐데 반성이 됩니다.
 
-<br/>
-
+<br />
 
 > I have found these strategies to work best when your App becomes more complex, and they also scale quite well. You definitely don't need to do this for a Todo App 😁.
 
 tkdodo님의 기술 글쓰기가 편안하다고 느껴지는 부분들 중 하나는, 이렇게 특정 프랙티스에 대한 전제를 아주 잘 짚고 넘어가는 부분이 많아서인 것 같습니다.
 
-<br/>
+<br />
 
 > Yes, Query Keys can be a string, too, but to keep things unified, I like to always use Arrays. React Query will internally convert them to an Array anyhow, so:
 
 v4로 넘어오면서 배열 `queryKey`만 쓸 수 있도록 되었는데, string을 허용할 때에도 `queryKey`는 배열로 변형되는 구조였다고 합니다.
 
-<br/>
-
+<br />
 
 > Structure your Query Keys from *most generic* to *most specific*, with as many levels of granularity as you see fit in between. Here's how I would structure a todos list that allows for filterable lists as well as detail views:
 
 ```ts
-['todos', 'list', { filters: 'all' }]
-[('todos', 'list', { filters: 'done' })]
-[('todos', 'detail', 1)]
-[('todos', 'detail', 2)]
+['todos', 'list', { filters: 'all' }][('todos', 'list', { filters: 'done' })][
+  ('todos', 'detail', 1)
+][('todos', 'detail', 2)];
 ```
 
 인지적으로도 더 좋은 방법으로 보여지네요. [제공된 예제](https://tkdodo.eu/blog/effective-react-query-keys#structure)도 `queryKey`가 이런 식으로 짜지지 않았다면 더 선언적으로 보이지 않았을 것 같습니다.
 
-<br/>
-
+<br />
 
 > That's why I recommend one Query Key factory per feature. It's just a simple object with entries and functions that will produce query keys, which you can then use in your custom hooks. For the above example structure, it would look something like this:
 
@@ -226,15 +217,13 @@ const todoKeys = {
 
 query를 명시적으로 처리하기 위해 api 요청했던 URL을 떠올려야 한다거나... 하는 프랙티스는 뇌정지를 유발하기가 쉬우니, 서버의 정보를 토대로 만들어진 `queryKey`를 팩토리로 만들고 쉽게 가져다 쓸 수 있는 형태는 좋은 것 같습니다. 팩토리를 만들지 않는다면, 관리가 유용하게끔 `queryKey`에 들어갈 것들을 간단하게 잘 만들어 써야 하겠습니다. 결국 인지의 용이함 이야기인 것 같기도 하고 그렇네요.
 
----
-
 역시 저만 관심있는 주제는 아니었는지, 댓글창에 여러 맥락의 질문들이 이루어지고 있던게 흥미로웠습니다. 눈에 띄던 몇 개를 가져와보자면
 
 > if every key starts with the name of the feature, there shouldn't be any clashes unless you have features with the same name. It was rather a problem for us to have global query keys, because they can get quite large, and if you then copy-paste one line but don't change the query key prefix (it happens!), you'll get key duplications which are very hard to spot. I've been there and it took me hours to find
 
 `queryKey` collocation해도 중복될 수 있으니 글로벌하게 관리하면 어떨까? 하는 질문에 그렇게 하면 너무 커지고 알아보기도 어려워지니 granuality를 보장하는 방식으로 `queryKey`가 만들어지는게 중요하다는 답변입니다.
 
-<br/>
+<br />
 
 > query key factory concept is very useful! how about using api baseUrl (with path parameter, query parameter) to query key? 👀
 
@@ -260,7 +249,7 @@ export const useTodos = () => {
 
 여러개의 파라미터가 필요한 데이터 요청의 경우 `queryFn`에 param을 계속 넣어주는 방식으로 확장을 시킬 수 있는데, 이렇게 하면 `queryFn`의 인자와 `queryKey` 배열을 동시에 수정해야 하니 너무 많아졌을 때 관리에 고충이 생기고 실수할 여지가 생기니 `queryFunctionContext` 패턴을 써보면 좋다 - 정도로 이해가 되었습니다.
 
-<br/>
+<br />
 
 > The `QueryFunctionContext` is an object that is passed as argument to the `queryFn`
 
@@ -293,7 +282,7 @@ export const useTodos = () => {
 
 사실 `placeholderData`라는게 있는지 몰랐는데요. `placeholderData`와 `initialData`는 주어지는 순간 `loading` 상태를 건너뛰고 바로 `success`로 직행한다는 공통점이 있습니다.
 
-<br/>
+<br />
 
 > For each Query Key, there is only one cache entry. This is kinda obvious because part of what makes React Query great is the possibility to share the same data "globally" in our application.
 
@@ -305,7 +294,7 @@ export const useTodos = () => {
 
 그것은 RQ의 동작이 query를 기반으로 하는 것이 아니라 query observer를 기반으로 동작하기 때문이겠구나 싶네요. query와 query observer는 다릅니다.
 
-<br/>
+<br />
 
 > `InitialData` works on cache level, while `placeholderData` works on observer level. This has a couple of implications:
 
@@ -315,13 +304,13 @@ export const useTodos = () => {
 - **Background refetches**: `initialData`는 `staleTime`과 연관이 있지만 `placeholderData`는 없다.
 - **Error Transitions**: `initialData` 확보시의 실패는 일반적인 background query error처럼 처리되어 기존의 캐시 데이터가 남아있으나, `placeholderData`는 따로 에러 처리가 되지 않고 캐시 데이터는 `undefined`로 남는다.
 
-<br/>
+<br />
 
 > I personally like to use `initialData` when pre-filling a query from another query, and I use `placeholderData` for everything else.
 
 `initialData`가 여러 observer들로 하여금 같은 데이터를 가지고 있을 수 있게끔 "전파"한다고 이해할 수도 있어 보이네요.
 
-<br/>
+<br />
 
 > What do you think will happen in each situation? I've hidden the answers so that you can try to come up with them for yourselves if you want before expanding them.
 
@@ -337,7 +326,7 @@ React Query는 Data fetching library가 아니라 **Async state manager입니다
 
 RQ가 저장할 수 있는 상태가 Promise를 통해 제공되는 이상, 사실 데이터 패칭이 이루어지지 않아도 어떤 데이터든지 RQ는 가지고 있을 수 있습니다. 아까 웹 소켓의 사례를 생각해보아도 맞는 말이죠.
 
-<br/>
+<br />
 
 > Because React Query manages async state (or, in terms of data fetching: server state), it assumes that the frontend application doesn't "own" the data. And that's totally right. If we display data on the screen that we fetch from an API, we only display a "snapshot" of that data
 
@@ -347,7 +336,7 @@ RQ가 저장할 수 있는 상태가 Promise를 통해 제공되는 이상, 사�
 
 Redux에서는 상태는 그냥 상태일 뿐이고 비동기 데이터를 처리하는 방식은 미들웨어 등의 다른 방식으로 직접 만들어줘야 했었죠.
 
-<br/>
+<br />
 
 > The principle is that stale data is better than no data, because no data usually means a loading spinner, and this will be perceived as "slow" by users. At the same time, it will try to perform a background refetch to revalidate that data.
 
@@ -355,7 +344,7 @@ Redux에서는 상태는 그냥 상태일 뿐이고 비동기 데이터를 처�
 
 이 포스팅에서는 RQ는 상태 관리 라이브러리다! 라고 말하고는 있지만 상태 관리 라이브러리처럼만 쓰거나 기대하면 안 된다는 생각도 동시에 드는 부분입니다. 요 단락 아래에서 나오는 `smart refetches` , `staleTime` 과 같은 기능 설명들이 그런 이야기를 하고 있다고 느껴져요.
 
-<br/>
+<br />
 
 > This is mainly because `staleTime` defaults to *zero*, which means that every time you e.g. mount a new component instance, you will get a background refetch.
 
@@ -363,7 +352,7 @@ Redux에서는 상태는 그냥 상태일 뿐이고 비동기 데이터를 처�
 
 최대한 오래 fresh한 상태로 유지하게 한 다음 필요한 사용처에 명시적인 설정값으로 refetch, Invalidation을 만들어내는 것이 더 최적점을 찾기 쉬운 프랙티스로 생각이 들긴 합니다. 해보진 않아서 짐작만으로 말하는 거긴 하지만요.
 
-<br/>
+<br />
 
 > What's going on here, I just fetched my data 2 seconds ago, why is there another network request happening? This is insane!
 
@@ -371,7 +360,7 @@ Redux에서는 상태는 그냥 상태일 뿐이고 비동기 데이터를 처�
 
 같은 `queryKey`를 가진 query를 다른 옵션 없이 2개를 연달아 React 컴포넌트 안에서 호출하면 페칭도 2번 이루어집니다. 데이터가 fresh한 상태로 남아있어야 페칭이 일어나지 않습니다.
 
-<br/>
+<br />
 
 > That changed a lot when hooks came around. You can now `useContext`, `useQuery` or `useSelector` (if you're using redux) everywhere, and thus inject dependencies into your component. You can argue that doing so makes your component more coupled. You can also say that it's now more independent because you can move it around freely in your app, and it will just work on its own.
 
@@ -383,7 +372,7 @@ Redux에서는 상태는 그냥 상태일 뿐이고 비동기 데이터를 처�
 
 에러도 observer 단위로 처리되기 때문에, onError 콜백도 observer의 개수만큼 호출됩니다.
 
-<br/>
+<br />
 
 > The global callbacks need to be provided when you create the `QueryCache`, which happens implicitly when you create a `new QueryClient`, but you can also customize that:
 

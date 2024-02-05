@@ -14,7 +14,7 @@ React-Query는 React앱에서 비동기 로직을 쉽게 다루게 해주는 라
 다만 아직 한국어 자료는 많이 없는 것 같아서, 이 포스팅이 React-Query를 한번 살펴보고 싶으신 분들께
 도움이 되었으면 합니다.
 
-<img src="https://github.com/tannerlinsley/react-query/raw/master/media/repo-dark.png" />
+<img src="../images/react-query-preview/main.png" width="400" />
 
 > 포스팅의 내용은 모두 [React Query Docs](https://react-query.tanstack.com/)의 내용과 제 사견으로 이루어져 있습니다.  
 > 굉장히 러프하게 정리한 내용을 블로그 글로 바로 옮겨서, 기존 블로그 포스팅과 말투도 좀 다르고 이해하기에 부족하거나 빠진 내용이 있을 수 있습니다. 지적 부탁드립니다!
@@ -332,7 +332,7 @@ const { status, data, error } = useQuery(['todo', { id: 5 }], fetchTodoByID);
 
 **그럼에도 디버깅이 용이하다** : Saga에서 그 엄청 많은 액션들을 다 작성하더라도 가성비가 극악까지는 아니었던 이유 중 하나는 디버깅이 쉬워진다는 장점 때문이었다. Redux Devtool 쓰면 비동기 요청의 실행, 성공, 실패까지 액션으로 다 찍히고 store의 diff도 눈으로 확인하기 너무 쉽다. 하지만 React Query도 자체 데브툴을 제공하고(크롬 익스텐션 식으로 나온건 아니고 컴포넌트에 직접 넣어주긴 해야한다) 쿼리의 호출 상태를 바로 브라우저에서 확인이 가능하니, 디버깅을 유용하게 하고자 그 많은 액션을 작성할 필요가 없어졌다.
 
-<img src="/images/react-query-preview/dev-tool.png" width="400" />
+<img src="../images/react-query-preview/dev-tool.png" width="400" />
 
 **Redux 자체를 좀 더 취지에 맞게 사용하게 해준다** : 서버 상태와 클라이언트 상태의 특성이 다르니 다르게 관리되어야 한다는 React Query의 주장에 동감하는 편이다. Redux Saga를 쓰며 비동기 로직을 관리하면서도 모든 비동기 요청으로 받아온 데이터를 전부 스토어에 저장해야 하는지, 여러 컴포넌트에서 동시에 데이터가 필요한 경우에는 어떻게 해야 하는지 고민이 될 때가 많았다. 확실히 React Query를 살펴보고 나니, React Query가 이런 서버의 데이터를 좀 더 효율적으로 관리할 수 있는 방법 중 하나가 될 수 있을 것 같다.
 
