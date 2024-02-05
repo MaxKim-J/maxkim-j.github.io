@@ -120,18 +120,27 @@ p code {
 
 .mdx-post blockquote {
   margin: 30px 0;
-  font-size: 30px;
   padding: 0px 18px;
   border-left: 3px solid var(--code-quote-blockquote-border-color);
-  font-style: oblique 20deg;
+
   word-break: break-all;
+  background-color: var(--blockquote-background-color);
 }
 
 .mdx-post blockquote p {
-  font-size: 19px;
-  margin: 35px 0;
+  padding: 12px 0px;
+  font-size: 17px;
   @media (max-width: 750px) {
-    font-size: 18px;
+    font-size: 16px;
+  }
+}
+
+.mdx-post blockquote code {
+  font-style: normal;
+  background-color: var(--blockquote-code-background-color);
+  font-size: 14px;
+  @media (max-width: 750px) {
+    font-size: 13px;
   }
 }
 

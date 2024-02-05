@@ -6,6 +6,8 @@ body[data-theme='light'] {
   --font-color: #000000;
   --line-color: #000000;
   --background-color: #ffffff;
+  --blockquote-background-color: #f9f9f9;
+  --blockquote-code-background-color: #efefef;
   --code-quote-background-color: #f2f2f2;
   --code-quote-blockquote-border-color: #000000;
 }
@@ -14,6 +16,8 @@ body[data-theme='dark'] {
   --font-color: #ffffff;
   --line-color: #ffffff;
   --background-color: #232323;
+  --blockquote-background-color: #383838;
+  --blockquote-code-background-color: #444444;
   --code-quote-background-color: #6b6b6b;
   --code-quote-blockquote-border-color: #ffffff;
 }
