@@ -6,10 +6,10 @@ category: tech
 tags:
   - react
   - javascript
+lang: ko
 ---
 
-
-1년도 더 전에 React Query를 살펴보는 포스팅을 작성했는데요. 시간이 지나서 v4가 나왔고 이름도 Tanstack Query로 바뀌었습니다. 
+1년도 더 전에 React Query를 살펴보는 포스팅을 작성했는데요. 시간이 지나서 v4가 나왔고 이름도 Tanstack Query로 바뀌었습니다.
 
 주요한 breacking change 몇 개를 Tanstack Query 공식문서의 [Migration to React Query 4](https://tanstack.com/query/latest/docs/react/guides/migrating-to-react-query-4)의 꼭지들을 토대로 간략히 살펴봅니다. 번역과 패러프레이징으로 독스의 내용을 옮기고 사족을 붙일 예정입니다.
 
@@ -19,27 +19,26 @@ tags:
 
 v4에서는 기존 `useQuery`의 리턴값 중 하나였던 `status`가 `fetchStatus`와 `status`로 나뉩니다.
 
-- **`status`**:  `data`, 쿼리 결과값에 대한 정보를 나타냄
-	- loading: 아직 data가 없음
-	- error: data는 없고 에러가 있음
-	- success: data가 있음
+- **`status`**: `data`, 쿼리 결과값에 대한 정보를 나타냄
+  - loading: 아직 data가 없음
+  - error: data는 없고 에러가 있음
+  - success: data가 있음
 - **`fetchStatus`**: `queryFn`에 대한 정보를 나타냄
-	- idle: 쿼리가 아무것도 안하고 있는 상태
-	- paused: 쿼리가 패칭을 시도했지만 일시중지된 상태. network mode와 연관
-	- fetching: 쿼리가 패칭중인 상태
+  - idle: 쿼리가 아무것도 안하고 있는 상태
+  - paused: 쿼리가 패칭을 시도했지만 일시중지된 상태. network mode와 연관
+  - fetching: 쿼리가 패칭중인 상태
 
 독스에서는 Background refetch나 stale-while-validate 동작이 이 2가지 상태의 조합으로 모두 설명될 수 있다고 말합니다.
 
 `status` 하나였을 때 표현이 애매한 상황이 있었던 것이었는데, 이것이 `status`가 분화된 이유로 보여져요. 아래 인용은 독스에서 가져온 상황들이고, 이에 대응되는 애매함입니다.
 
-> query가 success 상태이면 fetchStatus는 idle인 상태가 보통이겠지만, 백그라운드 패칭이 발생하고 있어서 fetching인 상태일 수 있습니다. 
+> query가 success 상태이면 fetchStatus는 idle인 상태가 보통이겠지만, 백그라운드 패칭이 발생하고 있어서 fetching인 상태일 수 있습니다.
 
 v3에서는 background refetch 상황에서 `status`가 `loading`인지를 평가해 통해 패칭이 진행되고 있다는 것을 [제대로 알 수 없어](https://react-query-v3.tanstack.com/guides/background-fetching-indicators#_top) `isFetching` 값을 사용해야 했었습니다. `status`가 query의 상태를 제대로 표현할 수 없었던 것이죠.
 
-> query가 마운트된 이후 데이터가 없는 경우는 status가 loading이고 fetchStatus가 fetching인 경우가 있을 수도 있지만, network connection에 따라서 paused된 경우일 수 있습니다. 
+> query가 마운트된 이후 데이터가 없는 경우는 status가 loading이고 fetchStatus가 fetching인 경우가 있을 수도 있지만, network connection에 따라서 paused된 경우일 수 있습니다.
 
 v3에서는 첫번째 요청을 실패하면 네트워크 연결이 없을 때 refetch를 일시 중지합니다. 연결을 다시 시작할때까지 `status`는 `loading` [상태로 유지되는데요.](https://tkdodo.eu/blog/offline-react-query) 이런 상황에서 `status`는 쿼리가 일시중지된 상태임을 나타내지 못합니다.
-
 
 ## [Queries and mutations, per default, need network connection to run](https://tanstack.com/query/latest/docs/react/guides/migrating-to-react-query-4#queries-and-mutations-per-default-need-network-connection-to-run)
 
@@ -50,48 +49,48 @@ v4에서는 query와 mutation의 명시적인 오프라인 모드를 제공하�
 v3에서의 동작을 원한다면, `networkMode` 설정은 다음과 같이 바꿀 수 있습니다.
 
 ```tsx
-new QueryClient({ 
+new QueryClient({
   defaultOptions: {
     queries: {
       networkMode: 'offlineFirst',
     },
     mutations: {
       networkMode: 'offlineFirst',
-    },  
+    },
   },
-})
+});
 ```
 
 networkMode의 설정값은 3가지입니다.
 
-- **`online`**: 오프라인 상태에서 network connection이 있기 전까지 fetch를 하지 않고, 이때 쿼리의 상태를 `fetchStatus:paused` 로 표시합니다. 
-- **`always`**: 오프라인 상태에서도 온라인처럼 fetch를 시도합니다. 오프라인 상태에서 요청을 보내는 것이니 `status:error`  상태가 될 겁니다. 
-- **`offlineFirst`**: v3에서의 동작과 같습니다. queryFn 최초 호출 후 retry를 멈춥니다.  
+- **`online`**: 오프라인 상태에서 network connection이 있기 전까지 fetch를 하지 않고, 이때 쿼리의 상태를 `fetchStatus:paused` 로 표시합니다.
+- **`always`**: 오프라인 상태에서도 온라인처럼 fetch를 시도합니다. 오프라인 상태에서 요청을 보내는 것이니 `status:error` 상태가 될 겁니다.
+- **`offlineFirst`**: v3에서의 동작과 같습니다. queryFn 최초 호출 후 retry를 멈춥니다.
 
 독스와 tk-dodo님의 블로그 글에서, offline query를 설명할 때 흥미로운 사족이 붙어있는데요.
 
->Even though React Query is an Async State Manager that can be used for anything that produces a Promise, it is most often used for data fetching in combination with data fetching libraries. ([#](https://tanstack.com/query/latest/docs/react/guides/migrating-to-react-query-4#queries-and-mutations-per-default-need-network-connection-to-run))
+> Even though React Query is an Async State Manager that can be used for anything that produces a Promise, it is most often used for data fetching in combination with data fetching libraries. ([#](https://tanstack.com/query/latest/docs/react/guides/migrating-to-react-query-4#queries-and-mutations-per-default-need-network-connection-to-run))
 
->I've said it time and time again - React Query is an [async state manager](https://tkdodo.eu/blog/react-query-as-a-state-manager). As long as you give it a Promise, resolved or rejected, the library is happy. Doesn't matter where that Promise comes from. ([#](https://tkdodo.eu/blog/offline-react-query))
+> I've said it time and time again - React Query is an [async state manager](https://tkdodo.eu/blog/react-query-as-a-state-manager). As long as you give it a Promise, resolved or rejected, the library is happy. Doesn't matter where that Promise comes from. ([#](https://tkdodo.eu/blog/offline-react-query))
 
-network mode는 오직 data fetching과만 관련된 유스케이스입니다. 그래서 `networkMode`와 같은 옵션을 제공한다는 것이 Tanstack Query가 표방하는 "Async State Manager"의 컨셉과 아주 맞는 것은 아니라는 설명을 하고싶은게 아닐까...했습니다. 
+network mode는 오직 data fetching과만 관련된 유스케이스입니다. 그래서 `networkMode`와 같은 옵션을 제공한다는 것이 Tanstack Query가 표방하는 "Async State Manager"의 컨셉과 아주 맞는 것은 아니라는 설명을 하고싶은게 아닐까...했습니다.
 
 ## [Query Filters](https://tanstack.com/query/latest/docs/react/guides/migrating-to-react-query-4#query-filters)
 
-`queryClient`를 이용해 여러개의 조건에 맞는 쿼리들에 일괄적으로 변화를 주는 `active`, `inactive` 옵션이 `type` 하나로 통합됩니다. 
+`queryClient`를 이용해 여러개의 조건에 맞는 쿼리들에 일괄적으로 변화를 주는 `active`, `inactive` 옵션이 `type` 하나로 통합됩니다.
 
 ```tsx
 // Cancel all queries
-await queryClient.cancelQueries()
+await queryClient.cancelQueries();
 
 // Remove all inactive queries that begin with `posts` in the key
-queryClient.removeQueries({ queryKey: ['posts'], type: 'inactive' })
+queryClient.removeQueries({ queryKey: ['posts'], type: 'inactive' });
 
 // Refetch all active queries
-await queryClient.refetchQueries({ type: 'active' })
+await queryClient.refetchQueries({ type: 'active' });
 
 // Refetch all active queries that begin with `posts` in the key
-await queryClient.refetchQueries({ queryKey: ['posts'], type: 'active' })
+await queryClient.refetchQueries({ queryKey: ['posts'], type: 'active' });
 ```
 
 원래 `active`와 `inactive` 옵션값은 서로 배타적인 설정값이라 2개를 모두 설정했을 때 잘 동작하지 않는 경우가 존재했었습니다. 두개 다 false로 세팅하면 모든 쿼리가 매치되는데 이런 동작을 예상하긴 힘듭니다.
@@ -104,22 +103,20 @@ await queryClient.refetchQueries({ queryKey: ['posts'], type: 'active' })
 + type?: 'active' | 'inactive' | 'all'
 ```
 
-
 ## onSuccess is no loger called from setQueryData
 
 `onSuccess` 콜백이 `setQueryData`를 호출했을 때 더이상 호출되지 않습니다. `onSuccess` 콜백은 실질적인 요청이 발생한 후에만 호출됩니다.
 
 기존 동작에서는 `setQueryData`가 `onSuccess` 안에서 불릴 수도 있어 무한루프의 원인이 되기도 했습니다. `staleTime`과 엮였을때도, 데이터가 캐시에서 불러올 때는 `onSuccess`가 불리지 않아 예상하지 못한 방식으로 로직이 작동할 수도 있었습니다.
 
-독스에서는 또한, data가 바뀐 것을 실질적으로 구독하고 싶다면 `onSuccess`에서보단 `useEffect`를 사용하라고 권합니다. data를 `useEffect` 의존성 배열에 넣는 것이죠. 
+독스에서는 또한, data가 바뀐 것을 실질적으로 구독하고 싶다면 `onSuccess`에서보단 `useEffect`를 사용하라고 권합니다. data를 `useEffect` 의존성 배열에 넣는 것이죠.
 
 ```tsx
-const { data } = useQuery({ queryKey, queryFn })
-React.useEffect(() => mySideEffectHere(data), [data])
+const { data } = useQuery({ queryKey, queryFn });
+React.useEffect(() => mySideEffectHere(data), [data]);
 ```
 
 [structural sharing](https://tkdodo.eu/blog/react-query-render-optimizations)을 통해 아래와 같은 effect는 모든 background fetch에서 호출되지 않고 data가 진짜 바뀔 때만 호출됩니다.
-
 
 ## Tracked Query per default
 
@@ -130,11 +127,11 @@ React.useEffect(() => mySideEffectHere(data), [data])
 ```tsx
 // V3
 function User() {
-   const { data } = useQuery('user', fetchUser, {
-     notifyOnChangeProps: ['data'], // data가 바뀌었을 때만 리렌더링
-   })
-   return <div>Username: {data.username}</div>
- }
+  const { data } = useQuery('user', fetchUser, {
+    notifyOnChangeProps: ['data'], // data가 바뀌었을 때만 리렌더링
+  });
+  return <div>Username: {data.username}</div>;
+}
 ```
 
 v4부터는 이 처리가 없어도 [자체적으로 query를 proxy처리하고](https://github.com/TanStack/query/discussions/1554), 컴포넌트에서 어떤 값에 접근하는지 판단하여 해당 값을 구독하게 됩니다.
@@ -142,10 +139,10 @@ v4부터는 이 처리가 없어도 [자체적으로 query를 proxy처리하고]
 ```tsx
 // V4
 function User() {
-   // notifyOnChangeProps가 없어도 data가 바뀌었을 때만 리렌더링
-   const { data } = useQuery('user', fetchUser)
-   return <div>Username: {data.username}</div>
- }
+  // notifyOnChangeProps가 없어도 data가 바뀌었을 때만 리렌더링
+  const { data } = useQuery('user', fetchUser);
+  return <div>Username: {data.username}</div>;
+}
 ```
 
 이제 notifyOnChangeProps 옵션으로는 쿼리 리턴값 이름으로 구성된 배열을 넘길 필요는 없고, 모든 리턴값들을 워치하는 것이 필요하다면 'all' 값을 넘기면 됩니다.
@@ -155,36 +152,40 @@ function User() {
 중요도는 떨어진다고 생각합니다만 한 번 보고 가시면 좋습니다.
 
 - [Bailing out of updates with setQueryData](https://tanstack.com/query/latest/docs/react/guides/migrating-to-react-query-4#bailing-out-of-updates-with-setquerydata)
+
 ```tsx
-queryClient.setQueryData(['todo', id], previousTodo =>
+queryClient.setQueryData(['todo', id], (previousTodo) =>
   previousTodo ? { ...previousTodo, done: true } : undefined
-)
+);
 ```
+
 setQueryData에 callback을 넘겨 쿼리 데이터를 업데이트할때, 콜백이 undefined를 리턴하면 데이터를 업데이트하지 않게 됩니다. 위의 예시처럼 조건적으로 데이터를 업데이트해야 할때 활용할 수 있을 것 같군요.
 
 - [Consistent behvior for `cancelRefetch`](https://tanstack.com/query/latest/docs/react/guides/migrating-to-react-query-4#consistent-behavior-for-cancelrefetch) : imperative하게 쿼리 데이터를 업데이트할 때의 최적화 기능을 제공합니다.
 - [PersistQueryClient and the corresponding persister plugins are no longer experimental and have been renamed](https://tanstack.com/query/latest/docs/react/guides/migrating-to-react-query-4#persistqueryclient-and-the-corresponding-persister-plugins-are-no-longer-experimental-and-have-been-renamed): 외부 스토리지와 쿼리 데이터를 sync하는 플러그인인데요, 더이상 exprerimental이 아닙니다.
 - [Mutation Cache Garbage Collection](https://tanstack.com/query/latest/docs/react/guides/migrating-to-react-query-4#mutation-cache-garbage-collection): Mutation에서도 Query처럼 GC를 하고, cacheTime을 줄 수 있다고 합니다. 근데 mutation cache를 유지해서 어떻게 쓰는건지는 아직 잘 모르겠습니다.
 
-
 ## 인터페이스와 라이브러리 환경 변화
 
 - `useQuery`의 `queryKey`로 이제 배열만 넘길 수 있습니다. [#](https://tanstack.com/query/latest/docs/react/guides/migrating-to-react-query-4#query-keys-and-mutation-keys-need-to-be-an-array)
+
 ```diff
 - useQuery('todos', fetchTodos)
 + useQuery(['todos'], fetchTodos)
 ```
 
 - `useQueries`에 여러개 쿼리를 넘길 때 방식의 변화가 있습니다. [#](https://tanstack.com/query/latest/docs/react/guides/migrating-to-react-query-4#new-api-for-usequeries)
+
 ```diff
 - useQueries([{ queryKey1, queryFn1, options1 }, { queryKey2, queryFn2, options2 }])
 + useQueries({ queries: [{ queryKey1, queryFn1, options1 }, { queryKey2, queryFn2, options2 }] })
 ```
 
 - `queryFn`이 `undefined`를 리턴할 수 없도록 타입, 런타임 단에서 동시에 막습니다. [#](https://tanstack.com/query/latest/docs/react/guides/migrating-to-react-query-4#undefined-is-an-illegal-cache-value-for-successful-queries)
+
 ```tsx
 // ❌
-useQuery(['key'], () => axios.get(url).then(result => console.log(result.data)))
+useQuery(['key'], () => axios.get(url).then((result) => console.log(result.data)));
 ```
 
 - SSR에 필요한 API들을 모아놓은 기존 react-query/hydration 패키지가 통합됩니다. [#](https://tanstack.com/query/latest/docs/react/guides/migrating-to-react-query-4#separate-hydration-exports-have-been-removed)
