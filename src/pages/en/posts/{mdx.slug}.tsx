@@ -38,7 +38,7 @@ export const Head = (data: Props) => {
   const { title, description } = data.data.post.frontmatter;
   const thumbnail = data.data.post.frontmatter?.thumbnail?.childImageSharp.fluid.src ?? undefined;
 
-  return <MetaHead title={title} description={description} thumbnail={thumbnail} />;
+  return <MetaHead lang={LANG} title={title} description={description} thumbnail={thumbnail} />;
 };
 
 export const query = graphql`

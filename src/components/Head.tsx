@@ -1,5 +1,7 @@
 import React from 'react';
 import { graphql, useStaticQuery } from 'gatsby';
+import { resources } from '../i18n/resources';
+import { Lang } from '../types';
 
 export const useSiteMetadata = () => {
   const data = useStaticQuery(graphql`
@@ -23,16 +25,14 @@ interface Props {
   title?: string;
   description?: string;
   thumbnail?: string;
+  lang: Lang;
 }
 
-const MetaHead = ({ title, description, thumbnail }: Props) => {
-  const {
-    title: defaultTitle,
-    description: defaultDescription,
-    image,
-    siteUrl,
-    twitterUsername,
-  } = useSiteMetadata();
+const MetaHead = ({ title, description, thumbnail, lang }: Props) => {
+  const { image, siteUrl, twitterUsername } = useSiteMetadata();
+
+  const defaultTitle = resources[lang].translation['김맥스 블로그'];
+  const defaultDescription = resources[lang].translation['김맥스의 블로그입니다'];
 
   const seo = {
     title: title || defaultTitle,

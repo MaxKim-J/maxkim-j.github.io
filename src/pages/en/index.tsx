@@ -66,7 +66,7 @@ export const query = graphql`
 `;
 
 export const Head = () => {
-  return <CustomHead />;
+  return <CustomHead lang={LANG} />;
 };
 
 export default IndexPage;

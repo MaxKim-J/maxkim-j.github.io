@@ -34,7 +34,7 @@ export default function GalleryPage({ data }: Props) {
 }
 
 export const Head = () => {
-  return <MetaHead title="김맥스 블로그 | gallery" description="찍은 사진들" />;
+  return <MetaHead lang={LANG} title="gallery" description="찍은 사진들" />;
 };
 
 export const query = graphql`
