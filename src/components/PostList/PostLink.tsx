@@ -9,6 +9,7 @@ interface Props {
   frontmatter: BlogPost['frontmatter'];
 }
 
+// TODO: Lang값도 같이 받아야함
 function PostLink({ id, slug, frontmatter }: Props) {
   const { title, date, description } = frontmatter;
 

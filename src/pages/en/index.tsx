@@ -1,14 +1,14 @@
 import * as React from 'react';
 import { graphql } from 'gatsby';
 
-import Layout from '../components/Layout';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
-import PostList from '../components/PostList/PostList';
-import CustomHead from '../components/Head';
-import { type BlogPosts } from '../types';
-import MenuBar from '../components/MenuBar/MenuBar';
-import { PostCategories } from '../components/PostCategory';
+import Layout from '../../components/Layout';
+import Header from '../../components/Header';
+import Footer from '../../components/Footer';
+import PostList from '../../components/PostList/PostList';
+import CustomHead from '../../components/Head';
+import { type BlogPosts } from '../../types';
+import MenuBar from '../../components/MenuBar/MenuBar';
+import { PostCategories } from '../../components/PostCategory';
 
 export interface Props {
   data: {
