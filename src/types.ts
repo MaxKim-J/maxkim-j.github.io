@@ -10,6 +10,7 @@ export interface BlogPost {
     date: string;
     description: string;
     tags?: string[];
+    lang: string;
     thumbnail?: {
       childImageSharp: {
         fluid: {

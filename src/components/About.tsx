@@ -9,21 +9,29 @@ import {
   infoTitleStyle,
 } from './About.css';
 import { MDXRenderer } from 'gatsby-plugin-mdx';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   body: string;
 }
 
 export function About({ body }: Props) {
+  const { t } = useTranslation();
+
   return (
     <>
-      <h1 className={nameStyle}>김종혁</h1>
+      <h1 className={nameStyle}>{t('김종혁')}</h1>
       <section className="mdx-post">
         <MDXRenderer>{body}</MDXRenderer>
       </section>
+
       <div className={infoSectionStyle}>
         <div className={infoStyle}>
-          <div className={infoTitleStyle}>Currently</div>
+          <div className={infoTitleStyle}>Location</div>
+          <div>Seoul, South Korea(UTC+09:00)</div>
+        </div>
+        <div className={infoStyle}>
+          <div className={infoTitleStyle}>Working at</div>
           <Link className={infoAnchorStyle} to="https://flex.team">
             <span className={infoTitleStyle}>flex.team</span> Product Engineer(FE)
           </Link>
@@ -45,23 +53,6 @@ export function About({ body }: Props) {
             </Link>
             <Link className={infoAnchorStyle} to="https://github.com/MaxKim-J/RESUME">
               resume
-            </Link>
-          </div>
-        </div>
-        <div className={infoStyle}>
-          <div className={infoTitleStyle}>Other Posts</div>
-          <div>
-            <Link
-              className={infoAnchorStyle}
-              to="https://univalli.com/news/search_result.html?search=%EA%B9%80%EC%A2%85%ED%98%81&page=1"
-            >
-              대학언론협동조합
-            </Link>
-            <Link
-              className={infoAnchorStyle}
-              to="https://univ20.com/?s=%EA%B9%80%EC%A2%85%ED%98%81"
-            >
-              대학내일
             </Link>
           </div>
         </div>

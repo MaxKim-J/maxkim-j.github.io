@@ -9,25 +9,27 @@ import {
   postTitleTagsStyle,
 } from './PostTitle.css';
 import { useLangStore } from '../../store/langStore';
+import { useTranslation } from 'react-i18next';
 
 type Props = Pick<BlogPost['frontmatter'], 'title' | 'description' | 'tags' | 'date'>;
 
 function PostTitle({ title, description, tags }: Props) {
+  const { t } = useTranslation();
   const currentLang = useLangStore((state) => state.lang);
 
   return (
     <section className={postTitleWrapperStyle}>
-      <h1 className={postTitleHeadingStyle} aria-label={`포스트 제목`}>
+      <h1 className={postTitleHeadingStyle} aria-label={t(`포스트 제목`)}>
         {title}
       </h1>
-      <div className={postTitleDescriptionStyle} aria-label={`포스트 부제목`}>
+      <div className={postTitleDescriptionStyle} aria-label={t(`포스트 부제목`)}>
         {description}
       </div>
       <div>
         {(tags ?? []).map((tag) => (
           <Link
             className={postTitleTagsStyle}
-            aria-label={`태그${tag}`}
+            aria-label={`tag: ${tag}`}
             key={tag}
             to={currentLang === 'ko' ? `/tags/?tag=${tag}` : `/${currentLang}/tags/?tag=${tag}`}
           >

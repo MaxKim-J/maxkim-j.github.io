@@ -2,6 +2,7 @@ import React from 'react';
 import { labelStyle, selectStyle } from './LangSelect.css';
 import { useLangStore, LANG_LIST } from '../../store/langStore';
 import { type Lang } from '../../types';
+import { useTranslation } from 'react-i18next';
 
 const navigateByLang = ({
   pathname,
@@ -23,6 +24,8 @@ const navigateByLang = ({
 export function LangSelect() {
   const currentLang = useLangStore((store) => store.lang);
   const setLang = useLangStore((store) => store.setLang);
+  const { t } = useTranslation();
+
   return (
     <>
       <label className={labelStyle} htmlFor="category">
@@ -31,7 +34,7 @@ export function LangSelect() {
       <select
         className={selectStyle}
         id="category"
-        aria-label="카테고리를 선택하면 아래 포스트 목록을 카테고리에 따라 보실 수 있어요"
+        aria-label={t(`블로그의 언어를 바꿉니다`)}
         name="category"
         value={currentLang}
         onChange={(e) => {

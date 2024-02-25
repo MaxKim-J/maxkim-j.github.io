@@ -11,11 +11,11 @@ interface Props {
 
 // TODO: Lang값도 같이 받아야함
 function PostLink({ id, slug, frontmatter }: Props) {
-  const { title, date, description } = frontmatter;
+  const { title, date, description, lang } = frontmatter;
 
   return (
     <li className={listItemStyle}>
-      <Link to={`/posts/${slug}`} key={id}>
+      <Link to={`/posts/${slug}${lang === 'ko' ? '' : `-${lang}`}`} key={id}>
         <span className={listItemTitleStyle}>{title}</span>
         <span className={listItemDescriptionStyle}>
           {date} - {description}

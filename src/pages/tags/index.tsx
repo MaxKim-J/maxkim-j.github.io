@@ -45,7 +45,10 @@ export default function TagPage({ data }: Props) {
 
 export const query = graphql`
   query TAG_QUERY {
-    allMdx(sort: { fields: [frontmatter___date], order: DESC }) {
+    allMdx(
+      sort: { fields: [frontmatter___date], order: DESC }
+      filter: { frontmatter: { lang: { eq: "ko" } } }
+    ) {
       nodes {
         id
         frontmatter {

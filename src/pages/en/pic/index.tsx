@@ -6,28 +6,40 @@ import Header from '../../../components/Header';
 import Layout from '../../../components/Layout';
 import MetaHead from '../../../components/Head';
 import MenuBar from '../../../components/MenuBar/MenuBar';
-import { About } from '../../../components/About';
+import { Pic } from '../../../components/Pic';
+import type { PicPost } from '../../../types';
+
 import { useLangStore } from '../../../store/langStore';
 import { initialize } from '../../../i18n/initialize';
 
 const LANG = 'en';
 
-export default function AboutPage({ data }: { data: { mdx: { body: string } } }) {
+interface Props {
+  data: {
+    mdx: PicPost;
+  };
+}
+
+export default function GalleryPage({ data }: Props) {
   initialize(LANG);
   useLangStore((state) => state.setLang)(LANG);
 
   const { body } = data.mdx;
 
   return (
-    <Layout header={<Header />} footer={<Footer />} nav={<MenuBar />}>
-      <About body={body} />
+    <Layout header={<Header />} nav={<MenuBar />} footer={<Footer />}>
+      <Pic body={body} />
     </Layout>
   );
 }
 
+export const Head = () => {
+  return <MetaHead title="김맥스 블로그 | gallery" description="찍은 사진들" />;
+};
+
 export const query = graphql`
-  query ABOUT_QUERY_EN {
-    mdx(frontmatter: { title: { eq: "about" }, lang: { eq: "en" } }) {
+  query PHOTOS_QUERY_2 {
+    mdx(frontmatter: { title: { eq: "pic" } }) {
       id
       slug
       body
@@ -38,7 +50,3 @@ export const query = graphql`
     }
   }
 `;
-
-export const Head = () => {
-  return <MetaHead title="김맥스 블로그 | about" description="안녕하세요 김종혁입니다." />;
-};

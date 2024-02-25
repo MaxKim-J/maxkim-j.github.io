@@ -45,7 +45,10 @@ const IndexPage = ({ data }: Props) => {
 
 export const query = graphql`
   query {
-    allMdx(sort: { fields: [frontmatter___date], order: DESC }) {
+    allMdx(
+      sort: { fields: [frontmatter___date], order: DESC }
+      filter: { frontmatter: { lang: { eq: "en" }, title: { nin: ["about", "pic"] } } }
+    ) {
       nodes {
         id
         frontmatter {
@@ -53,6 +56,7 @@ export const query = graphql`
           date(formatString: "YYYY년 MM월 DD일")
           description
           tags
+          lang
           category
         }
         slug

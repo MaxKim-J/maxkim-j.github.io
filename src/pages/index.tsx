@@ -44,7 +44,10 @@ const IndexPage = ({ data }: Props) => {
 
 export const query = graphql`
   query {
-    allMdx(sort: { fields: [frontmatter___date], order: DESC }) {
+    allMdx(
+      sort: { fields: [frontmatter___date], order: DESC }
+      filter: { frontmatter: { lang: { eq: "ko" }, title: { nin: ["about", "pic"] } } }
+    ) {
       nodes {
         id
         frontmatter {

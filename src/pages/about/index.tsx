@@ -28,7 +28,7 @@ export default function AboutPage({ data }: { data: { mdx: { body: string } } })
 
 export const query = graphql`
   query ABOUT_QUERY {
-    mdx(frontmatter: { title: { eq: "about" } }) {
+    mdx(frontmatter: { title: { eq: "about" }, lang: { eq: "ko" } }) {
       id
       slug
       body

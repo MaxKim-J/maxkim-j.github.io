@@ -5,12 +5,14 @@ import PostLink from './PostLink';
 
 import { orderedListStyle } from './PostList.css';
 import { useCategoryStore } from '../../store/categoryStore';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   postList: BlogPosts;
 }
 
 function PostList({ postList }: Props) {
+  const { t } = useTranslation();
   const category = useCategoryStore((state) => state.category);
 
   const refinedPostList = postList.filter(({ frontmatter }) => {
@@ -21,7 +23,7 @@ function PostList({ postList }: Props) {
   });
 
   return (
-    <ol className={orderedListStyle} aria-label="포스트 목록">
+    <ol className={orderedListStyle} aria-label={t(`포스트 목록`)}>
       {refinedPostList.length ? (
         refinedPostList.map(({ id, frontmatter, slug }) => (
           <PostLink key={id} id={id} slug={slug} frontmatter={frontmatter} />
