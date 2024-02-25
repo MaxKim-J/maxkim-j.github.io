@@ -1,15 +1,22 @@
 import React from 'react';
 import { labelStyle, selectStyle } from './LangSelect.css';
 import { useLangStore, LANG_LIST } from '../../store/langStore';
-import { navigate } from 'gatsby';
 import { type Lang } from '../../types';
 
-const navigateByLang = ({ pathname, targetLang }: { pathname: string; targetLang: Lang }) => {
+const navigateByLang = ({
+  pathname,
+  search,
+  targetLang,
+}: {
+  pathname: string;
+  search: string;
+  targetLang: Lang;
+}) => {
   if (targetLang === 'ko') {
     const pathnameWithoutLang = pathname.split('/').slice(2).join('/');
-    navigate(`/${pathnameWithoutLang}`);
+    window.location.href = `/${pathnameWithoutLang}${search}`;
   } else {
-    navigate(`/${targetLang}${pathname}`);
+    window.location.href = `/${targetLang}${pathname}${search}`;
   }
 };
 
@@ -33,7 +40,8 @@ export function LangSelect() {
             setLang(targetLang);
 
             const pathname = typeof window !== undefined ? window.location.pathname : '/';
-            navigateByLang({ pathname, targetLang });
+            const search = typeof window !== undefined ? window.location.search : '';
+            navigateByLang({ pathname, search, targetLang });
           }
         }}
       >
