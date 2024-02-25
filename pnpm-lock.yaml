@@ -38,11 +38,13 @@ specifiers:
   gatsby-transformer-remark: ^5.24.0
   gatsby-transformer-sharp: ^4.19.0
   gh-pages: ^4.0.0
+  i18next: ^23.10.0
   prettier: ^2.7.1
   prismjs: ^1.29.0
   query-string: ^7.1.1
   react: ^18.1.0
   react-dom: ^18.1.0
+  react-i18next: ^14.0.5
   typescript: ^4.7.4
   zustand: ^4.5.0
 
@@ -76,10 +78,12 @@ dependencies:
   gatsby-theme-stitches: 1.0.0_hd2aysa5vydwthqmpj22we6tn4
   gatsby-transformer-remark: 5.24.0_gatsby@4.19.2
   gatsby-transformer-sharp: 4.19.0_znzqm6hqtpxv2jzbx45hf5s26q
+  i18next: 23.10.0
   prismjs: 1.29.0
   query-string: 7.1.1
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
+  react-i18next: 14.0.5_mdmfabosavhwg3wfcbmtjbnr3i
   zustand: 4.5.0_3hx2ussxxho4jajbwrd6gq34qe
 
 devDependencies:
@@ -120,7 +124,7 @@ packages:
       '@babel/core': 7.23.7
       '@babel/generator': 7.23.6
       '@babel/parser': 7.23.6
-      '@babel/runtime': 7.21.5
+      '@babel/runtime': 7.23.9
       '@babel/traverse': 7.23.7
       '@babel/types': 7.23.6
       babel-preset-fbjs: 3.4.0_@babel+core@7.23.7
@@ -1962,6 +1966,13 @@ packages:
       regenerator-runtime: 0.13.11
     dev: false
 
+  /@babel/runtime/7.23.9:
+    resolution: {integrity: sha512-0CX6F+BI2s9dkUqr08KFrAIZgNFj75rdBU/DjCyYLIaV/quFjkk6T+EJ2LkZHyZTbEV4L5p97mNkUsHl2wLFAw==}
+    engines: {node: '>=6.9.0'}
+    dependencies:
+      regenerator-runtime: 0.14.1
+    dev: false
+
   /@babel/template/7.18.6:
     resolution: {integrity: sha512-JoDWzPe+wgBsTTgdnIma3iHNFC7YVJoPssVBDjiHfNlyt4YcunDtcDOUmfVDfCK5MfdsaIoX9PkijPhjH3nYUw==}
     engines: {node: '>=6.9.0'}
@@ -2510,7 +2521,7 @@ packages:
     resolution: {integrity: sha512-oXhiaPtYTGYqGZlazYRUabWVHWx5z6sAyBVLhUnpsKcBsK815cET+mjeWDKpmvJmFTKHC72Bvy1WIEnW3++YxA==}
     engines: {node: '>=14.15.0', parcel: 2.x}
     dependencies:
-      '@babel/runtime': 7.21.5
+      '@babel/runtime': 7.23.9
       '@parcel/namer-default': 2.6.2_@parcel+core@2.6.2
       '@parcel/plugin': 2.6.2_@parcel+core@2.6.2
       gatsby-core-utils: 3.24.0
@@ -2970,7 +2981,7 @@ packages:
     peerDependencies:
       '@jimp/custom': '>=0.3.5'
     dependencies:
-      '@babel/runtime': 7.21.5
+      '@babel/runtime': 7.23.9
       '@jimp/custom': 0.16.1
       '@jimp/utils': 0.16.1
       bmp-js: 0.1.0
@@ -2979,7 +2990,7 @@ packages:
   /@jimp/core/0.16.1:
     resolution: {integrity: sha512-la7kQia31V6kQ4q1kI/uLimu8FXx7imWVajDGtwUG8fzePLWDFJyZl0fdIXVCL1JW2nBcRHidUot6jvlRDi2+g==}
     dependencies:
-      '@babel/runtime': 7.21.5
+      '@babel/runtime': 7.23.9
       '@jimp/utils': 0.16.1
       any-base: 1.1.0
       buffer: 5.7.1
@@ -2995,7 +3006,7 @@ packages:
   /@jimp/custom/0.16.1:
     resolution: {integrity: sha512-DNUAHNSiUI/j9hmbatD6WN/EBIyeq4AO0frl5ETtt51VN1SvE4t4v83ZA/V6ikxEf3hxLju4tQ5Pc3zmZkN/3A==}
     dependencies:
-      '@babel/runtime': 7.21.5
+      '@babel/runtime': 7.23.9
       '@jimp/core': 0.16.1
     dev: false
 
@@ -3004,7 +3015,7 @@ packages:
     peerDependencies:
       '@jimp/custom': '>=0.3.5'
     dependencies:
-      '@babel/runtime': 7.21.5
+      '@babel/runtime': 7.23.9
       '@jimp/custom': 0.16.1
       '@jimp/utils': 0.16.1
       gifwrap: 0.9.4
@@ -3016,7 +3027,7 @@ packages:
     peerDependencies:
       '@jimp/custom': '>=0.3.5'
     dependencies:
-      '@babel/runtime': 7.21.5
+      '@babel/runtime': 7.23.9
       '@jimp/custom': 0.16.1
       '@jimp/utils': 0.16.1
       jpeg-js: 0.4.2
@@ -3027,7 +3038,7 @@ packages:
     peerDependencies:
       '@jimp/custom': '>=0.3.5'
     dependencies:
-      '@babel/runtime': 7.21.5
+      '@babel/runtime': 7.23.9
       '@jimp/custom': 0.16.1
       '@jimp/utils': 0.16.1
     dev: false
@@ -3037,7 +3048,7 @@ packages:
     peerDependencies:
       '@jimp/custom': '>=0.3.5'
     dependencies:
-      '@babel/runtime': 7.21.5
+      '@babel/runtime': 7.23.9
       '@jimp/custom': 0.16.1
       '@jimp/utils': 0.16.1
     dev: false
@@ -3047,7 +3058,7 @@ packages:
     peerDependencies:
       '@jimp/custom': '>=0.3.5'
     dependencies:
-      '@babel/runtime': 7.21.5
+      '@babel/runtime': 7.23.9
       '@jimp/custom': 0.16.1
       '@jimp/utils': 0.16.1
     dev: false
@@ -3057,7 +3068,7 @@ packages:
     peerDependencies:
       '@jimp/custom': '>=0.3.5'
     dependencies:
-      '@babel/runtime': 7.21.5
+      '@babel/runtime': 7.23.9
       '@jimp/custom': 0.16.1
       '@jimp/utils': 0.16.1
       tinycolor2: 1.4.2
@@ -3071,7 +3082,7 @@ packages:
       '@jimp/plugin-resize': '>=0.3.5'
       '@jimp/plugin-scale': '>=0.3.5'
     dependencies:
-      '@babel/runtime': 7.21.5
+      '@babel/runtime': 7.23.9
       '@jimp/custom': 0.16.1
       '@jimp/plugin-blit': 0.16.1_@jimp+custom@0.16.1
       '@jimp/plugin-resize': 0.16.1_@jimp+custom@0.16.1
@@ -3087,7 +3098,7 @@ packages:
       '@jimp/plugin-resize': '>=0.3.5'
       '@jimp/plugin-scale': '>=0.3.5'
     dependencies:
-      '@babel/runtime': 7.21.5
+      '@babel/runtime': 7.23.9
       '@jimp/custom': 0.16.1
       '@jimp/plugin-crop': 0.16.1_@jimp+custom@0.16.1
       '@jimp/plugin-resize': 0.16.1_@jimp+custom@0.16.1
@@ -3100,7 +3111,7 @@ packages:
     peerDependencies:
       '@jimp/custom': '>=0.3.5'
     dependencies:
-      '@babel/runtime': 7.21.5
+      '@babel/runtime': 7.23.9
       '@jimp/custom': 0.16.1
       '@jimp/utils': 0.16.1
     dev: false
@@ -3110,7 +3121,7 @@ packages:
     peerDependencies:
       '@jimp/custom': '>=0.3.5'
     dependencies:
-      '@babel/runtime': 7.21.5
+      '@babel/runtime': 7.23.9
       '@jimp/custom': 0.16.1
       '@jimp/utils': 0.16.1
     dev: false
@@ -3120,7 +3131,7 @@ packages:
     peerDependencies:
       '@jimp/custom': '>=0.3.5'
     dependencies:
-      '@babel/runtime': 7.21.5
+      '@babel/runtime': 7.23.9
       '@jimp/custom': 0.16.1
       '@jimp/utils': 0.16.1
     dev: false
@@ -3130,7 +3141,7 @@ packages:
     peerDependencies:
       '@jimp/custom': '>=0.3.5'
     dependencies:
-      '@babel/runtime': 7.21.5
+      '@babel/runtime': 7.23.9
       '@jimp/custom': 0.16.1
       '@jimp/utils': 0.16.1
     dev: false
@@ -3141,7 +3152,7 @@ packages:
       '@jimp/custom': '>=0.3.5'
       '@jimp/plugin-rotate': '>=0.3.5'
     dependencies:
-      '@babel/runtime': 7.21.5
+      '@babel/runtime': 7.23.9
       '@jimp/custom': 0.16.1
       '@jimp/plugin-rotate': 0.16.1_g72lzg55x5a4ao4td3uebcztme
       '@jimp/utils': 0.16.1
@@ -3152,7 +3163,7 @@ packages:
     peerDependencies:
       '@jimp/custom': '>=0.3.5'
     dependencies:
-      '@babel/runtime': 7.21.5
+      '@babel/runtime': 7.23.9
       '@jimp/custom': 0.16.1
       '@jimp/utils': 0.16.1
     dev: false
@@ -3162,7 +3173,7 @@ packages:
     peerDependencies:
       '@jimp/custom': '>=0.3.5'
     dependencies:
-      '@babel/runtime': 7.21.5
+      '@babel/runtime': 7.23.9
       '@jimp/custom': 0.16.1
       '@jimp/utils': 0.16.1
     dev: false
@@ -3172,7 +3183,7 @@ packages:
     peerDependencies:
       '@jimp/custom': '>=0.3.5'
     dependencies:
-      '@babel/runtime': 7.21.5
+      '@babel/runtime': 7.23.9
       '@jimp/custom': 0.16.1
       '@jimp/utils': 0.16.1
     dev: false
@@ -3182,7 +3193,7 @@ packages:
     peerDependencies:
       '@jimp/custom': '>=0.3.5'
     dependencies:
-      '@babel/runtime': 7.21.5
+      '@babel/runtime': 7.23.9
       '@jimp/custom': 0.16.1
       '@jimp/utils': 0.16.1
     dev: false
@@ -3193,7 +3204,7 @@ packages:
       '@jimp/custom': '>=0.3.5'
       '@jimp/plugin-blit': '>=0.3.5'
     dependencies:
-      '@babel/runtime': 7.21.5
+      '@babel/runtime': 7.23.9
       '@jimp/custom': 0.16.1
       '@jimp/plugin-blit': 0.16.1_@jimp+custom@0.16.1
       '@jimp/utils': 0.16.1
@@ -3205,7 +3216,7 @@ packages:
     peerDependencies:
       '@jimp/custom': '>=0.3.5'
     dependencies:
-      '@babel/runtime': 7.21.5
+      '@babel/runtime': 7.23.9
       '@jimp/custom': 0.16.1
       '@jimp/utils': 0.16.1
     dev: false
@@ -3218,7 +3229,7 @@ packages:
       '@jimp/plugin-crop': '>=0.3.5'
       '@jimp/plugin-resize': '>=0.3.5'
     dependencies:
-      '@babel/runtime': 7.21.5
+      '@babel/runtime': 7.23.9
       '@jimp/custom': 0.16.1
       '@jimp/plugin-blit': 0.16.1_@jimp+custom@0.16.1
       '@jimp/plugin-crop': 0.16.1_@jimp+custom@0.16.1
@@ -3232,7 +3243,7 @@ packages:
       '@jimp/custom': '>=0.3.5'
       '@jimp/plugin-resize': '>=0.3.5'
     dependencies:
-      '@babel/runtime': 7.21.5
+      '@babel/runtime': 7.23.9
       '@jimp/custom': 0.16.1
       '@jimp/plugin-resize': 0.16.1_@jimp+custom@0.16.1
       '@jimp/utils': 0.16.1
@@ -3245,7 +3256,7 @@ packages:
       '@jimp/plugin-blur': '>=0.3.5'
       '@jimp/plugin-resize': '>=0.3.5'
     dependencies:
-      '@babel/runtime': 7.21.5
+      '@babel/runtime': 7.23.9
       '@jimp/custom': 0.16.1
       '@jimp/plugin-blur': 0.16.1_@jimp+custom@0.16.1
       '@jimp/plugin-resize': 0.16.1_@jimp+custom@0.16.1
@@ -3259,7 +3270,7 @@ packages:
       '@jimp/plugin-color': '>=0.8.0'
       '@jimp/plugin-resize': '>=0.8.0'
     dependencies:
-      '@babel/runtime': 7.21.5
+      '@babel/runtime': 7.23.9
       '@jimp/custom': 0.16.1
       '@jimp/plugin-color': 0.16.1_@jimp+custom@0.16.1
       '@jimp/plugin-resize': 0.16.1_@jimp+custom@0.16.1
@@ -3271,7 +3282,7 @@ packages:
     peerDependencies:
       '@jimp/custom': '>=0.3.5'
     dependencies:
-      '@babel/runtime': 7.21.5
+      '@babel/runtime': 7.23.9
       '@jimp/custom': 0.16.1
       '@jimp/plugin-blit': 0.16.1_@jimp+custom@0.16.1
       '@jimp/plugin-blur': 0.16.1_@jimp+custom@0.16.1
@@ -3302,7 +3313,7 @@ packages:
     peerDependencies:
       '@jimp/custom': '>=0.3.5'
     dependencies:
-      '@babel/runtime': 7.21.5
+      '@babel/runtime': 7.23.9
       '@jimp/custom': 0.16.1
       '@jimp/utils': 0.16.1
       pngjs: 3.4.0
@@ -3313,7 +3324,7 @@ packages:
     peerDependencies:
       '@jimp/custom': '>=0.3.5'
     dependencies:
-      '@babel/runtime': 7.21.5
+      '@babel/runtime': 7.23.9
       '@jimp/custom': 0.16.1
       utif: 2.0.1
     dev: false
@@ -3323,7 +3334,7 @@ packages:
     peerDependencies:
       '@jimp/custom': '>=0.3.5'
     dependencies:
-      '@babel/runtime': 7.21.5
+      '@babel/runtime': 7.23.9
       '@jimp/bmp': 0.16.1_@jimp+custom@0.16.1
       '@jimp/custom': 0.16.1
       '@jimp/gif': 0.16.1_@jimp+custom@0.16.1
@@ -3336,7 +3347,7 @@ packages:
   /@jimp/utils/0.16.1:
     resolution: {integrity: sha512-8fULQjB0x4LzUSiSYG6ZtQl355sZjxbv8r9PPAuYHzS9sGiSHJQavNqK/nKnpDsVkU88/vRGcE7t3nMU0dEnVw==}
     dependencies:
-      '@babel/runtime': 7.21.5
+      '@babel/runtime': 7.23.9
       regenerator-runtime: 0.13.11
     dev: false
 
@@ -5127,7 +5138,7 @@ packages:
     resolution: {integrity: sha512-o/HelwhuKpTj/frsOsbNLNgnNGVIFsVP/SW2BSF14gVl7kAfMOJ6/8wUAUvG1R1NHKrfG+2sHZTu0yauT1qBrA==}
     engines: {node: '>=6.0'}
     dependencies:
-      '@babel/runtime': 7.21.5
+      '@babel/runtime': 7.23.9
       '@babel/runtime-corejs3': 7.18.9
     dev: false
 
@@ -5397,7 +5408,7 @@ packages:
     resolution: {integrity: sha512-Cg7TFGpIr01vOQNODXOOaGz2NpCU5gl8x1qJFbb6hbZxR7XrcE2vtbAsTAbJ7/xwJtUuJEw8K8Zr/AE0LHlesg==}
     engines: {node: '>=10', npm: '>=6'}
     dependencies:
-      '@babel/runtime': 7.21.5
+      '@babel/runtime': 7.23.9
       cosmiconfig: 7.0.1
       resolve: 1.22.1
     dev: false
@@ -5446,7 +5457,7 @@ packages:
       gatsby: ^4.0.0-next
     dependencies:
       '@babel/core': 7.18.9
-      '@babel/runtime': 7.21.5
+      '@babel/runtime': 7.23.9
       gatsby: 4.19.2_5pseeqoa3w4jcl6fccmssxxawy
       gatsby-core-utils: 3.24.0
     dev: false
@@ -5513,7 +5524,7 @@ packages:
       '@babel/plugin-transform-spread': 7.18.9_@babel+core@7.18.9
       '@babel/preset-env': 7.18.9_@babel+core@7.18.9
       '@babel/preset-react': 7.18.6_@babel+core@7.18.9
-      '@babel/runtime': 7.21.5
+      '@babel/runtime': 7.23.9
       babel-plugin-dynamic-import-node: 2.3.3
       babel-plugin-macros: 3.1.0
       babel-plugin-transform-react-remove-prop-types: 0.4.24
@@ -6373,7 +6384,7 @@ packages:
     resolution: {integrity: sha512-Esl/qCau3rjpnRkmo31BYOE6l72SJ/5Fq8bF6gmXOf/lnbOh51so8hgRcClfizr1nCihqQQihZn//o4DIgZKeA==}
     hasBin: true
     dependencies:
-      '@babel/runtime': 7.21.5
+      '@babel/runtime': 7.23.9
     dev: false
 
   /create-require/1.1.1:
@@ -7454,7 +7465,7 @@ packages:
     peerDependencies:
       graphql: ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0
     dependencies:
-      '@babel/runtime': 7.21.5
+      '@babel/runtime': 7.23.9
       graphql: 15.8.0
       graphql-config: 3.4.1_adhpqum2mjcmzrkmijy4ba6l5e
       lodash.flatten: 4.4.0
@@ -7504,7 +7515,7 @@ packages:
     peerDependencies:
       eslint: ^3 || ^4 || ^5 || ^6 || ^7 || ^8
     dependencies:
-      '@babel/runtime': 7.21.5
+      '@babel/runtime': 7.23.9
       aria-query: 4.2.2
       array-includes: 3.1.5
       ast-types-flow: 0.0.7
@@ -8324,7 +8335,7 @@ packages:
       '@babel/generator': 7.18.9
       '@babel/helper-plugin-utils': 7.18.9
       '@babel/preset-typescript': 7.18.6_@babel+core@7.18.9
-      '@babel/runtime': 7.21.5
+      '@babel/runtime': 7.23.9
       '@babel/template': 7.18.6
       '@babel/types': 7.18.9
       '@jridgewell/trace-mapping': 0.3.14
@@ -8372,7 +8383,7 @@ packages:
     resolution: {integrity: sha512-cjXs9DsXkPZt+UdiLHxtq+rGMGVrcnM0KwkawlruvPchI7lqGNv9CScqlvYPxx1dBhu3zSZS26EBALMlFhyOJA==}
     engines: {node: '>=14.15.0'}
     dependencies:
-      '@babel/runtime': 7.21.5
+      '@babel/runtime': 7.23.9
       ci-info: 2.0.0
       configstore: 5.0.1
       fastq: 1.17.0
@@ -8393,7 +8404,7 @@ packages:
     resolution: {integrity: sha512-D3DIulUFoPvexwsGYFkfESL1Dd3qsxBfj8OBi8vsd6BuXrA6MbLtX3j5+BLVxfKkN2wF7XN6b3/DH+JGNuhh2A==}
     engines: {node: '>=14.15.0'}
     dependencies:
-      '@babel/runtime': 7.21.5
+      '@babel/runtime': 7.23.9
       ci-info: 2.0.0
       configstore: 5.0.1
       fastq: 1.17.0
@@ -8414,7 +8425,7 @@ packages:
     resolution: {integrity: sha512-P4tbcYOJ1DSYKRP4gIAR9Xta/d/AzjmsK2C6PzX7sNcGnviDKtAIoeV9sE0kNXOqBfUCez25zmAi2cq8NlaxKw==}
     engines: {node: '>=14.15.0'}
     dependencies:
-      '@babel/runtime': 7.21.5
+      '@babel/runtime': 7.23.9
       ci-info: 2.0.0
       configstore: 5.0.1
       fastq: 1.17.0
@@ -8435,7 +8446,7 @@ packages:
     resolution: {integrity: sha512-diCAmlr42YQpSKapD374JVF+ojDXTHxnrNoS907jNGgT4J35t2az9GsEQFgrEou3Td5TLuUl/8yJM2Hpwn4gyg==}
     engines: {node: '>=18.0.0'}
     dependencies:
-      '@babel/runtime': 7.21.5
+      '@babel/runtime': 7.23.9
       ci-info: 2.0.0
       configstore: 5.0.1
       fastq: 1.17.0
@@ -8457,13 +8468,13 @@ packages:
     resolution: {integrity: sha512-wOD1LuWaSbCtZ0E9C2HxMBQj67k8kPnlLMr/VfKHgBh0FfvIavIq5vOq5K9zRIkAzSzYVODGEz2NVdbfVK9Bew==}
     engines: {node: '>=14.15.0'}
     dependencies:
-      '@babel/runtime': 7.21.5
+      '@babel/runtime': 7.23.9
     dev: false
 
   /gatsby-legacy-polyfills/2.19.0:
     resolution: {integrity: sha512-WuyN01eiRxhanfnj6UgsCxU+Pxs9B8rtgxbrwXhlEKX+QdAp4XlywDQ8QXvv8i028QDF9h+VnvGlfcZY4tgQrQ==}
     dependencies:
-      '@babel/runtime': 7.21.5
+      '@babel/runtime': 7.23.9
       core-js-compat: 3.9.0
     dev: false
 
@@ -8497,7 +8508,7 @@ packages:
     resolution: {integrity: sha512-eYStV4jQbuEBKhatH3yzWA+lmoydJBCZVg6w2GG38eSsgcj9pdep8oQqyQdGFU3dy/HizWmWCv+wW9FIUoVQsQ==}
     engines: {node: '>=14.15.0'}
     dependencies:
-      '@babel/runtime': 7.21.5
+      '@babel/runtime': 7.23.9
       bluebird: 3.7.2
       chokidar: 3.5.3
       fs-exists-cached: 1.0.0
@@ -8685,7 +8696,7 @@ packages:
     peerDependencies:
       gatsby: ^4.0.0-next
     dependencies:
-      '@babel/runtime': 7.21.5
+      '@babel/runtime': 7.23.9
       '@babel/traverse': 7.18.9
       '@sindresorhus/slugify': 1.1.2
       chokidar: 3.5.3
@@ -8790,7 +8801,7 @@ packages:
       '@babel/plugin-proposal-numeric-separator': 7.18.6_@babel+core@7.18.9
       '@babel/plugin-proposal-optional-chaining': 7.18.9_@babel+core@7.18.9
       '@babel/preset-typescript': 7.18.6_@babel+core@7.18.9
-      '@babel/runtime': 7.21.5
+      '@babel/runtime': 7.23.9
       babel-plugin-remove-graphql-queries: 4.19.0_dxeruin6mssvjcve62e33yojya
       gatsby: 4.19.2_5pseeqoa3w4jcl6fccmssxxawy
     transitivePeerDependencies:
@@ -8803,7 +8814,7 @@ packages:
     peerDependencies:
       gatsby: ^3.0.0-next.0
     dependencies:
-      '@babel/runtime': 7.21.5
+      '@babel/runtime': 7.23.9
       gatsby: 4.19.2_5pseeqoa3w4jcl6fccmssxxawy
       joi: 17.9.2
     dev: false
@@ -8814,7 +8825,7 @@ packages:
     peerDependencies:
       gatsby: ^4.0.0-next
     dependencies:
-      '@babel/runtime': 7.18.9
+      '@babel/runtime': 7.23.9
       '@gatsbyjs/potrace': 2.2.0
       fs-extra: 10.1.0
       gatsby: 4.19.2_5pseeqoa3w4jcl6fccmssxxawy
@@ -8837,7 +8848,7 @@ packages:
       gatsby: ^5.0.0-next
       graphql: ^16.0.0
     dependencies:
-      '@babel/runtime': 7.21.5
+      '@babel/runtime': 7.23.9
       fastq: 1.17.0
       fs-extra: 11.1.1
       gatsby: 4.19.2_5pseeqoa3w4jcl6fccmssxxawy
@@ -8870,7 +8881,7 @@ packages:
       react: ^16.9.0 || ^17.0.0 || ^18.0.0
       react-dom: ^16.9.0 || ^17.0.0 || ^18.0.0
     dependencies:
-      '@babel/runtime': 7.21.5
+      '@babel/runtime': 7.23.9
       '@gatsbyjs/reach-router': 1.3.8_biqbaboplfbrettd7655fr4n2y
       prop-types: 15.8.1
       react: 18.2.0
@@ -9025,7 +9036,7 @@ packages:
     requiresBuild: true
     dependencies:
       '@babel/code-frame': 7.18.6
-      '@babel/runtime': 7.21.5
+      '@babel/runtime': 7.23.9
       '@turist/fetch': 7.2.0_node-fetch@2.6.7
       '@turist/time': 0.0.2
       async-retry-ng: 2.0.1
@@ -9114,7 +9125,7 @@ packages:
     engines: {node: '>=14.15.0'}
     dependencies:
       '@babel/core': 7.18.9
-      '@babel/runtime': 7.21.5
+      '@babel/runtime': 7.23.9
     transitivePeerDependencies:
       - supports-color
     dev: false
@@ -9907,6 +9918,12 @@ packages:
     resolution: {integrity: sha512-DV5Ln36z34NNTDgnz0EWGBLZENelNAtkiFA4kyNOG2tDI6Mz1uSWiq1wAKdyjnJwyDiDO7Fa2SO1CTxPXL8VxA==}
     dev: false
 
+  /html-parse-stringify/3.0.1:
+    resolution: {integrity: sha512-KknJ50kTInJ7qIScF3jeaFRpMpE8/lfiTdzf/twXyPBLAGrLRTmkz3AdTnKeh40X8k9L2fdYwEp/42WGXIRGcg==}
+    dependencies:
+      void-elements: 3.1.0
+    dev: false
+
   /html-void-elements/1.0.5:
     resolution: {integrity: sha512-uE/TxKuyNIcx44cIWnjr/rfIATDH7ZaOMmstu0CwhFG1Dunhlp4OC6/NMbhiwoq5BpW0ubi303qnEk/PZj614w==}
     dev: false
@@ -9995,6 +10012,12 @@ packages:
   /human-signals/2.1.0:
     resolution: {integrity: sha512-B4FFZ6q/T2jhhksgkbEW3HBvWIfDW85snkQgawt07S7J5QXTk6BkNV+0yAeZrM5QpMAdYlocGoljn0sJ/WQkFw==}
     engines: {node: '>=10.17.0'}
+    dev: false
+
+  /i18next/23.10.0:
+    resolution: {integrity: sha512-/TgHOqsa7/9abUKJjdPeydoyDc0oTi/7u9F8lMSj6ufg4cbC1Oj3f/Jja7zj7WRIhEQKB7Q4eN6y68I9RDxxGQ==}
+    dependencies:
+      '@babel/runtime': 7.23.9
     dev: false
 
   /iconv-lite/0.4.24:
@@ -10551,7 +10574,7 @@ packages:
   /jimp/0.16.1:
     resolution: {integrity: sha512-+EKVxbR36Td7Hfd23wKGIeEyHbxShZDX6L8uJkgVW3ESA9GiTEPK08tG1XI2r/0w5Ch0HyJF5kPqF9K7EmGjaw==}
     dependencies:
-      '@babel/runtime': 7.21.5
+      '@babel/runtime': 7.23.9
       '@jimp/custom': 0.16.1
       '@jimp/plugins': 0.16.1_@jimp+custom@0.16.1
       '@jimp/types': 0.16.1_@jimp+custom@0.16.1
@@ -11286,7 +11309,7 @@ packages:
   /media-query-parser/2.0.2:
     resolution: {integrity: sha512-1N4qp+jE0pL5Xv4uEcwVUhIkwdUO3S/9gML90nqKA7v7FcOS5vUtatfzok9S9U1EJU8dHWlcv95WLnKmmxZI9w==}
     dependencies:
-      '@babel/runtime': 7.21.5
+      '@babel/runtime': 7.23.9
     dev: false
 
   /media-typer/0.3.0:
@@ -13154,6 +13177,26 @@ packages:
     resolution: {integrity: sha512-nQTTcUu+ATDbrSD1BZHr5kgSD4oF8OFjxun8uAaL8RwPBacGBNPf/yAuVVdx17N8XNzRDMrZ9XcKZHCjPW+9ew==}
     dev: false
 
+  /react-i18next/14.0.5_mdmfabosavhwg3wfcbmtjbnr3i:
+    resolution: {integrity: sha512-5+bQSeEtgJrMBABBL5lO7jPdSNAbeAZ+MlFWDw//7FnVacuVu3l9EeWFzBQvZsKy+cihkbThWOAThEdH8YjGEw==}
+    peerDependencies:
+      i18next: '>= 23.2.3'
+      react: '>= 16.8.0'
+      react-dom: '*'
+      react-native: '*'
+    peerDependenciesMeta:
+      react-dom:
+        optional: true
+      react-native:
+        optional: true
+    dependencies:
+      '@babel/runtime': 7.23.9
+      html-parse-stringify: 3.0.1
+      i18next: 23.10.0
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+    dev: false
+
   /react-is/16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
 
@@ -13251,7 +13294,7 @@ packages:
   /redux/4.1.2:
     resolution: {integrity: sha512-SH8PglcebESbd/shgf6mii6EIoRM0zrQyjcuQ+ojmfxjTtE0z9Y8pa62iA/OJ58qjP6j27uyW4kUF4jl/jd6sw==}
     dependencies:
-      '@babel/runtime': 7.21.5
+      '@babel/runtime': 7.23.9
     dev: false
 
   /regenerate-unicode-properties/10.0.1:
@@ -13269,10 +13312,14 @@ packages:
     resolution: {integrity: sha512-kY1AZVr2Ra+t+piVaJ4gxaFaReZVH40AKNo7UCX6W+dEwBo/2oZJzqfuN1qLq1oL45o56cPaTXELwrTh8Fpggg==}
     dev: false
 
+  /regenerator-runtime/0.14.1:
+    resolution: {integrity: sha512-dYnhHh0nJoMfnkZs6GmmhFknAGRrLznOu5nc9ML+EJxGvrx6H7teuevqVqCuPcPK//3eDrrjQhehXVx9cnkGdw==}
+    dev: false
+
   /regenerator-transform/0.15.0:
     resolution: {integrity: sha512-LsrGtPmbYg19bcPHwdtmXwbW+TqNvtY4riE3P83foeHRroMbH6/2ddFBfab3t7kbzc7v7p4wbkIecHImqt0QNg==}
     dependencies:
-      '@babel/runtime': 7.21.5
+      '@babel/runtime': 7.23.9
     dev: false
 
   /regex-parser/2.2.11:
@@ -13331,7 +13378,7 @@ packages:
   /relay-runtime/12.0.0:
     resolution: {integrity: sha512-QU6JKr1tMsry22DXNy9Whsq5rmvwr3LSZiiWV/9+DFpuTWvp+WFhobWMc8TC4OjKFfNhEZy7mOiqUAn5atQtug==}
     dependencies:
-      '@babel/runtime': 7.21.5
+      '@babel/runtime': 7.23.9
       fbjs: 3.0.4
       invariant: 2.2.4
     transitivePeerDependencies:
@@ -15471,6 +15518,11 @@ packages:
       sass: 1.55.0
     optionalDependencies:
       fsevents: 2.3.3
+    dev: false
+
+  /void-elements/3.1.0:
+    resolution: {integrity: sha512-Dhxzh5HZuiHQhbvTW9AMetFfBHDMYpo23Uo9btPXgdYP+3T5S+p+jgNy7spra+veYhBP2dCSgxR/i2Y02h5/6w==}
+    engines: {node: '>=0.10.0'}
     dev: false
 
   /watchpack/2.4.0:

@@ -10,6 +10,11 @@ import { type BlogPosts } from '../../types';
 import MenuBar from '../../components/MenuBar/MenuBar';
 import { PostCategories } from '../../components/PostCategory';
 
+import { useLangStore } from '../../store/langStore';
+import { initialize } from '../../i18n/initialize';
+
+const LANG = 'en';
+
 export interface Props {
   data: {
     allMdx: {
@@ -19,6 +24,9 @@ export interface Props {
 }
 
 const IndexPage = ({ data }: Props) => {
+  initialize(LANG);
+  useLangStore((state) => state.setLang)(LANG);
+
   return (
     <Layout
       header={<Header />}

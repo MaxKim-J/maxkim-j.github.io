@@ -11,6 +11,11 @@ import { BlogPosts } from '../../types';
 import MenuBar from '../../components/MenuBar/MenuBar';
 import { TagTitle } from '../../components/TagTitle';
 
+import { useLangStore } from '../../store/langStore';
+import { initialize } from '../../i18n/initialize';
+
+const LANG = 'ko';
+
 export interface Props {
   data: {
     allMdx: {
@@ -20,6 +25,9 @@ export interface Props {
 }
 
 export default function TagPage({ data }: Props) {
+  initialize(LANG);
+  useLangStore((state) => state.setLang)(LANG);
+
   const parsed = typeof window !== 'undefined' ? parse(location.search) : ({} as string);
   const tag = (parsed as any).tag;
 

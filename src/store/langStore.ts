@@ -11,9 +11,6 @@ interface LangStore {
 
 export const useLangStore = create<LangStore>((set) => ({
   lang: DEFAULT_LANG,
-  initialize: (lang: Lang) => {
-    // TODO: i18n과 결합시키기
-  },
   setLang: (lang: Lang) => {
     set(() => ({ lang }));
   },

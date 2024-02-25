@@ -6,10 +6,13 @@ import Header from '../../components/Header';
 import Layout from '../../components/Layout';
 import MetaHead from '../../components/Head';
 import MenuBar from '../../components/MenuBar/MenuBar';
-
 import { Pic } from '../../components/Pic';
-
 import type { PicPost } from '../../types';
+
+import { useLangStore } from '../../store/langStore';
+import { initialize } from '../../i18n/initialize';
+
+const LANG = 'ko';
 
 interface Props {
   data: {
@@ -18,6 +21,9 @@ interface Props {
 }
 
 export default function GalleryPage({ data }: Props) {
+  initialize(LANG);
+  useLangStore((state) => state.setLang)(LANG);
+
   const { body } = data.mdx;
 
   return (

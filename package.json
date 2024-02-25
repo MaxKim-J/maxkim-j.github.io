@@ -46,10 +46,12 @@
     "gatsby-theme-stitches": "^1.0.0",
     "gatsby-transformer-remark": "^5.24.0",
     "gatsby-transformer-sharp": "^4.19.0",
+    "i18next": "^23.10.0",
     "prismjs": "^1.29.0",
     "query-string": "^7.1.1",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
+    "react-i18next": "^14.0.5",
     "zustand": "^4.5.0"
   },
   "devDependencies": {

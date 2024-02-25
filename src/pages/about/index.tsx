@@ -8,7 +8,15 @@ import MetaHead from '../../components/Head';
 import MenuBar from '../../components/MenuBar/MenuBar';
 import { About } from '../../components/About';
 
+import { useLangStore } from '../../store/langStore';
+import { initialize } from '../../i18n/initialize';
+
+const LANG = 'ko';
+
 export default function AboutPage({ data }: { data: { mdx: { body: string } } }) {
+  initialize(LANG);
+  useLangStore((state) => state.setLang)(LANG);
+
   const { body } = data.mdx;
 
   return (

@@ -8,10 +8,13 @@ import {
   postTitleDescriptionStyle,
   postTitleTagsStyle,
 } from './PostTitle.css';
+import { useLangStore } from '../../store/langStore';
 
 type Props = Pick<BlogPost['frontmatter'], 'title' | 'description' | 'tags' | 'date'>;
 
 function PostTitle({ title, description, tags }: Props) {
+  const currentLang = useLangStore((state) => state.lang);
+
   return (
     <section className={postTitleWrapperStyle}>
       <h1 className={postTitleHeadingStyle} aria-label={`포스트 제목`}>
@@ -26,7 +29,7 @@ function PostTitle({ title, description, tags }: Props) {
             className={postTitleTagsStyle}
             aria-label={`태그${tag}`}
             key={tag}
-            to={`/tags/?tag=${tag}`}
+            to={currentLang === 'ko' ? `/tags/?tag=${tag}` : `/${currentLang}/tags/?tag=${tag}`}
           >
             #{tag}
           </Link>

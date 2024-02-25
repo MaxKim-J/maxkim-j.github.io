@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'gatsby';
+import { useTranslation } from 'react-i18next';
 
 import { BlogPost } from '../../types';
 import {
@@ -11,6 +12,8 @@ import {
   bottomNavSectionStyle,
   bottomNavLinkStyle,
 } from './ByLine.css';
+import { useLangStore } from '../../store/langStore';
+
 interface Props {
   postSlugs: BlogPost['slug'][];
   currentSlug: BlogPost['slug'];
@@ -18,6 +21,9 @@ interface Props {
 }
 
 function ByLine({ postSlugs, currentSlug, title }: Props) {
+  const currentLang = useLangStore((state) => state.lang);
+  const { t } = useTranslation();
+
   const currentSlugIndex = postSlugs.indexOf(currentSlug);
 
   const prevSlugIndex = currentSlugIndex - 1;
@@ -28,7 +34,7 @@ function ByLine({ postSlugs, currentSlug, title }: Props) {
     <div>
       <hr />
       <div className={personalSectionStyle}>
-        <div>Written by 김맥스</div>
+        <div>{t('Written by 김맥스')}</div>
         <div className={socialMediaSectionStyle}>
           <Link className={socialMediaLinkStyle} to="https://twitter.com/max_kim_dev">
             twitter
@@ -56,7 +62,7 @@ function ByLine({ postSlugs, currentSlug, title }: Props) {
             }
           }}
         >
-          트위터에 공유하기
+          {t('트위터에 공유하기')}
         </button>
         <button
           className={sharedSectionActionButtonStyle}
@@ -65,24 +71,45 @@ function ByLine({ postSlugs, currentSlug, title }: Props) {
             alert('지금 보고 계시는 포스트의 URL이 클립보드에 복사되었습니다.');
           }}
         >
-          링크 복사하기
+          {t('링크 복사하기')}
         </button>
       </div>
       <div className={bottomNavSectionStyle}>
-        <Link to="/">글 목록으로 돌아가기</Link>
+        <Link to={currentLang === 'ko' ? '/' : `/${currentLang}`}>{t('글 목록으로 돌아가기')}</Link>
         <div>
           {prevSlugIndex >= 0 && (
-            <Link className={bottomNavLinkStyle} to={`/posts/${postSlugs[prevSlugIndex]}`}>
-              이전글
+            <Link
+              className={bottomNavLinkStyle}
+              to={
+                currentLang === 'ko'
+                  ? `/posts/${postSlugs[prevSlugIndex]}`
+                  : `/${currentLang}/posts/${postSlugs[prevSlugIndex]}`
+              }
+            >
+              {t('이전글')}
             </Link>
           )}
           {postSlugIndex < postSlugs.length && (
-            <Link className={bottomNavLinkStyle} to={`/posts/${postSlugs[postSlugIndex]}`}>
-              다음글
+            <Link
+              className={bottomNavLinkStyle}
+              to={
+                currentLang === 'ko'
+                  ? `/posts/${postSlugs[postSlugIndex]}`
+                  : `/${currentLang}/posts/${postSlugs[postSlugIndex]}`
+              }
+            >
+              {t('다음글')}
             </Link>
           )}
-          <Link className={bottomNavLinkStyle} to={`/posts/${postSlugs[randomSlugIndex]}`}>
-            랜덤
+          <Link
+            className={bottomNavLinkStyle}
+            to={
+              currentLang === 'ko'
+                ? `/posts/${postSlugs[randomSlugIndex]}`
+                : `/${currentLang}/posts/${postSlugs[randomSlugIndex]}`
+            }
+          >
+            {t('랜덤')}
           </Link>
         </div>
       </div>

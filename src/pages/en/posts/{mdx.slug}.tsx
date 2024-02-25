@@ -9,6 +9,10 @@ import MetaHead from '../../../components/Head';
 import Layout from '../../../components/Layout';
 import MenuBar from '../../../components/MenuBar/MenuBar';
 import type { BlogPost, PostSlugList } from '../../../types';
+import { useLangStore } from '../../../store/langStore';
+import { initialize } from '../../../i18n/initialize';
+
+const LANG = 'en';
 
 deckDeckGoHighlightElement();
 
@@ -20,6 +24,9 @@ interface Props {
 }
 
 export default function PostPage({ data: { post, postSlugList } }: Props) {
+  initialize(LANG);
+  useLangStore((state) => state.setLang)(LANG);
+
   return (
     <Layout header={<Header />} nav={<MenuBar />} footer={<Footer />}>
       <Post post={post} postSlugList={postSlugList} />
