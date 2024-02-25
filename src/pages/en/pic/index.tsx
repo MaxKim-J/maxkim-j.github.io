@@ -41,8 +41,8 @@ export const query = graphql`
   query PHOTOS_QUERY_2 {
     mdx(frontmatter: { title: { eq: "pic" } }) {
       id
-      slug
       body
+      slug
       frontmatter {
         title
         description

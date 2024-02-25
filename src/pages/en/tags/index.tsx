@@ -54,13 +54,13 @@ export const query = graphql`
           description
           tags
           category
+          slug
         }
-        slug
       }
     }
   }
 `;
 
 export const Head = () => {
-  return <CustomHead title="김맥스 블로그 | 태그모아보기" />;
+  return <CustomHead lang={LANG} title="김맥스 블로그 | 태그모아보기" />;
 };

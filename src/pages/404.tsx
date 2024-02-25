@@ -21,7 +21,7 @@ const NotFoundPage = () => {
 };
 
 export const Head = () => {
-  return <CustomHead />;
+  return <CustomHead lang={LANG} />;
 };
 
 export default NotFoundPage;

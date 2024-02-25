@@ -2,17 +2,17 @@ import { graphql } from 'gatsby';
 import React from 'react';
 import { defineCustomElements as deckDeckGoHighlightElement } from '@deckdeckgo/highlight-code/dist/loader';
 
-import Footer from '../../../components/Footer';
-import Header from '../../../components/Header';
-import Post from '../../../components/Post/Post';
-import MetaHead from '../../../components/Head';
-import Layout from '../../../components/Layout';
-import MenuBar from '../../../components/MenuBar/MenuBar';
-import type { BlogPost, PostSlugList } from '../../../types';
-import { useLangStore } from '../../../store/langStore';
-import { initialize } from '../../../i18n/initialize';
+import Footer from '../../components/Footer';
+import Header from '../../components/Header';
+import Post from '../../components/Post/Post';
+import MetaHead from '../../components/Head';
+import Layout from '../../components/Layout';
+import MenuBar from '../../components/MenuBar/MenuBar';
+import type { BlogPost, PostSlugList } from '../../types';
+import { useLangStore } from '../../store/langStore';
+import { initialize } from '../../i18n/initialize';
 
-const LANG = 'en';
+const LANG = 'ko';
 
 deckDeckGoHighlightElement();
 
@@ -42,21 +42,23 @@ export const Head = (data: Props) => {
 };
 
 export const query = graphql`
-  query ($slug: String) {
-    post: mdx(slug: { eq: $slug }) {
+  query ($frontmatter__slug: String) {
+    post: mdx(frontmatter: { slug: { eq: $frontmatter__slug }, lang: { eq: "ko" } }) {
       id
-      slug
       body
       frontmatter {
         title
         date(formatString: "YYYY년 MM월 DD일")
         description
         tags
+        slug
       }
     }
     postSlugList: allMdx(sort: { fields: [frontmatter___date], order: DESC }) {
       nodes {
-        slug
+        frontmatter {
+          slug
+        }
       }
     }
   }

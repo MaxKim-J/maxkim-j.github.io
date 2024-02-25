@@ -58,8 +58,8 @@ export const query = graphql`
           tags
           lang
           category
+          slug
         }
-        slug
       }
     }
   }
