@@ -1,0 +1,71 @@
+---
+title: A Front-End Developer's Infrastructure Study
+description: Clients need servers too
+date: 2021-03-29
+category: tech
+slug: frontend-infrastructure
+tags:
+  - thought
+  - infrastructure
+lang: en
+---
+
+I haven't been blogging much lately because I've been busy with work 😭 I've been working at work and studying algorithms and infrastructure, which I thought I was lacking. Infrastructure, including cloud computing services such as AWS, hasn't been something I've been able to study until recently. I thought it was because I'm a front-end developer working on the front end of the service.
+
+When I actually started studying infrastructure, I realized that I was wrong. After all, there is nothing in the developer ecosystem that you shouldn't know. In this article, I'd like to summarize my thoughts on infrastructure, especially on handling large amounts of traffic.
+
+It's not a post with a lot of research, but rather a post that summarizes my impressions after studying for a short time and dabbling in infrastructure at my company. There's a lot more to learn, but you can see it as a short retrospective of an infrastructure kid who has just taken the first step. I won't try to explain all the infrastructure-related terms that appear in the post 🙂 .
+
+## A front is a server too
+
+The frontend is also a server. When you deploy your web app code, it comes from a server, and of course it has traffic. The web pages you see when you make a request in the address bar are all coming from the server. Whether it's an SPA on S3, a static web page, an SSR app like Next on EC2, or serverless, the server, which can exist in many forms, serves the output of your front-end development.
+
+With the creation and evolution of front-end development, servers-and deployment-are no longer the sole domain of the backend. The front-end deployment process can now be independent of the back-end, and the perspective is different. Even at the company I've been working at since mid-January, front-end deployments are physically unrelated to back-end deployments. Also, since joining the company, I've been writing deployment pipelines, scripts, and arranging AWS resources, so I've gotten to see a lot more of the infrastructure than I did as an intern at my last job.
+
+I started developing relatively recently, in 2019, so I took this environment for granted, but I learned that in deployments before the separation of front-end and back-end, the front-end was often dependent on the back-end deployment. In web development, the server would send all the resources the user requested.
+
+In this situation... 🧐 I realized that front-end developers shouldn't have to know the infrastructure. Front-end developers are now responsible for keeping the servers and infrastructure that serve client code stable.
+
+## Serving the client
+
+I've identified three main goals for front-end developers to pursue in infrastructure.
+
+### Serve reliably
+
+Reliability is the number one virtue of a server. Servers that serve client web apps need to serve the client apps to users reliably and uninterruptedly. So, let's turn the question around and ask, under what circumstances does a server become unstable?
+
+The easiest thing to think of is excessive traffic. If there's too much traffic and the server can't handle it, it will stretch.
+
+Of course, the traffic on a front-end server is much less than that of a back-end server. The only time the client app requests and fetches data from the server is when a user accesses your website from the address bar or a link, and when they hit refresh, after that it makes multiple requests to the backend for different data. The ratio is roughly 1:N. After a user accesses the client webapp, they can request data from the backend multiple times in a session.
+
+However, if you have a huge number of users, you need to take measures to increase the availability of your front-end servers. \*\*(Of course, if you need to increase the availability of your front-end servers, you can assume that your back-end traffic must be really, really high...😯 )
+
+Speaking of AWS S3, which is often used for front-end deployments, S3 is 99.99999999% reliable [and can handle 3500-5500 requests per second by default](https://docs.aws.amazon.com/AmazonS3/latest/userguide/optimizing-performance.html), so unless you're a big service, you don't need to make your storage highly available or use a lot of storage.
+
+However, if you need to be able to handle more traffic, you can increase availability by using a CDN (Cloud Front), [Client Side Load Balancing with Route 53](https://rakeshjain-devops.medium.com/elb-vs-route-53-routing-a84e91183697), etc. If you're using EC2, you might want to consider things like ELB or increasing the compute power of your instances.
+
+### Aligning with planning/organizational intent
+
+As you build your front-end apps and servers, it's important to understand and reflect your planning and organizational intent. Let's say you're building a new service and you need to adopt server-side rendering because search traffic is important. If you need to apply SSR to an existing service, your development team can add code to do it, but if that's not possible, you can do it [using lambda@edge](https://uzihoon.com/post/8f203610-8e67-11ea-925d-abc1dfcb23bd) in your infrastructure.
+
+If you are developing a new app that will be SSR, you may want to consider adopting an SSR framework like Next or Nuxt. Next and Nuxt allow you to build client apps as well as server-facing apps, so it's not enough to just put them on S3 storage, you need a way to deploy them using EC2, Elastic Beanstalk, or Lambda.
+
+So, while there are some things you can do as a developer to plan, understand the intent of the organization, and build the app, there are times when you need to think about the infrastructure to deploy it. In addition, what if the organization needs to adopt microservice architecture to rethink its efficiency? In this situation, front-end developers need to devise an app and infrastructure structure that can properly reflect the requirements and plans of the service.
+
+### Deploy quickly and easily
+
+Let's talk about the front-end app at my company: a month or so ago, we finally went live for the first time with the web client code written by me and other in-house developers, replacing the legacy service code that was outsourced in the very early days of the company. We were working to a tight deadline because our goal was to quickly replace the legacy, and the first deliverable was full of bugs and gaps. That first deployment was the beginning, not the end, and over the next three weeks we continued to make improvements and the app quickly stabilized.
+
+Rapid deployment was essential in this process. In the no-exit mentality of an early-stage startup, where plans and designs are revised daily, and CSs are pouring in on ChannelTalk about problems with the website, it was crucial to create a system that allowed us to deploy accurately, so that corrected code could be applied with a single yarn command immediately after review\*\*. We had to keep up with the rapid pace of bug reports and planning/design changes to our front-end app.
+
+I created an environment using S3 and cloud front, and wrote a yarn command script that would upload new build files to S3 while simultaneously invalidating the CDN cache so that I could see what I had deployed on the fly. It's a lot easier than building a fully-fledged CI/CD pipeline, of course, but just being able to deploy quickly was very empowering for the app improvements that needed to happen quickly. It was a great reminder of the power of automation.
+
+Front-end developers need to be able to build a pipeline that allows for rapid deployment so that changes to the app can be reflected and seen on screen quickly, and this can only be done by learning about infrastructure and automation.
+
+## Also important - optimize asynchronous requests
+
+True... Before you even think about the infrastructure of your front-end servers, **if you can reduce unnecessary requests from the front-end to the back-end**, you can very directly help the back-end handle high volumes of traffic. When you're developing a web app quickly, you're often so focused on getting the data on the screen and looking good that you don't think much about optimizing asynchronous requests to the backend. That's why I think it's important to consciously think about whether you're requesting data from the backend unnecessarily during the development process. I think it's also a good idea to implement caching so that you don't request data until the right time.
+
+## Wrapping up
+
+After writing this far, I'm wondering if I'm misleading people because I'm just an infrastructure novice who hasn't studied infrastructure, and I'm just a little bit of a dick at work... I'm self-censoring myself 🥴 I'm not sure if I wrote well... I think that any developer who develops a service can contribute effectively to the service by knowing the infrastructure well and become a developer who actively prepares for failures, so I will continue to study infrastructure and automation diligently for the time being.😎

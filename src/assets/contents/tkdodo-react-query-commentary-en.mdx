@@ -1,0 +1,329 @@
+---
+title: Using React Query in better ways
+description: tkdodo React Query post commentary (1-11)
+date: 2023-12-10
+category: tech
+slug: tkdodo-react-query-commentary
+tags:
+  - react
+  - react-query
+lang: en
+---
+
+Recently, we were discussing how to write better React Query for our company, and one of the contributors to React Query, [tkdodo](https://tkdodo.eu/blog), wrote a series of posts on React Query. It was a really good reference with a lot of thoughts and practices for writing better React Query.
+
+I've been reading through the threads lately. There are currently 23 posts, and I've read about half of them, 11 posts, and I've written a short book review for each one, summarizing/quoting the content and adding my own thoughts and feelings. I'll try to finish reading them and write a second installment later.
+
+# [1. practical react query](https://tkdodo.eu/blog/practical-react-query)
+
+> So it seems that we have always been treating this _server state_ like any other _client state_. Except that when it comes to _server state_ (think: A list of articles that you fetch, the details of a User you want to display, ...), your app does not own it. We have only **borrowed** it to display the most recent version of it on the screen for the user. It is the server who owns the data.
+
+> To me, that introduced a paradigm shift in how to think about data. If we can leverage the cache to display data that **we do not own**, there isn't really much left that is real client state that _also_ needs to be made available to the whole app.
+
+The idea of data as ownership is something I've felt since my first exposure to RQ.
+
+By saying that the client is only responsible for borrowing data from the server and showing the most recent version, it clarifies the responsibilities of data ownership. This distinction seems to be the starting point for the library's existence, and also clarifies where the roadmap for development should focus.
+
+> (Don't use the queryCache as a local state manager) If you tamper with the queryCache (`queryClient.setQueryData`), it should only be for optimistic updates or for writing data that you receive from the backend after a mutation. Remember that every background refetch might override that data, so [use](https://reactjs.org/docs/hooks-state.html) [something](https://zustand.surge.sh/) [else](https://redux.js.org/) for local state.
+
+This was interpreted as saying to avoid setting data explicitly as much as possible. In context, it seems like they're trying to make sure that the behavior we talked about earlier, the separation of state and background fetching, happens as much as possible as intended.
+
+The "use something else" suggested is react's state, zustand, and redux, but RQ also has a top-down state management with providers, so I wonder if I'm suggesting the right tools in this context.
+
+# [2. React Query Data Transformations](https://tkdodo.eu/blog/react-query-data-transformations)
+
+> **On the backend**
+
+I think you bring up a good point because sometimes I forget that I can transform data on the backend. It's not all on me, after all.
+
+Some data transformations are better done on the backend, and if you have multiple clients borrowing data, it's better to ensure uniformity on the backend. The more logic that changes data on the backend, the more it's in the client, the harder it's always been to determine what's happening where.
+
+> But if you pass a selector, you are now only subscribed to the result of the selector function. This is quite powerful,
+
+selectors also serve to narrow down the changes a query should watch for.
+
+In fact, this post shows the places where we change data (backend, queryFn, render function, select), and while `select` seems like the least disadvantageous of the three, it's not the only one.
+
+In my experience, there are quite a few situations where it's better to just put the backend's response into the result of a query. It's a simpler mental model to have a 1:1 correspondence between the query and the specific backend data, and it's better to work from a common understanding of what the backend's response looks like so that multiple workers can easily see what the data looks like in documentation, etc. The `select` could easily become implicit, or even cause redundant patching if you hooked into a query with a `select` set, and then couldn't get the data you wanted from a particular function.
+
+In the end, I realized that it might be more scalable to keep the backend response in the query and `select` the response from the query, which would allow for frequent data transformations in the render function, since writing another query to `select` the response from the original query might seem like overkill.
+
+# [3. React Query Render Optimizations](https://tkdodo.eu/blog/react-query-render-optimizations)
+
+> Render optimizations are an advanced concept for any app. React Query already comes with very good optimizations and defaults out of the box, and most of the time, no further optimizations are needed.
+
+> I'd take an "unnecessary re-render" over a "missing render-that-should-have-been-there" all day every day.
+
+It seems like "optimize" and "don't re-render" always go hand in hand when it comes to React. [see also this great article by Kent Dodds](https://kentcdodds.com/blog/fix-the-slow-render-before-you-fix-the-re-render).
+
+> I'm quite proud of this feature, given that it was my first major contribution to the library. If you set `notifyOnChangeProps` to `'tracked'`, React Query will keep track of the fields you are using during render, and will use this to compute the list.
+
+I think tracked query, which has been the default since v4, is a really nice feature: it brings what you need to care about into the library appropriately, and the only interface that goes out is a single setting.
+
+It's not like understanding anything more than just pulling out the properties you need is essential to running the app or using the library, and I don't feel like it's necessary even for a significant edge case.
+
+Isn't it a virtue from a library implementation point of view to understand the functionality of these attributes and bring them neatly into the library? from a library implementation perspective.
+
+> - If you use [object rest destructuring](https://github.com/tc39/proposal-object-rest-spread/blob/6ee4ce3cdda246746fc46fb149bb8b43c28e704d/Rest.md), you are effectively observing all fields. Normal destructuring is fine, just don't do this:
+
+Destructuring with the unfold operator is said to break the effectiveness of tracked queries.
+
+# [4. Status Checks in React Query](https://tkdodo.eu/blog/status-checks-in-react-query)
+
+> - `success`: Your query was successful, and you have `data` for it
+> - `error`: Your query did not work, and an `error` is set
+> - `pending`: Your query has no data
+
+This is an explanation of `status`, which was changed since v4 [I think it's better explained by the split between `status` and `fetchStatus`](https://maxkim-j.github.io/posts/tanstack-query-v4-preview#the-idle-state-has-been-removed) The mental model is simple because `status` is based on the presence or absence of `data`. In v5, `loading` was renamed to `pending`. This was done [primarily] because pending is a better name for the absence of data.](https://github.com/TanStack/query/discussions/4252) This makes sense if you think about the pending state of a promise.
+
+> This is even more relevant when we take into account that React Query will retry failed queries three times per default with exponential backoff, so it might take a couple of seconds until the stale data is replaced with the error screen. If you also have no background fetching indicator, this can be really perplexing. This is why I usually check for data-availability first:
+
+`retry` defaults to 3 times on fetch failures, so if you bring up the error view when an error occurs, it's going to be quite a while before you see the error on screen. This is why I say it's a better practice to branch by finding out if data is available first, rather than by errors or loading status.
+
+If you do it like the example shown, you'll always show the data if it's there, regardless of whether there's a refetch error or not.
+
+```tsx
+// data-first
+const todos = useTodos();
+
+if (todos.data) {
+  return <div>{todos.data.map(renderTodo)}</div>;
+}
+
+if (todos.error) {
+  return 'An error has occurred: ' + todos.error.message;
+}
+
+} return 'Loading...';
+```
+
+# [5. Testing React Query](https://tkdodo.eu/blog/testing-react-query)
+
+I like the way the article is organized, first explaining a good way to mock the backend API, then explaining the RQ-specific parts, and then giving some testing tips.
+
+> It's one of the most common "gotchas" with React Query and testing: The library defaults to three retries with exponential backoff, which means that your tests are likely to timeout if you want to test an erroneous query. The easiest way to turn retries off is, again, via the `QueryClientProvider`.
+
+The `QueryClient` for testing means that you want to turn off the `retry` option.
+
+> The best advice I can give you for this problem is: Don't set these options on `useQuery` directly. Try to use and override the defaults as much as possible, and if you really need to change something for specific queries, use [queryClient.setQueryDefaults](https://react-query.tanstack.com/reference/QueryClient#queryclientsetquerydefaults).
+
+There is an API, `setQueryDefaults`, that allows you to change the options for specific queries to suit the context of your test. I realized that if I used this directly in the application and not in a test, I would have no idea where the settings came from and might cause a brain freeze.
+
+> Since React Query is async by nature, when running the hook, you won't immediately get a result. It usually will be in loading state and without data to check
+
+It goes without saying that we should expect asynchronous test results.
+
+# [6. React Query and TypeScript](https://tkdodo.eu/blog/react-query-and-type-script)
+
+> If you (like me) like to keep your api layer separated from your queries, you'll need to add type definitions anyway to avoid _implicit any_, so React Query can infer the rest:
+
+> Since React Query is not in charge of the function that returns the Promise, it also can't know what type of errors it might produce. So `unknown` is correct.
+
+To get the most out of type inference, you should give the function that goes into `queryFn` a return type, and handle the error type directly since it's unknown (`unknown`) unless you give it a generic.
+
+> It will further help TypeScript to narrow types when using the status field or one of the status booleans, which it cannot do if you use destructuring:
+
+The return value of `useQuery` is inferred based on the set value, so using it without destructuring is better for type inference. However, this seems to conflict with the tracked query, which says that only the properties you need should be destructured to work well.
+
+# [7. Using WebSockets with React Query](https://tkdodo.eu/blog/using-web-sockets-with-react-query)
+
+> React Query doesn't have anything built-in specifically for WebSockets. That doesn't mean that WebSockets are not supported or that they don't work well with the library. It's just that React Query is _very_ agnostic when it comes to how you fetch your data: All it needs is a resolved or rejected `Promise` to work - the rest is up to you.
+
+React Query doesn't explicitly have a specific implementation to support websockets, because it just needs to work on a promise basis. In fact, this concept makes it so that it doesn't matter where or how you get your data. I'm glad you pointed this out.
+
+> This goal overlaps a lot with WebSockets, which update your data in real-time. Why would I need to refetch at all if I just manually _invalidated_ because the server just told me to do so via a dedicated message?
+
+Since WebSockets explicitly update and invalidate data on an event-driven basis, you may not need to assume that it gets stale over time, so I guess that means that it's probably okay to take `staleTime` to be `Infinity`.
+
+# [8. Effective React Query Keys](https://tkdodo.eu/blog/effective-react-query-keys)
+
+> If you have some _state_ that changes your data, all you need to do is to put it in the Query Key, because React Query will trigger a refetch automatically whenever the key changes. So when you want to apply your filters, just change your _client state_:
+
+Don't put `refetch` in the handler to fetch it, change the `queryKey` to make it fetch again. The `refetch` is not meant to be used when you want to re-request with different parameters.
+
+It is understood as a usage that is required to write and handle queries declaratively. It also ties in with what we talked about in [Treat the query key like a dependency array](https://tkdodo.eu/blog/practical-react-query#treat-the-query-key-like-a-dependency-array).
+
+> Manual Interactions with the Query Cache are where the structure of your Query Keys is most important. Many of those interaction methods, like [invalidateQueries](https://react-query.tanstack.com/reference/QueryClient#queryclientinvalidatequeries) or [setQueriesData](https://react-query.tanstack.com/reference/QueryClient#queryclientsetqueriesdata) support [Query Filters](https://react-query.tanstack.com/guides/filters#query-filters), which allow you to fuzzily match your Query Keys.
+
+We've known for a long time that query filters existed to make it easier to deal with query caches explicitly.
+
+However, I haven't used them much (or rigorously) in actual development. I remembered a few cases where I didn't manage `queryKey` properly in my app, or just invalidated things in a fuzzy way. It's a shame because it would have degraded the user experience.
+
+> I have found these strategies to work best when your App becomes more complex, and they also scale quite well. You definitely don't need to do this for a Todo App 😁.
+
+I think one of the reasons I feel comfortable with your technical writing is because you're so good at explaining the premise behind certain practices.
+
+> Yes, Query Keys can be a string, too, but to keep things unified, I like to always use Arrays. React Query will internally convert them to an Array anyway, so:
+
+When we moved to v4, we were only allowed to write array `queryKey`, and even when we allowed strings, `queryKey` was still an array.
+
+> Structure your Query Keys from _most generic_ to _most specific_, with as many levels of granularity as you see fit in between. Here's how I would structure a todos list that allows for filterable lists as well as detail views:
+
+```ts
+['todos', 'list', { filters: 'all' }][('todos', 'list', { filters: 'done' })][
+  ('todos', 'detail', 1)
+][('todos', 'detail', 2)];
+```
+
+This seems better cognitively, and I think the [provided example](https://tkdodo.eu/blog/effective-react-query-keys#structure) would also look more declarative if the `queryKey` wasn't framed this way.
+
+> That's why I recommend one Query Key factory per feature. It's just a simple object with entries and functions that will produce query keys, which you can then use in your custom hooks. For the above example structure, it would look something like this:
+
+```ts
+const todoKeys = {
+  all: ['todos'] as const,
+  lists: () => [...todoKeys.all, 'list'] as const,
+  list: (filters: string) => [...todoKeys.lists(), { filters }] as const,
+  details: () => [...todoKeys.all, 'detail'] as const,
+  detail: (id: number) => [...todoKeys.details(), id] as const,
+};
+```
+
+You're telling me to create a `queryKey` factory to characterize my data, which seems like a good idea, especially for larger projects.
+
+As an aside, I've seen some people use `queryKeys in practice to automatically separate things like URL endpoints and request bodies, and I've wondered if that's a good practice.
+
+I think we should write the `queryKey` as a concept that can be manipulated and understood by the client to some extent, based on the information we get from the server, so that it's easier to deal with, and it creates a layer of client-centricity around the data.
+
+The idea of having to remember the URL of an API request to explicitly handle a query... can cause brain freeze, so it would be nice to have a factory of `queryKey`s that are based on information from the server and can be easily imported. If you don't create a factory, you need to make the things that go into the `queryKey` simple and well-crafted so that it's useful for management. It seems to be a story of ease of recognition after all.
+
+It was interesting to see that I wasn't the only one interested in this topic, and that there were a lot of different contextual questions being asked in the comments. Here are some of the ones that stood out to me
+
+> if every key starts with the name of the feature, there shouldn't be any clashes unless you have features with the same name. It was rather a problem for us to have global query keys, because they can get quite large, and if you then copy-paste one line but don't change the query key prefix (it happens!), you'll get key duplications which are very hard to spot. I've been there and it took me hours to find
+
+When asked if `queryKey` collocation can lead to duplicates, why not manage them globally, the answer is that it's important that `queryKey`s are created in a way that ensures granularity because otherwise they become too large and hard to read.
+
+> query key factory concept is very useful! how about using api baseUrl (with path parameter, query parameter) to query key? 👀
+
+> yes, you can do that as well and then even leverage the defaultQueryFn as described here: [default query function](https://react-query.tanstack.com/guides/default-query-function)
+
+From a library perspective, I don't think creating a `queryKey` based on information from the server is a completely bad practice.
+
+# [8a. Leveraging the Query Function Context](https://tkdodo.eu/blog/leveraging-the-query-function-context)
+
+> Don't use inline functions - leverage the Query Function Context given to you, and use a Query Key factory that produces object keys
+
+```ts
+export const useTodos = () => {
+  const { state, sorting } = useTodoParams();
+
+  // 🚨 can you spot the mistake ⬇️
+  return useQuery({
+    queryKey: ['todos', state],
+    queryFn: () => fetchTodos(state, sorting),
+  });
+};
+```
+
+For data requests that require multiple parameters, you can extend the `queryFn` by continuing to add parameters to it, which makes sense to me because you have to modify both the arguments of the `queryFn` and the `queryKey` array at the same time, which can be a pain to manage when it gets too many and leaves room for mistakes, so the `queryFunctionContext` pattern makes sense.
+
+> The `QueryFunctionContext` is an object that is passed as argument to the `queryFn`
+
+```ts
+const fetchTodos = async ({ queryKey }) => {
+  // 🚀 we can get all params from the queryKey
+  const [, state, sorting] = queryKey;
+  const response = await axios.get(`todos/${state}?sorting=${sorting}`);
+  return response.data;
+};
+
+export const useTodos = () => {
+  const { state, sorting } = useTodoParams();
+
+  // ✅ no need to pass parameters manually
+  return useQuery({
+    queryKey: ['todos', state, sorting],
+    queryFn: fetchTodos,
+  });
+};
+```
+
+# [9. Placeholder and Initial Data in React Query](https://tkdodo.eu/blog/placeholder-and-initial-data-in-react-query)
+
+There's a lot of stuff here that I didn't know, so I just summarized the whole article.
+
+> Another way is to _synchronously_ pre-fill the cache with data that we think will potentially be right for our use-case, and for that, React Query offers two different yet similar approaches: [Placeholder Data](https://tanstack.com/query/latest/docs/react/guides/placeholder-query-data) and [Initial Data](https://tanstack.com/query/latest/docs/react/guides/initial-query-data).
+
+> As already hinted, they both provide a way to pre-fill the cache with data that we have synchronously available. It further means that if either one of these is supplied, our query will not be in `loading` state, but will go directly to `success` state
+
+Actually, I didn't realize there was such a thing as `placeholderData`. What `placeholderData` and `initialData` have in common is that they skip the `loading` state and go directly to `success` when given.
+
+> For each Query Key, there is only one cache entry. This is kinda obvious because part of what makes React Query great is the possibility to share the same data "globally" in our application.
+
+> An observer in React Query is, broadly speaking, a subscription created for one cache entry.
+
+A `cache` has only one entry per `queryKey`, and an `observer` can be multiple for a single `queryKey`.
+
+This concept of `observer` was new to me. When I was talking with my colleagues about how RQ works, we talked a lot about query as the basic unit. Even if I wrapped a query in a hook, I sometimes wondered "why is the behavior different here even though the settings are the same?".
+
+I think it's because the behavior of RQ is not based on query, but on query observer. Query and query observer are different.
+
+> `InitialData` works on cache level, while `placeholderData` works on observer level. This has a couple of implications:
+
+We can say that `initialData` exists at the cache level, while `placeholderData` exists at the observer level. Below is a summary of [this part](https://tkdodo.eu/blog/placeholder-and-initial-data-in-react-query#differences).
+
+- Persistence\*\*: `initialData` is stored in the cache, but `placeholderData` is not.
+- Background refetches\*\*: `initialData` is associated with `staleTime`, but `placeholderData` is not.
+- Error Transitions\*\*: Failure to get `initialData` is handled like a normal background query error and the existing cache data is retained, but `placeholderData` is not handled as an error and the cache data is left as `undefined`.
+
+> I personally like to use `initialData` when pre-filling a query from another query, and I use `placeholderData` for everything else.
+
+It seems to me that `initialData` could also be understood as "propagating" so that multiple observers can have the same data.
+
+> What do you think will happen in each situation? I've hidden the answers so that you can try to come up with them for yourselves if you want before expanding them.
+
+I know it's a bit of a stretch, but I think this is a good point for a technical article.
+
+# [10. React Query as a State Manager](https://tkdodo.eu/blog/react-query-as-a-state-manager)
+
+> React Query is loved by many for drastically simplifying data fetching in React applications. So it might come as a bit of a surprise if I tell you that React Query is in fact _NOT_ a data fetching library.
+
+> React Query is an async state manager. It can manage any form of asynchronous state - it is happy as long as it gets a Promise.
+
+React Query is an **Async state manager**, not a Data fetching library. RQ knows very little about the network or the layer where asynchronous requests are made (things like offline mode), and data patching is really the responsibility of http clients like axios or ky.
+
+As long as the state that the RQ can store is provided via a promise, the RQ can actually have whatever data it wants without any data patching happening. This makes sense if you think about the web socket example from earlier.
+
+> Because React Query manages async state (or, in terms of data fetching: server state), it assumes that the frontend application doesn't "own" the data. And that's totally right. If we display data on the screen that we fetch from an API, we only display a "snapshot" of that data
+
+Embracing these unique points specific to fetching client application data into the implementation of the state management library seems to be the biggest difference between RQ and state management tools like Redux that are used to handling traditional asynchronous data.
+
+I think that these implementations provide ways to manage data as a time series (`staleTime`, `cacheTime`), the concept of SWR, and ways to manage React's lifecycle (`refetchOnMount`), depending on the nature of the data element.
+
+In Redux, state was just state, and you had to create your own way of handling asynchronous data, like middleware or something.
+
+> The principle is that stale data is better than no data, because no data usually means a loading spinner, and this will be perceived as "slow" by users. At the same time, it will try to perform a background refetch to revalidate that data.
+
+Since the philosophy itself is based on SWR, it seems to me that using it properly and making the loading circle as invisible as possible to the user is the same way to use RQ properly.
+
+In this post, I'm going to say RQ is a state management library! but at the same time, I don't think it should be used or expected to be used like a state management library. I feel like the descriptions of features like `smart refetches` and `staleTime` further down in the paragraph are saying that.
+
+> This is mainly because `staleTime` defaults to _zero_, which means that every time you e.g. mount a new component instance, you will get a background refetch.
+
+Nowadays, I've been thinking about leaving `staleTime` as the default `Inifinity` since I first set up RQ... because after all, the default of 0 is assuming the most basic situation and creates as much fetching as possible.
+
+It seems like a more optimal practice would be to keep it fresh as long as possible, and then create refetches and invalidations with explicit settings for the uses that need them, but I'm just guessing because I haven't tried it.
+
+> What's going on here, I just fetched my data 2 seconds ago, why is there another network request happening? This is insane!
+
+> As long as data is fresh, it will always come from the cache only. You will not see a network request for fresh data, no matter how often you want to retrieve it.
+
+If you call two queries with the same `queryKey` in a row inside a React component without any other options, you will also get fetched twice. The data must remain fresh to avoid fetching.
+
+> That changed a lot when hooks came around. You can now `useContext`, `useQuery` or `useSelector` (if you're using redux) everywhere, and thus inject dependencies into your component. You can argue that doing so makes your component more coupled. You can also say that it's now more independent because you can move it around freely in your app, and it will just work on its own.
+
+I personally don't think that React Hooks are a means of DI, because I think the logic is structured in such a way that too many things are coupled together, but I also agree with what the article says is a tradeoff: it's not too easy to do DI with props.
+
+# [11. React Query Error Handling](https://tkdodo.eu/blog/react-query-error-handling)
+
+> You see, the `onError` callback on `useQuery` is called for every `Observer`, which means if you call `useTodos` twice in your application, you will get two error toasts, even though only one network request fails.
+
+Since errors are also handled on a per-observer basis, the onError callback is also called for as many observers as there are observers.
+
+> The global callbacks need to be provided when you create the `QueryCache`, which happens implicitly when you create a `new QueryClient`, but you can also customize that:
+
+I would expect the global form of error handling to be handled in the `queryClient` and the local form of error handling to be handled in the `ErrorBoundary`, and I could do it in the individual query.
+
+I feel like there needs to be a rule or something to better honor this principle, or a better design to handle error toasts. There may be a need to display something different than what is displayed globally for error toasts.
+
+(End)

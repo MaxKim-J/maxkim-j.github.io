@@ -1,0 +1,267 @@
+---
+title: Little things I've learned about building a React development environment
+description: No big deal
+date: 2021-12-03
+category: tech
+slug: frontend-tooling-ideas
+tags:
+  - react
+  - webpack
+  - babel
+lang: en
+---
+
+Recently, I've been working on a new version of the [Outside Clock](https://github.com/MaxKim-J/hufs-semester-clock-v2). I'm working on a project that was developed with Vue, and I'm rebuilding it with React+Typescript. Instead of using the existing boilerplate, I created the chrome extension boilerplate from scratch, starting with `yarn init`.
+
+I wrote all the webpack, babel, and tsconfig settings from scratch so that I could create a bundle that can be served as a chrome extension. Here's a summary of what I've learned and how it compares to what I've done.
+
+# Things I learned
+
+## 1. Webpack Loader application order
+
+The webpack loader is written by specifying a particular extension and attaching the required loader for it. You can apply the loaders in different ways depending on the order of application.
+
+When writing a configuration that applies more than one loader, you can write it in the following way
+
+````javascript
+// 1
+{ ```javascript // 1
+  test: /\.ts|tsx$/,
+  loaders: ['babel-loader'],
+},
+{
+  test: /\.ts|tsx$/,
+  loaders: ['ts-loader'],
+},
+````
+
+```javascript
+// 2
+{
+  test: /\.ts|tsx$/,
+  loaders: ['babel-loader', 'ts-loader'],
+},
+```
+
+[The result is the same in both cases](https://stackoverflow.com/questions/32234329/what-is-the-loader-order-for-webpack) When listed vertically in the full array of loaders, the lower order is applied first; when applied horizontally to the array of loaders with test, the higher order is applied first.
+
+You can think of it as wrapping functions back to back. So if you're styling with SCSS, you'll want to put `css-loader` `sass-loader` in that order when processing with loaders.
+
+I find the second way cleaner. It also seems like a better way to express how you want to handle resources for your project in one object.
+
+## 2. babel Loader vs babelrc
+
+I wondered what the difference was between having babelrc in the root directory and writing config in the Webpack Babel Loader's config object.
+
+````javascript
+// webpack.config.js
+
+{ ```
+  test: /\.(tsx?)$/,
+  use: {
+    loader: 'babel-loader',
+    options: {
+      presets: [
+        ['@babel/preset-env', {
+          modules: False,
+        }],
+        '@babel/preset-react',
+        ['@babel/preset-typescript', {
+          isTSX: true,
+          allExtensions: true,
+        }],
+      ],
+      plugins: [
+      '@babel/proposal-class-properties',
+      '@babel/plugin-syntax-dynamic-import',
+      ],
+    },
+  },
+}
+
+````
+
+```json
+// babelrc
+{
+  "plugins": ["@babel/proposal-class-properties", "@babel/plugin-syntax-dynamic-import"],
+  "presets": [], "presets".
+    [
+      "@babel/preset-env",
+      {
+        "modules": False
+      }
+    ],
+    "@babel/preset-react",
+    [
+      "@babel/preset-typescript",
+      {
+        "isTSX": True,
+        "allExtensions": True
+      }
+    ]
+  ]
+}
+```
+
+[No difference in results](https://stackoverflow.com/questions/48476373/whats-the-difference-when-configuring-webpack-babel-loader-vs-configuring-it-wit) Basically, if you put babelrc in the root, babel-loader will find it and apply it. Obviously, you don't need to create both.
+
+However, putting babelrc in the root directory allows for a more scalable setup. Storybook will look for and apply babelrc in the root directory at build time. You can choose whether you want this to be a configuration specific to your webpack, or one that is shared with other runtimes like Storybook.
+
+## 3. babel preset, plugin application order
+
+When writing the babel config, we list the required plugins and presets in an array, and I was curious about the order in which they are applied.
+
+According to [babel docs](https://babeljs.io/docs/en/plugins#plugin-ordering), plugins are executed before presets. Plugins are then executed from the front of the array to the back. Presets are executed from the back index of the array forward. If I display the order in the babel config example I showed above, it looks like this.
+
+```json
+{
+  "plugins": [ "plugins".
+    "@babel/proposal-class-properties", // 1st
+    "@babel/plugin-syntax-dynamic-import" // 2nd
+  ],
+  "presets": [
+    [
+      "@babel/preset-env",
+      {
+        // 5th
+        "modules": False
+      }
+    ],
+    "@babel/preset-react", // 4th
+    [ "@babel/preset-typescript
+      "@babel/preset-typescript",
+      {
+        // 3rd
+        "isTSX": True,
+        "allExtensions": true
+      }
+    ]
+  ]
+}
+```
+
+Sometimes the order in which presets or plugins are applied is important. If you're using [emotion CSS props](https://emotion.sh/docs/css-prop) for styling, you can use the Babel plugin (`@emotion/babel-preset-css-prop`) to set them up. [Docks](https://emotion.sh/docs/@emotion/babel-preset-css-prop#usage) says to place them after `@babel/preset-react` or `@babel/preset-typescript` if you're using them together. The idea is that they should be applied sooner.
+
+The plugin uses the `jsx` function in the emotion/react library to apply emotion's css props to JSX, which should normally be turned into a [`React.createElement`](https://emotion.sh/docs/@emotion/babel-preset-css-prop#features), so if `@babel/preset-react`, which turns JSX into a `React.createElement`, is applied first, the plugin won't work properly.
+
+In fact, given that a preset is a collection of plugins, the semantics of plugins and presets are almost equivalent, so I think it's entirely possible that in some situations, following the execution order of presets and plugins as suggested by babel will cause the plugins to be out of order between the preset and the plugin.
+
+On a related note, there was an open [discussion and PR](https://github.com/babel/babel/pull/5735) to allow you to customize babel's plugin calling order. I don't think the PR has been closed yet, but there hasn't been any activity recently.
+
+## 4. Good settings for tree shaking
+
+In order for tree shaking to remove dead code by determining the code and `export` of unused libraries, we need a few settings in the development environment. If you're curious about tree shaking in Webpack, check out [this article](https://ui.toast.com/weekly-pick/ko_20180716)!
+
+During the build process, webpack categorizes code and `export`s to show where they are not needed, and terser, a tool that helps compress code in the final stages of bundling, removes code that is not needed.
+
+Tree shaking is only possible in an ESM module environment, which natively allows for static analysis of modules, so you should try to keep your code as written in ESM as much as possible, until terser in webpack removes dead code and minifies it.
+
+Once you set the value of the `module` attribute in `tsconfig` to ESNext or ES6, it will become a typescript transfile with the ESM module preserved.
+
+```json
+{
+  "compilerOptions" : {
+  "module": "ESNext",
+  ...
+  }
+}
+```
+
+In subsequent babel configurations, setting the `modules` setting in `@babel/preset-env` to false will prevent ESM modules from being replaced with cjs.
+
+```json
+{
+  "presets": [
+    [
+      "@babel/preset-env",
+      {
+      "targets": {"chrome": "58"},
+      "modules": False,
+      ...
+      }
+    ]
+  ]
+}
+```
+
+When I first came across this information, I had a simple thought: if I keep ESM, won't I be breaking browser compatibility because the final bundled output will come out in ESM? [after all, webpack is converting the code into a universally usable form](https://ui.toast.com/weekly-pick/ko_20180716#babel%EB%A1%9C-es6-%EB%AA%A8%EB%93%88%EC%9D%B4-commonjs-%EB%AA%A8%EB%93%88%EB%A1%9C-%EB%B3%80%ED%99%98%EB%90%98%EB%8A%94-%EA%B2%83-%EB%A7%89%EA%B8%B0)
+
+# Choice.
+
+As you organize your development environment with `babel`, `tsc`, and `webpack`, there are situations where the same thing can be done with both tools. Here's a quick comparison of what to choose in this case.
+
+## TypeScript : tsc vs @babel/preset-typescript
+
+You can choose whether to write tsc or babel in your TypeScript transpiles, and it's a fairly well-known choice. I came across [this article](https://ui.toast.com/weekly-pick/ko_20180716#babel%EB%A1%9C-es6-%EB%AA%A8%EB%93%88%EC%9D%B4-commonjs-%EB%AA%A8%EB%93%88%EB%A1%9C-%EB%B3%80%ED%99%98%EB%90%98%EB%8A%94-%EA%B2%83-%EB%A7%89%EA%B8%B0) and realized that babel can be written to a typescript transfile.
+
+While making boilerplate this time, I agreed with the above post that it's not easy to use two compilers together. The order of things was confusing and there was a lot to think about. If you do the TypeScript transpile in babel, you can convert almost everything you need for bundling with just babel.
+
+The advantage of using babel is that it's faster.](https://github.com/JaeYeopHan/tip-archive/issues/30) TSC is slower because it scans the d.ts of all the libraries inside `node_modules` to make sure they're working correctly, creates a type declaration file (index.d.ts) for the current project, and does type chaining every time it builds. On the other hand, babel is faster because it compiles by simply stripping out the TypeScript syntax.
+
+However, this makes babel unusable in cases where you need to create a type declaration file together (such as library development).
+
+I think I was hesitant to use it at first because of the fact that it doesn't check build-time types - humans can't always be meticulous, and catching build-time type errors makes for a more robust product. However, it seems like this is a point that can be compensated for by building additional environments that can check for type errors on demand, or with the help of eslint.
+
+But still, I'm not sure if I would be diligent enough to run type checking when I separate it... If there is an error when type checking with tsc at the CI/CD stage, integration is not possible... I think I need to think of another tool that can enforce type compliance.
+
+And it seems like there are more unsupported grammars than tsc, so it would be a bit troublesome to install and maintain a plugin for that.
+
+I'm using tsc for the outer clocks project, but I'd like to experiment with `@babel/preset-typescript` as a POC first.
+
+## JSX : tsconfig vs @babel/preset-react
+
+The difference is whether you do the JSX conversion in the TypeScript transpile step or using @babel/preset-react. Again, you can do either one. JSX transformation while applying the [New JSX Transform](https://github.com/max-kim-tutorial/client-advanced/tree/master/24_frontend-tooling), which is supported since React 17, can be done with settings in either `tsconfig` or `babelrc`.
+
+```javascript
+// babelrc
+// If you want to transform JSX in babel, the jsx setting in tsconfig should be preserve (preserve JSX)
+{
+  "presets": [].
+    ["@babel/preset-react", {
+    "runtime": "automatic"
+    }]
+  ]
+}
+
+// or tsconfig
+// Support for the New JSX Transform starting with TS 4.1.
+{ }
+  jsx: 'react-jsx',
+  ...
+}
+```
+
+I thought it would be better to set it in tsconfig. It's because I don't need to install and use `@babel/preset-react`. Why install another plugin when there is an option available in `tsconfig`? In other words, I don't need to use `@babel/preset-react` in React projects that don't know JS but use TS...? I've been thinking a bit.
+
+Using tsconfig also makes it easier to apply emotion, you don't need to use `@emotion/babel-preset-css-prop`, you just need to add one more setting in tsconfig, which will allow you to convert JSX via emotion's JSX functions.
+
+```json
+{
+  "compilerOptions" : {
+  "jsx": "react-jsx",
+  "jsxImportSource": "@emotion/react",
+  ...
+  }
+}
+```
+
+TypeScript supports several JSX conversion options. You can check them out [here](https://www.typescriptlang.org/docs/handbook/jsx.html)!
+
+## ES5: Just Babel
+
+If you set the `target` property in tsc's tsconfig option to ES5, the transpile will be done to ES5.
+
+However, it is unlikely that you will ever use tsc without babel when developing a web application. This is because `@babel/preset-env` allows you to set browser compatibility options, set the right settings for tree shaking, and many other options for web development.
+
+Since ES5 conversion was originally babel's own thing, it seems right to leave ES5 transpilation of web applications to babel.
+
+# Closing thoughts
+
+These are some of the things I've learned recently about building front-end development environments.
+
+While it's easy to Google "how to do it", I think digging a little deeper has given me a better understanding of how the build process works, which tools to choose, and what exactly each tool does.
+
+It's still pretty hard for me to make decisions about my build environment because I'm not sure if this is the best way to go.
+
+The difference between the results is not immediately apparent like making a web screen, and I feel like I can only create an environment that is comfortable for development. I would like to become a developer who can create the best build results in various situations by gaining more know-how.

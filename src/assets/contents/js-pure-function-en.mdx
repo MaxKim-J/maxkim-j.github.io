@@ -1,0 +1,115 @@
+---
+title: A Taste of "Pure Functions" without Side Effects
+description: Purity and Impurity, Side Effects
+date: 2020-04-11
+category: 'tech'
+slug: js-pure-function
+tags:
+  - javascript
+  - react
+lang: en
+---
+
+When you were learning React, you were taught that `state` should be **immutable**, and when you were learning Redux, you were probably introduced to the concept of **pure functions**. There's a difference between knowing what these concepts are and building an app that doesn't.
+
+<img src="../images/js-pure-function/functions.png" />
+By considering side effects and function purity, you can write functions that do the same thing in any
+situation and don't interfere with the work of other functions. In a collaborative situation, you don't
+want someone else's function to interfere with yours. or interfere with your own function in a collaborative
+situation? To write better JavaScript code, understanding pure functions to write better JavaScript code.
+
+## Side effects and pure functions
+
+So, first of all, what are side effects? A side effect is an effect or side effect that is different from the purpose for which the function was created. To put it more simply, if a function has the potential to do something unexpected, then it's a function that can have side effects.
+
+A function without side effects is a "pure function" and a function with side effects is an "impure function".
+
+```javascript
+
+// Functions that send HTTP requests: can't be pure functions
+const getData = () => {
+  axios.get('http://data.url')
+  .then(...)
+  .catch(...)
+}
+
+// Input-implied functions: can't be pure functions
+const typeInput = () => {
+const input = prompt("Message");
+  return input;
+}
+
+// function to directly change parameters: can't be a pure function
+const changeParams = (arr, elem) => {
+  arr.push(elem);
+  return arr;
+}
+```
+
+A function can't be pure if **something unexpected** can happen inside or outside the function. A function that sends asynchronous requests has the potential for the request to fail. Functions that take inputs can't be pure functions either, because there's a chance that the output will depend on the input.
+
+Functions that directly modify values passed in as parameters also can't be pure functions, because if you modify a referenced data type object, such as an array, directly inside a function, it can affect the behavior of other functions that take it as an argument later. We'll explain this in more detail later.
+
+While the term impure function may have a negative connotation, it's not necessarily a bad thing. Sometimes you need side effects, like in asynchronous HTTP requests.
+
+## Pure functions that don't change parameters directly
+
+You can create a pure function simply by avoiding directly changing the values that go into the parameters of your function. The reason for avoiding direct manipulation of parameters is that we don't know **what else this parameter might be used for**.
+
+If a function directly changes the value of a parameter, the changed value will persist and can affect the behavior of other functions. Consider the code below.
+
+```javascript
+const num_arr = [1, 2, 3, 4, 5];
+
+// Impure function that directly changes the value of a parameter
+const addSixImpure = (arr) => {
+  // add 6 directly to the parameter
+  arr.push(6);
+  return arr;
+};
+
+// Pure function that changes the value of a parameter copied from it
+const addSixPure = (arr) => {
+  // add 6 to a new array with the expand operator
+  newArr = [...arr, 6];
+  return newArr;
+};
+
+// Function to check if the parameter arr has 6 in it
+const hasSix = (arr) => {
+  if (arr.includes(6)) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+const new_arr = addSixImpure(num_arr);
+console.log(hasSix(num_arr)); // true
+```
+
+At first glance, `addSixPure()` and `addSixInpure()` don't look much different, but `addSixInpure()` is an impure function that changes the value of a parameter directly, while `addSixPure()` is a pure function that copies the value of a parameter and changes it.
+
+Because `addSixInpure()` directly replaces `num_arr`, when the function runs, the value of `num_arr` is permanently changed to `[1,2,3,4,5,6]`, so the result of the `hasSix()` function is true.
+
+However, if the developer's intention was to assign a new array to the variable `new_arr` after calling the `addSix` function, and then determine whether `num_arr` with the value `[1,2,3,4,5]` has sixes in it, the code didn't work as intended. The result should be `false` because `num_arr` has already changed.\*\* So in this case, the `addSix` function shouldn't directly change `num_arr`. Instead, we need code like this
+
+```javascript
+const new_arr = addSixPure(num_arr);
+console.log(hasSix(num_arr)); // false
+```
+
+Because `addSixPure()` does not directly manipulate `num_arr`, the value that was initially assigned to `num_arr` is unchanged. Therefore, the result of `hasSix(num_arr)` is `false`.
+
+This example illustrates that **the more pure functions you have, the more predictable your code will be**. The result of `hasSix()` is incorrect because `addSixInpure()` had the **side effect** of adding 6 to `num_arr`. The less we manipulate the declared variables directly, the more likely functions will behave as the developer intended without side effects.
+
+## Wrapping up
+
+Pure functions can be useful and are often used in practice. React state avoids side effects by avoiding direct manipulation. The `reducer` in `Redux` must be a pure function because functions that change the value of `store` must not have side effects, so that the values inside `store` are safe.
+
+Pure functions are also easier to test because they always guarantee the same output for the same input, which is a key concept in functional programming... I feel like I've only scratched the surface with this post, so I hope I can post about the benefits of pure functions in practice.
+
+## reference
+
+- [React official documentation - hooks](https://ko.reactjs.org/docs/hooks-overview.html)
+- [The Art of JavaScript Coding](https://github.com/gilbutITbook/007030)

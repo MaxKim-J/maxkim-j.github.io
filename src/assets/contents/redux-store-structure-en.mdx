@@ -1,0 +1,505 @@
+---
+title: Redux Store Structure for Effective Asynchronous Request Management
+description: Redux, The Complete Redux Saga
+date: 2021-08-24
+category: tech
+slug: redux-store-structure
+tags:
+  - react
+  - redux
+lang: en
+---
+
+> > This is a continuation of the previous post [**Redux Toolkit and its own util functions to reduce Redux+Saga typing** > ](https://maxkim-j.github.io/posts/how-to-minimize-redux-saga-typing)!
+
+I recently spent a lot of energy refactoring the structure of Saga, the Redux Store that manages asynchronous requests for our products. There were two main points of improvement.
+
+1. reduce the typing of the Redux Store, where Actions and SAGAs are declared manually and verbosely without any other auxiliary libraries, using the Redux Toolkit and our own Util functions.
+2. creating a structure for the Redux Store to effectively store asynchronous request response data values.
+
+In the previous post, I showed a few uses for Redux Toolkit to reduce the typing of your Redux Store. In this post, we'll take the patterns from the last post and apply them to a real product, with a few modifications to make them work for our production.
+
+In this post, I'll show you the structure of the Redux Store for effective asynchronous request management that I've come up with, and the Redux Utils (reducers, factory functions that create sagas) that I've tweaked to fit the changed structure.
+
+This will be the final, definitive post on the topic of asynchronous request management with Redux Store that I've been exploring.
+
+# Structure your Redux Store
+
+## Problems with the existing AsyncEntity and how to improve it
+
+In the last post, we set up a property called AsyncEntity that is responsible for a unit of asynchronous data in the store. The AsyncEntity we defined in the last post looks like this.
+
+```typescript
+export type GeneralStatus = 'idle' | 'loading' | 'success' | 'fail';
+
+export type AsyncEntity<DataType> = {
+  data: DataType | null;
+  status: GeneralStatus;
+  error: Error | null;
+};
+
+// Initial state of the store's properties = AsyncEntity<UserInfo>
+userInfo: {
+  data: null,
+  status: 'idle',
+  error: null,
+}
+
+```
+
+We use the data property as one source where data is stored, and another property to store the status of the most recent request and whether it was an error.
+
+We've also created a separate type that allows us to remove the data and store only the status of the request, in case a specific value is not returned in the response to a PUT, POST, DELETE, etc. request
+
+```typescript
+export type StatusOnlyAsyncEntity = {
+  status: GeneralStatus;
+  error?: Error | null;
+};
+
+// store's property initial state = StatusOnlyAsyncEntity
+putUserInfoStatus: {
+  status: 'idle',
+  error: null,
+}
+```
+
+However, the data you request from the server may not be available only when you make a GET request from the client. Sometimes the backend will return the modified data itself, even if you send a request to modify the data directly from the client with a POST, PUT, DELETE, or other request.
+
+Using only the types shown above, we have to manage request state values that could actually be bundled together in other properties of the store, which seems pretty inefficient and makes the store properties feel less cohesive.
+
+```typescript
+// have different states and values per request
+userInfo: {
+  data: UserInfo,
+  status: 'idle' | 'loading' | 'success' | 'fail',
+  error: Error,
+},
+userInfoPutStatus: {
+  // userInfo.data should be modified on successful PUT request => low cohesion
+  status: 'idle' | 'loading' | 'success' | 'fail',
+  error: Error,
+}
+userInfoDeleteStatus: {
+  // userInfo.data should be modified on successful DELETE request => low cohesion
+  status: 'idle' | 'loading' | 'success' | 'fail',
+  error: Error,
+}
+
+```
+
+What if we did this? In a store, we could create a property that represents a unit of data, and make it possible to manage the state of request methods like GET and POST.
+
+```typescript
+userInfo: {
+  data: UserInfo,
+  GET: {
+    status: 'idle' | 'loading' | 'success' | 'fail',
+    error: Error,
+  },
+  PUT: {
+    status: 'idle' | 'loading' | 'success' | 'fail',
+    error: Error,
+  },
+  DELETE: {
+    status: 'idle' | 'loading' | 'success' | 'fail',
+    error: Error,
+  },
+}
+```
+
+For example, if your app has a comments feature and you want to get a list of comments on a GET request, and an up-to-date list of comments reflecting the request on a PUT, POST, or DELETE request, this store structure will make it easier to manage server data. Data is stored in only one place (`userInfo.data`) no matter what the request method is.
+
+By structuring the store so that each request is uniformly located in the store, the logic for handling the response value is also uniform, making it easier to separate it into a utility function when creating Reducer's factory utility functions, which we'll discuss further later.
+
+## Create a Store with the new AsyncEntity type
+
+First, we declare a type for the object that manages the state value of the request.
+
+```typescript
+export type GeneralStatus = 'idle' | 'loading' | 'success' | 'fail';
+
+export type AsyncEntityStatus<StatusType> = {
+  status: StatusType;
+  error?: BaseException | null;
+};
+```
+
+By default, we declare the GeneralStatus type so that the status property has four basic states: `success | fail | idle | loading`.
+
+If you have different types of successes or failures, you might want to have status values like `success1 | success2 | fail1 | fail2 | idle | loading`. We've also set up `AsyncEntityStatus` to allow us to put in the types of status values we can have as generics.
+
+The AsyncEntity property, which was previously fixed, has been decomposed. The following types all come together to make a single AsyncEntity.
+
+```typescript
+export type AsyncEntityData<DataType> = {
+  data: DataType | null;
+};
+
+export type AsyncEntityGetStatus<GetStatus = GeneralStatus> = {
+  GET: CustomStatusOnlyAsyncEntity<GetStatusType>;
+};
+
+export type AsyncEntityPostStatus<PostStatus = GeneralStatus> = {
+  POST: CustomStatusOnlyAsyncEntity<PostStatusType>;
+};
+
+export type AsyncEntityPutStatus<PutStatus = GeneralStatus> = {
+  PUT: CustomStatusOnlyAsyncEntity<PutStatusType>;
+};
+
+export type AsyncEntityDeleteStatus<DeleteStatus = GeneralStatus> = {
+  DELETE: CustomStatusOnlyAsyncEntity<DeleteStatusType>;
+};
+
+// Store Type
+// userInfo data to GET, POST, PUT - feel free to attach any methods you need
+type UserInfoAsyncEntity = AsyncEntityData<UserInfo> &
+  AsyncEntityGetStatus &
+  AsyncEntityPostStatus &
+  AsyncEntityPutStatus;
+
+type UserStore = {
+  userInfo: UserInfoAsyncEntity;
+};
+```
+
+We create one property to store the data (AsyncEntityData) and declare it by naming the properties one by one with the names of the methods that modify that data.
+
+Now, using the completed types, declare initalState where we declare the slice.
+
+We'll assign an initial value for store that matches the type value. Since we don't have any data yet, we'll set the data property to null and all statuses to idle.
+
+```typescript
+const initialStore: UserStore = {
+  userInfo: {
+    data: null,
+    GET: {
+      status: 'idle',
+      error: null,
+    },
+    POST: {
+      status: 'idle',
+      error: null,
+    },
+    PUT: {
+      status: 'idle',
+      error: null,
+    },
+  },
+};
+```
+
+The data property type of `AsyncEntityData` can also be null, to explicitly represent the state of having no data as null. If the data type is not nullable as shown below, this can cause problems.
+
+```typescript
+export type AsyncEntityData<DataType> = {
+  data: DataType;
+};
+```
+
+If the type of the response is an array and you initialize it to an empty array, you might not be able to tell the difference between that and an empty array coming from the backend because there is no data in it. If the type is an object, it's annoying to have to set the initial values for every property of the data type.
+
+```typescript
+// X - array
+const initialStore:UserStore = {
+  userInfo: {
+    data: [], // indistinguishable from an empty array that might come when no data is present
+    GET: {
+      status: 'idle',
+      error: null
+    },
+  ...
+}
+
+// X - object
+const initialStore:UserStore = {
+  userInfo: {
+  data: {
+    userName: '',
+    userAge: 0,
+    ...
+  }, // Empty object doesn't fit the type definition, so you need to provide initial values for all properties
+  GET: {
+    status: 'idle',
+    error: null
+  },
+  ...
+  }
+}
+```
+
+And that's it for the store!
+
+# Reducer
+
+## Reducer Factory function - createReducer
+
+There are four main utility functions to create a reducer function for the redux toolkit slice I use.
+
+These are factory functions that create the `GeneralStatus` type of state change declared above and create a reducer function that can do the appropriate processing when the request succeeds. If you're using a StatusType that doesn't behave asynchronously, you'll need to implement your own reducer function, but these four functions should cover most situations.
+
+```typescript
+const createStartReducer =
+  <State extends { [key: string]: any }>(entity: string, method: HttpMethods) =>
+  <PayloadType>() => {
+    return (state: State, action: PayloadAction<PayloadType>) => {
+      state[entity][method].status = 'loading';
+    };
+  };
+
+const createSuccessReducer = { return
+  <State extends { [key: string]: any }>(entity: string, method: HttpMethods) =>
+  <PayloadType>() => {
+    return (state: State, action: PayloadAction<PayloadType>) => {
+      state[entity].data = action.payload;
+      state[entity][method].error = null;
+      state[entity][method].status = 'success';
+    };
+  };
+
+const createMethodFailReducer =
+  <State extends { [key: string]: any }>(entity: string, method: HttpMethods) =>
+  <PayloadType>() => {
+    return (state: State, action: PayloadAction<PayloadType>) => {
+      state[entity][method].error = action.payload;
+      state[entity][method].status = 'fail';
+    };
+  };
+
+const createMethodStatusRestoreReducer =
+  <State extends { [key: string]: any }>(entity: string, method: HttpMethods) =>
+  () => {
+    return (state: State) => {
+      state[entity][method].status = 'idle';
+    };
+  };
+```
+
+You should have a good idea of how we're modifying the store whenever the state changes.
+
+What's different from the last post is that we've added a restore reducer factory function that takes a request and turns it into a success, a failure, and finally an idle state at the end.
+
+This was something I didn't realize until I tried it out in production, but there was definitely a need to put the request back to the same idle, idle state it was in at the beginning, after the request ended with success or failure.
+
+If it's a GET request, it might not seem like it matters whether the last state was success or fail, because the re-call happens in the same situation as when you enter the page, and the state changes in a fraction of a second.
+
+However, for POST, PUT, and DELETE, if the state is left as success or fail, it can cause unexpected side effects when we are in a situation where we need to make a request again, because we already have a state like success or fail before we make the request.
+
+## Actual implementation
+
+Create a reducer function for the user information, injecting the name of the store property and the appropriate type for the method as generics.
+
+```typescript
+type GetUserStartPayload = {
+  userId: number;
+};
+
+const userSlice = createSlice({
+  name: 'user',
+  initialState,
+  reducers: {
+    getUserInfo: createStartReducer('userInfo', 'GET')<GetUserStartPayload>(),
+    getUserInfoSuccess: createSuccessReducer('userInfo', 'GET')<UserInfo>(),
+    getUserInfoFail: createFailReducer('userInfo', 'GET')<AxiosError>(),
+    getUserInfoRestore: createRestoreReducer('userInfo', 'GET')(),
+  },
+});
+
+export const userActions = userSlice.actions;
+```
+
+# Saga
+
+Finally, the saga function, where the API calls are actually made.
+
+## Async Saga Factory function - createAsyncSaga
+
+The utility function that actually creates the Saga that makes the asynchronous request and issues the appropriate action based on the result looks like this. It's a kind of higher-order factory function that returns a generator function.
+
+```typescript
+import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
+import { AxiosResponse } from "axios";
+
+type CreateAsyncSagaOptions<Start, Success> = {
+  fn: (requestBody: Start) => Promise<AxiosResponse<Success>>;
+  sustain?: number;
+};
+
+const createAsyncSaga = <Start, Success, Fail>(
+  success: ActionCreatorWithPayload<Success>,
+  fail: ActionCreatorWithPayload<Fail>,
+  { fn, sustain = 1000 }: CreateAsyncSagaOptions<Start, Success>
+  ) => {
+    return function\* (action: PayloadAction<Start>) {
+    try {
+      // Match Start's action.payload property to the arguments of the async request function
+      const response: AxiosResponse<Success> = yield call(fn, action.payload);
+      yield put(success(response.data));
+    } catch (error) {
+      const response: AxiosResponse<Fail> = error;
+      yield put(fail(response.data));
+    } finally {
+      yield delay(sustain); // how long to persist the state after success or fail
+      yield put(restore(undefined)); // switch to idle after the sustain time has elapsed
+    }
+  };
+};
+```
+
+Takes the success, fail, and restore actions as arguments and calls Saga, issuing the action in the appropriate situation.
+
+By default, we put the requestBody or queryParams required for the request as the payload of the Start action. Inside Saga, you'll need to create the following functions to call
+
+```typescript
+const getUserInfo = ({ userId }: GetUserStartPayload) => {
+  return axios.get('baseurl/user', {
+    params: { userId },
+  });
+};
+```
+
+The sustain argument allows you to set how many ms to keep the state showing the result after the asynchronous request completes (success, fail). This can be used in behaviors such as displaying an alert for a certain amount of time after a request.
+
+Depending on the nature of your application, you can set different parameters, for example, you can set the auth parameter to indicate whether the API request requires user authentication.
+
+If auth is true, we can use it to access the userReducer, which stores tokens for user authentication, with a select function to get the tokenId.
+
+```typescript
+const createAsyncSaga = <Start, Success, Fail>(
+    success: ActionCreatorWithPayload<Success>,
+    fail: ActionCreatorWithPayload<Fail>,
+    { fn, auth, sustain = 1000 }: CreateAsyncSagaOptions<Start, Success>,
+  ) => {
+    return function(action: PayloadAction<Start>) {
+      // If you store the token in a store, you can utilize it this way
+      const { tokenId } = yield select((state) => state.userReducer);
+      const requestBody = [action.payload];
+
+      if (auth) {
+        requestBody.push(tokenId)
+      }
+
+      } try {
+        const response: AxiosResponse<Success> = yield call(fn, ...requestBody);
+        yield put(success(response.data));
+      } catch (error) {
+        ...
+      }
+    };
+};
+```
+
+## Actual implementation
+
+```typescript
+const getUserInfoSaga = createAsyncSaga<GetUserStartPayload, UserInfo, Error>(
+  userActions.getUserInfoSuccess,
+  userActions.getUserInfoFail,
+  userActions.getUserInfoRestore,
+  {
+    fn: getUserInfo,
+    sustain: 2000,
+  }
+);
+
+export function\* userSaga() {
+  yield takeLatest(userActions.getUserInfo.type, getUserInfoSaga);
+}
+```
+
+We pass in the success, fail, and restore actions along with their parameters and types to return the generator function. Finally, we subscribe to the start action, which initiates the call using takeLatest and maps it to Saga.
+
+# Directory Structure
+
+We have the following directory structure We divide the store by domains of data managed by the server. Put commonly used utility functions (SagaUtil, createReducers) in the parent directory.
+
+You will also need a way to spatially separate the reducer functions that are needed to create conventions to fetch asynchronous data from those that are not.
+
+```shell
+src
+|- api
+|- index.ts
+|- store
+|- user # Separate reducers for a specific domain into directories below store
+|- reducer.ts
+|- types.ts
+|- saga.ts
+|- utils.ts
+|- types.ts # store types and utils used throughout the store in the store directory
+
+```
+
+# full implementation
+
+I'll show you the full implementation code, divided into a utility function part and an actual implementation part. It's definitely a simplified look compared to the [Redux example from the previous post](https://maxkim-j.github.io/posts/how-to-use-redux-saga#%EC%93%B4%EB%8B%A4%EB%A9%B4-%EB%8D%94-%EC%83%9D%EA%B0%81%ED%95%B4%EB%B4%90%EC%95%BC-%ED%95%A0-%EA%B2%83%EB%93%A4), thanks to the introduction of the Redux Toolkit.
+
+There are more newlines than in the last example, so the line count itself doesn't seem to make much of a difference, but the overall typing has been reduced. The best part is that I don't have to define an action string and an action return function.
+
+```typescript
+// The actual implementation part
+
+// index.ts
+const initialStore: UserStore = {
+userInfo: {
+    data: null,
+    GET: {
+      status: "idle",
+      error: null,
+    },
+    POST: {
+      status: "idle",
+      error: null,
+    },
+    PUT: {
+      status: "idle",
+      error: null,
+    },
+  },
+};
+
+const userSlice = createSlice({
+  name: "user",
+  initialState,
+  reducers: {
+    getUserInfo: createStartReducer("userInfo", "GET")<GetUserStartPayload>(),
+    getUserInfoSuccess: createSuccessReducer("userInfo","GET")<UserInfo>(),
+    getUserInfoFail: createFailReducer("userInfo", "GET")<AxiosError>(),
+    getUserInfoRestore: createRestoreReducer("userInfo", "GET")(),
+  },
+});
+
+// saga.ts
+export const userActions = userSlice.actions;
+
+const getUserInfoSaga = createAsyncSaga<GetUserStartPayload, UserInfo, Error>(
+  userActions.getUserInfoSuccess,
+  userActions.getUserInfoFail,
+  userActions.getUserInfoRestore,
+  {
+  fn: getUserInfo,
+  sustain: 1000,
+  }
+);
+
+export function\* userSaga() {
+  yield takeLatest(userActions.getUserInfo.type, getUserInfoSaga);
+}
+
+```
+
+# Closing remarks
+
+In hindsight, it doesn't seem like much, but it's been a topic I've been thinking about a lot in recent months. It's not easy to find time because I'm busy handling tasks at work, but it's also something I've been thinking about while refactoring reduxes!!!!.
+
+It's not perfect and I'm sure there are better ways to do it, but I'm a little proud of myself for gradually applying my research to the company's product and fixing/evolving it.
+
+However, as I've been looking at React Query lately, I've become more and more aware of the inherent limitations of Redux. It would be really difficult to implement the refetch, retry, and caching features that React Query makes it easy to use in Redux and Saga. I'd like to see libraries like React Query and SWR gradually replace asynchronous request logic.
+
+As a small startup with two junior front-end developers, we didn't have the time or buy-in to move forward with new technologies, but we were almost at the point where we couldn't add any more features, and we needed to improve, so the best we could come up with was to leave Redux alone and introduce the Redux Toolkit. I was able to convince them, and I'm glad it went relatively smoothly...
+
+Finding best practices for asynchronous management with Redux + Saga has been a bit of a struggle.
+
+Googling around, I found a lot of different ways to log success, failure, and loading statuses, but it took some research to find something I was happy with.
+
+I hope this provides a little insight for those of you who are building asynchronous projects with Redux+Saga.

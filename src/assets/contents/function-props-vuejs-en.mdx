@@ -1,0 +1,172 @@
+---
+title: Are function props an anti-pattern in Vue?
+description: Should we just use event emit?
+date: 2020-05-31
+category: tech
+slug: function-props-vuejs
+tags:
+  - vue
+  - javascript
+lang: en
+---
+
+In React, in order to update the state of a parent component in a child component, the function that updates that state needs to be passed as a props in the child component along with the parent component. \*\*In Vue, we use the method of emitting an event from the child component and the parent component detects it and performs certain logic. In this post, we'll compare the two methods of updating parent component data: function props in React.js and event emit in Vue.js.
+
+![View](../images/vue-props/meta.png)
+
+## For React: function props
+
+Let's create a simple app using Vue and React to display a number on the screen and a button to increment the number. In the case of React, as mentioned in the introduction, we need to pass the function that modifies that state from the parent component to props.
+
+```javascript
+// Implement the parent and child components together in one .js file
+
+import React, { useState } from 'react';
+
+function App() {
+  const [count, setCount] = useState(0);
+
+  const increaseCount = () => {
+    setCount(count + 1);
+  };
+  return <ShowCount count={count} increaseCount={increaseCount} />;
+}
+
+function ShowCount({ count, increaseCount }) {
+  return (
+    <div>{count
+      <div>{count}</div>
+      <button onClick={increaseCount}>Press to increase</button>
+    </div> </div>
+  );
+}
+```
+
+## For Vue: event emit
+
+For Vue, the exact same logic can be handled with event emit. The child component emits an event with `this.$emit('increase')` and the parent component catches it with the `@increase` event handler and executes the method. Here, `@` is a shorthand for the `v-on` directive.
+
+```html
+<template>
+  <!-- Parent component app.vue -->
+  <div id="app">
+    <!
+    <!-- Registering an event that occurs in the child component (increase) -->
+    <ShowCount :count="this.count" @increase="increaseCount" />
+  </div>
+</template>
+
+<script>
+  import ShowCount from './components/ShowCount';
+
+  export default {
+    name: 'App',
+    components: {
+      ShowCount,
+    },
+    data() {
+      return {
+        count: 0,
+      };
+    },
+    // Methods to increment count
+    methods: {
+      increaseCount() {
+        this.count++;
+      },
+    },
+  };
+</script>
+```
+
+```html
+<template>
+  <!-- Subcomponent showCount.vue -->
+  <div> <!
+    <div>{% raw %}{{ count }}{% endraw %}</div>
+    <button @click="increaseEventEmit">Increase when pressed</button>
+  </div>
+</template>
+
+<script> </script
+  export default {
+    name: 'App',
+    props: { count: number },
+    methods: {
+      // methods to fire the increase event, which is fired when the button is clicked
+      increaseEventEmit() {
+        this.$emit('increase');
+      },
+    },
+  };
+</script>
+```
+
+## function props in Vue
+
+Let's see if we can pass functions as props in Vue to modify data in the parent component, just like we can in React. Replace the code below with the following: the increment event handler is replaced with a `v-bind` that passes down a prop called `increseCount`. Note that `:` is shorthand.
+
+```html
+<template>
+  <div id="app">
+    <!-- passes functions with v-on bind -->
+    <ShowCount :count="this.count" :increaseCount="this.increaseCount" />
+  </div>
+</template>
+
+<script>
+  ...
+</script>
+```
+
+Then we assign increaseCount as a function to the child component's props object and modify it to call the increaseCount received as props when the button is clicked.
+
+```html
+<template>
+  <div <div>
+    <div>{% raw %}{{ count }}{% endraw %}</div>
+    <button @click="increaseCount">Press to increase</button>
+  </div>
+</template>
+
+<script>
+  </script
+   export default {
+     name: 'App',
+     props: {
+       count: Number,
+       increaseCount: Function,
+     },
+   };
+</script>
+```
+
+How does it look? It works just as well as the code we had earlier that used event emit. Function props work just fine in Vue!
+
+Shouldn't we use ##?
+
+Now that we know function props work well in Vue, is this an anti-pattern in Vue? I haven't found enough evidence to say so, but here's what some people are saying.
+
+1. event emit is similar to how the browser detects events, and this is the way Vue was designed, so we should respect this and consider function props as an antipattern in Vue and use event emit (Vue's event handler handles both browser events and developer-created events with event emit with the `v-on` directive) [(related post)](https://michaelnthiessen.com/pass-function-as-prop/)
+
+2. if you reuse a component multiple times, it's cleaner to use event emit than to prop a function to each component [(related post)](https://medium.com/js-dojo/using-react-style-callback-props-with-vue-pros-and-cons-e0ee7455695b)
+
+I'm not sure about both: the first comment has a point, but it's not a good enough reason not to use function props. I'm not sure about the second one because I don't see a significant code count or readability difference between passing a function as props and binding an event to that component. Of course, it's better to use one than the other, but I'll reserve judgment and end this post with some clear differences between the two.
+
+### How React and Vue components communicate differently
+
+In Vue, props and event emits allow two-way communication between components. In React, we only have props, so we only have one-way communication from top to bottom.
+
+### Dependency differences between components
+
+Each of the two methods determines which component is responsible for updating the data. In the case of event emit, the child component is only responsible for letting the parent know that the data needs to be updated, and the actual update is done by the parent. With props, the logic to change the data is passed to the child component outright, so we can say that the data update is also done by the child component.
+
+So event emit ensures that logic related to a component's specific data only exists and can only be performed in that component. This makes components less dependent on other components. In the official Vue documentation, there's this [passage](https://kr.vuejs.org/v2/guide/components.html) that describes event emits, and I think this is probably the design reason for event emits.
+
+> > It's important to note that in this example (event emit), the child component is completely isolated from what's happening externally. It's just reporting information about its own activity in case the parent component might care.
+
+## Reference
+
+- [How to Pass a Function as a Prop in Vue](https://michaelnthiessen.com/pass-function-as-prop/)
+- [Using React-Style Callback Props With Vue: Pros and Cons](https://medium.com/js-dojo/using-react-style-callback-props-with-vue-pros-and-cons-e0ee7455695b)
+- [Passing methods as props in Vue.js](https://medium.com/front-end-weekly/passing-methods-as-props-in-vue-js-d65805bccee)

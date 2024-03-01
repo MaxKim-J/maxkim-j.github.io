@@ -1,0 +1,152 @@
+---
+title: JavaScript Map Objects (Map Object)
+description: An introduction to map objects in JS.
+date: 2020-03-29
+category: 'tech'
+slug: js-map
+tags:
+  - Javascript
+lang: en
+---
+
+When you're developing an app in JavaScript, you're probably familiar with the Object data type, and the ability to store and retrieve values as keys and values is something you'll use in any app. In this post, we're going to look at an ES6 syntax that allows you to use JavaScript objects in a more subtle way: Map objects.
+
+## Map Object Methods
+
+Unlike traditional objects, map objects only use methods to add and subtract values. By default, you can insert, get, and delete with the following methods
+
+```javascript
+let max = new Map();
+
+// Insert into a map object with set
+max.set('id', 0);
+max.set('name', 'Michael');
+max.set('major', 'English Literature');
+max.set('age', 25);
+
+// You can also pass it as a two-dimensional array
+let michael = new Map([
+  ['id', 0],
+  ['name', 'Michael'],
+  ['major', 'English Literature'],
+  ['age', 29],
+]);
+
+// Get a map object with get
+max.get('name'); // "Michael"
+
+// Delete with delete
+max.delete('age'); // return true if delete succeeds
+
+// delete all properties in the map with clear
+max.clear();
+```
+
+You can write other methods as well. Unlike objects, which have very limited methods, map objects provide a rich set of methods. See [here](https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Map) for other methods of map objects!
+
+## Advantages of Map Objects
+
+### Non-string values can be used as keys
+
+With objects, only strings or symbols can be used as keys for properties. With map objects, any type of data, including functions and objects, can be used as keys for properties.
+
+Sometimes it's easier to see when the key is a Number rather than a string. For example, consider an object and a map object that hold information about the message to output based on an error code.
+
+```javascript
+const errorMessageObj = {
+  404: "The page is missing",
+  500: "Server error",
+  401: "You are not authorized"
+}
+
+const errorMessageMap = new Map([
+  [404, "Page not found"],
+  [500, "Server error"],
+  [401, "You are not authorized"],
+])
+
+errorMessageObj.404 // unexpected number error
+errorMessageObj["404"] // 'Page not found'
+errorMessageMap.get(404) // 'Page not found'
+```
+
+objects can only be retrieved via string, and entering a number after the `.` will result in an error. However, with a map object, you can pass a number as an argument to the `get` method and see that the value is retrieved correctly.
+
+### Clarity of method usage
+
+Once you're working with map objects, you can modify or retrieve the properties contained within them **just by using methods** without having to access them with `.` or `[]` like you would an object. The names of the methods (`set`, `get`, `delete`, `clear`) are very descriptive of what to do with a map object, and are a more accurate representation of behavior and intent than objects.
+
+```javascript
+let maxInfoObj = {
+  name: '김맥스',
+  age: '25',
+  major: 'English Literature',
+};
+
+const maxInfoMap = new Map([
+  ['name', '김맥스'],
+  ['age', 25],
+  ['major', 'English Literature'],
+]);
+
+// Object: initialize with an empty object by declaring it with let and assigning it an empty object
+maxInfoObj = {};
+
+// Map object: initialize as an empty map object using the clear method
+maxInfoMap.clear();
+```
+
+I'm particularly impressed by the provision of methods like `clear` and `delete` to explicitly clear the properties of a map. This makes the developer's intentions clearer than just allocating an empty object on deletion, as is the case with objects.
+
+### Clean traversal
+
+Map objects are themselves traversable via `for..of` statements. This traversal takes the form of a map iterator. A map iterator is an array of key-value pairs. You can see the map iterator with the `entries` method.
+
+```javascript
+const maxInfoMap = new Map([
+  ['name', 'KimMax'],
+  ['age', 25],
+  ['major', 'English Literature'],
+]);
+
+maxInfoMap.entries();
+// MapIterator { ["name", "KimMax"],["age", 25],["major", "English Literature"]}
+
+for (const [key, value] of maxInfoMap) {
+  console.log(key, value);
+}
+
+// Result.
+// "name" "KimMax"
+// "age" 25
+// "major" "English Literature"
+```
+
+objects have been traversed using either `for...in` statements or `Object.keys`. Those two traversal methods essentially only traverse the keys of the object's properties, so you have to use those keys to get the object's value back. (This inconvenience is what led to the introduction of `Object.entries` in ES2017, which returns an iterator of key-value pairs, just like a map object.)
+
+```javascript
+const maxInfoObj = {
+  name: '김맥스',
+  age: '25',
+  major: 'English Literature',
+};
+
+// Use a for in statement
+for (key in maxInfoObj) {
+  console.log(key, maxInfoObj[key]);
+}
+
+// using Object.keys()
+for (key of Object.keys(maxInfoObj)) {
+  console.log(key, maxinfoObj[key]);
+}
+```
+
+## When to use it.
+
+Map objects shine when you need to change the properties of an object **often**. Their predictable method names make their behavior clear, and unlike traditional objects, they're easy to traverse, making them a good choice for manipulating data. Of course, you don't need to use a map object in every situation, and it's probably better to store information that doesn't change often in an object.
+
+## Reference
+
+- [The Art of Coding in JavaScript](https://github.com/gilbutITbook/007030)
+- [MDN - map.prototype](https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Map)

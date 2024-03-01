@@ -1,0 +1,28 @@
+---
+title: Thoughts on TypeScript
+description: Some thoughts on programming with TS
+date: 2020-08-17
+category: tech
+slug: thought-ts
+tags:
+  - thought
+  - typescript
+lang: en
+---
+
+I'm currently revisiting the syntax of Typescript and working on a personal project in Typescript. Originally, I started studying with the feeling that TypeScript is good because it allows static typing! I started studying with only this feeling, but when I encountered and used the syntax that is a little different from JS like generics and classes, I had some thoughts and summarized them.
+
+## All about collaboration
+
+- One of the things I've realized a lot since joining the company is that I care about the readability of my code and naming variables and functions well, **not for the sake of the project itself, but for the sake of the other developers building the project**.
+- This may seem obvious, but in my own projects, I think I've mostly found reasons for clean code in my own projects. "This will make for a better project with better code", "This will make for a more knowledgeable developer", and so on.
+- The reason for adopting TypeScript shouldn't be "this project will be more slick with the latest technology", it should be "it will be easier to maintain in the future" or "new developers will be able to understand this code quickly when they see it".
+- The idea that statically typed code is easier to understand is something I've heard a lot in my time with TypeScript, and I think TypeScript's type representation can be quite helpful, especially for developers who are new to a large legacy.
+- I think it's important to find a reason for doing something rather than just doing it because everyone else is doing it.
+
+## Developers are in charge
+
+- When I was first learning TypeScript, I think I used to get frustrated with untyped errors and untyped variables because they looked wrong, so I would type every variable and type every function with a signature.
+- But there are quite a few cases where TypeScript does the type inference for you, and it doesn't throw an error, so you don't have to type it, and it's up to you to make that judgment.
+- "This variable is inferred by TypeScript, but it's better to make it explicit," given the context of the code you're writing.
+- I don't think it's necessary for a developer to be technically savvy, and I think it's more important to decide on the fly how you can use TypeScript to improve the quality of your code than to feel compelled to fix every error that TypeScript spits out and type every variable.

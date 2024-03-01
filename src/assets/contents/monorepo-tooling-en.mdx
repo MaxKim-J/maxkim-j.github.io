@@ -1,0 +1,185 @@
+---
+title: Tooling to Support the Monorepo
+description: Monorepo needs adequate tooling
+date: 2022-12-23
+category: tech
+slug: monorepo-tooling
+tags:
+  - platform
+  - DX
+lang: en
+---
+
+Recently, I've been getting the feeling that the practice of managing codebases with monorepo is gaining traction.
+
+The benefits of organizing a monorepo are widely recognized.
+What's less well known, however, is that in order to take full advantage of the advantages, the disadvantages of the monorepo structure must be minimized.
+If these disadvantages are not managed properly, monorepos can add enormous complexity to your existing repository management practices, and are likely to have a detrimental impact on what you're trying to accomplish by adopting monorepos.
+
+Minimizing the downsides of monorepo requires more than just bringing disparate multirepos together.
+It's the right tooling for monorepo that allows you to manage the different things happening on top of your codebase.
+In this post, I'll walk you through some of the places where you need codebase tooling to maximize the benefits of monorepo, but first I'll give you a quick overview of what monorepo is and what it can do for you.
+
+> For the sake of clarity, I'm referring to Monorepo in this post as a **nodejs package**. I realize that the problems I'm going to introduce may not be 100% applicable to a specific development ecosystem, and there may be problems that are naturally solved by build tools.
+
+## What is a monorepo?
+
+> A monorepo is a single repository containing multiple **distinct** projects, with **well-defined relationships.** - [Nrwl](https://nrwl.io/)
+
+I think this is a concise and accurate description of what a monorepo means, as defined by the Nrwl team that makes [Nx](https://github.com/nrwl/nx), one of the monorepo build tools.
+
+The individual projects (applications, packages) that make up a monorepo should be independent and distinct, meaning that if you were to replace a monorepo with a polylepo in a well-structured monorepo, the individual projects should be able to be separated again without any dependency issues.
+
+If the dependencies between each package-application or package-package relationship on top of a monorepo are complex and unmanageable, making it difficult for each project to be deployed independently, it is no different than a monolithic repository with multiple projects in one repository.
+In this case, there is a greater risk that code changes at one point in time [will impact applications that need to be deployed independently](https://blog.nrwl.io/misconceptions-about-monorepos-monorepo-monolith-df1250d4b03c) than in the case of a polyrepository. It also makes it difficult to apply the monorepo management tools described later in this article in practice.
+
+Because [monorepo is not simply code-colocation](https://monorepo.tools/#what-is-a-monorepo), each project must have strict, well-defined relationships. If the projects in a monorepo have package-package, package-application relationships, dependencies will inevitably arise.
+Even in this case, each project needs to have bugging for packages so that dependencies can be easily tracked, and tools to enforce or control dependency on specific packages.
+
+## What are the advantages of monorepo?
+
+There are three main benefits that you want to achieve with monorepo.
+
+### 1. Reduce the cost of code management for large projects.
+
+Monorepo is the foundation for delivering a consistent developer experience (DX) across multiple projects. Lint, test, and build tools that would otherwise have to be configured separately in a polyrepo can be applied and managed in a monorepo with a single configuration.
+
+[Atomic commits](https://en.wikipedia.org/wiki/Atomic_commit) make it easy to commit core changes to multiple projects. If I needed to version up the core library, I would have had to go to each repository and do it manually, but with Monorepo, I can version up multiple projects with a single commit.
+
+### 2. Create a flexible and transparent collaboration structure by blurring the boundaries between teams and tasks.
+
+In Monorepo, there are no artificial walls between teams or projects, and incremental refactoring or codebase changes are relatively free.
+
+This has a big impact on the way engineers work. Code changes across the project can be viewed as PRs in one repository, making it easy to see what changes have been made, and code reviews can come from multiple team members.
+It's easier to see what other engineers are working on, and it's easier to start improving the codebase regardless of ownership.
+
+### 3. It's easy to see code in specific packages and apply changes easily.
+
+If you have your internal package code and application code in one place, you can easily apply code changes to a package and then verify that it works when you apply it to your application, all on a single codebase.
+
+In a polyrepo, it's more cumbersome than a monorepo structure because when you make changes to a package, you have to deploy it, move it to the application repository, modify the code, validate it, and build it.
+
+It's also easier to navigate to the code in a package that a particular application depends on because both the package and the application exist in one repository.
+
+## What tooling do I need?
+
+Even with these advantages, monorepos inevitably introduce complexity, increased difficulty in navigating the code, and new drawbacks that we didn't have to worry about with separate and isolated repositories.
+
+These drawbacks need to be addressed with the right tooling.
+
+### Cons 1) The repository is too large
+
+Managing huge projects with monorepos puts a huge load on the performance of repository checkouts at the CI/CD end because there is so much code.
+As your monorepo grows larger, the time it takes to check out grows linearly.
+
+So you need a way to optimize the time it takes to download code from your CI/CD machine.
+
+By default, when you do a full clone of a repository, you get all the tags, commits, files, and history of that repository. You can optimize checkout by using the `git` command to perform the checkout.
+You can also use a `shallow clone` to get only the file geometry as of a specific commit, or if you need to change from the previous change history, you can use a `partial clone` to get the files as of the latest commit but check out the change history as well.
+
+```shell
+# partial clone
+$ git clone [repository_address] --filter=blob:none
+
+# shallow clone
+$ git clone [repository_address] --depth 1
+```
+
+If you need to build a specific application and you can easily specify the folders you need, you can also consider `sparse checkout`.
+Unlike the previous checkout methods, `sparse checkout` does not fetch all the directory geometry of the latest commit, but only the directories specified in the command, which can significantly reduce the size of the files to be downloaded.
+
+```shell
+$ git sparse-checkout init --cone
+$ git sparse-checkout set [specific_directory]
+```
+
+We've only scratched the surface, but if you're interested in learning more about lightweight checkout, check out the article below!
+
+- [Bring your monorepo down to size with sparse-checkout](https://github.blog/2020-01-17-bring-your-monorepo-down-to-size-with-sparse-checkout/)
+- [Get up to speed with partial clone and shallow clone](https://github.blog/2020-12-21-get-up-to-speed-with-partial-clone-and-shallow-clone/)
+
+### Cons 2) Monorepo is too easy to add and modify dependencies.
+
+> **Autonomy is provided by isolation, and isolation inhibits collaboration.** - [monorepo.tools](https://monorepo.tools/#why-a-monorepo)
+
+Monorepo makes it easier to create dependencies on packages in the same repository than in a poly-repo environment. This is an effect of moving away from the isolation of a poly-repo environment.
+
+In isolated individual repositories, individual teams could arbitrarily set up code dependencies and not have a significant impact on other projects that are physically separated, but in a monorepo environment, this can easily happen.
+
+Therefore, monorepo requires conventions and a way to monitor package dependencies and references. If you're using a yarn workspace, you can use [`Constraints`](https://yarnpkg.com/features/constraints#constraint-predicates) to provide dependency rules between packages.
+
+In my opinion, the best thing to do is to organize your packages into layers, separating them by category, and prevent backward dependencies, where packages in a higher layer depend on packages in a lower layer.
+I'm not sure yet how to do this in a nodejs-based monorepo, but in other development ecosystems, these [referencing rules](https://youtu.be/RVO02Z1dLF8) are often established when organizing a [multi-module project](https://techblog.woowahan.com/2637/).
+
+Bad references and circular references need to be caught during development or at the CI stage. Without them, you lose sight of the flow of dependencies, and you can't prevent the complexity of your project from growing linearly due to false dependencies.
+The monorepo tool `turborepo` catches package dependencies with circular references when performing defined commands.
+
+![turborepo error](../images/monorepo-tooling/circular-deps.png)
+
+It's useful to have a tool that can visually show the relationships between package dependencies. There is a related feature in `turborepo`, and you can also use third parties like `dependency cruiser` to draw dependency pictures.
+However, `turborepo` is not yet very usable, and the visualization that I personally find most satisfying is provided by `Nx`, which currently provides a graphical representation of the dependencies of a monorepo using the Nx command [without building the project with Nx](https://twitter.com/victorsavkin/status/1534909897976041474).
+
+![nx](https://nx.dev/documentation/shared/angular-tutorial/initial-project-graph.png)
+
+### Cons 3) When performing a task related to a specific application, it is difficult to determine which package's task should be performed.
+
+In a monorepo, where both package and application code are in one place, it can be difficult to determine which application should be deployed in the end when the code in a particular subpackage changes.
+You need a tool that can find all of the applications that rely on that package and proceed with the build and deployment.
+
+Both `turborepo` and `nx` can perform specific tasks by tracking [Topological Dependency](https://turbo.build/repo/docs/core-concepts/monorepos/running-tasks#dependencies-outside-of-a-task). Using `turborepo` as an example, if you set the following in `turbo.json` and then add
+
+```json
+{ "pipeline".
+  "pipeline": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**", ".next/**"] // build output
+    }
+  }
+}
+```
+
+When you build a specific application, `turborepo` rebuilds it starting with the subpackages whose code changes depend on the application being built.
+
+```shell
+$ turbo run build --filter=@apps/some-app
+```
+
+I understand that the difference is that `turborepo` is a system that finds all the packages it depends on based on topological dependencies and rebuilds them, while `Nx` tracks changes based on what is actually imported.
+
+It's not just builds and deployments, but also testing, CI, etc. that need to be done just before a particular application is deployed, and only packages that are relevant to that application should be able to perform those tasks.
+
+In a polyrepo, packages are isolated in different repositories, so you don't have to think about setting up and running CI pipelines for specific packages individually and performing tasks on top of specific repositories.
+In monorepo, however, packages are not isolated, but are clustered together in one place, which is why we need tooling to set up a common task configuration and ensure that only the intended tasks are performed.
+
+### Cons 4) You may need to perform the same task multiple times across multiple packages and apps
+
+In Monorepo, we often build, lint, and test for multiple projects, each of which has a relationship on top of Monorepo, resulting in duplicate tasks.
+
+In the case of `turborepo`, all of the build tasks mentioned in the previous paragraph are cached, so if you ever need to rebuild a package when the code hasn't changed, you can use the cache to finish the task very quickly. Not only builds are cached, but also a series of tasks above `turborepo`, such as running tests and linting.
+
+With [remote caching](https://turbo.build/repo/docs/core-concepts/remote-caching), you can leave the cache files created after a task is executed in a remote storage.
+This can be utilized to improve the development cycle between PRs and code reviews, such as building in CI first and not rebuilding in the deployment pipeline by importing the remote cache.
+
+## Closing thoughts
+
+[Google has famously managed its entire codebase as a monorepo](https://www.youtube.com/watch?v=W71BTkUbdqE) since the early 2000s. When you look at the size of Google's monorepo, it's hard to imagine how they could keep it as a single repository, and changes happen so frequently around the world.
+In order to maintain the benefits of monorepo, Google has applied a number of homegrown tools and infrastructure.
+
+- Piper: a large-scale code repository
+- Critique: code review tool
+- CodeSearch: code search tool
+- Tricorder: adivse tool for enforcing conventions
+- Rosie: Tool for managing Large Sclae Change across multiple ownership areas
+
+The reason Google has maintained monoliths for so long, despite all of this tooling effort, is because the benefits of the monolithic structure are significant.
+Conversely, without this tooling, monorepo would not work as well.
+
+If you're thinking about adopting or running a monolith, make sure to configure the right tooling for your project and have a successful monolith!
+
+## reference
+
+- [How Google does Monorepo](https://qeunit.com/blog/how-google-does-monorepo/)
+- [Why Google Stores Billions of Lines of Code in a Single Repository](https://www.youtube.com/watch?v=W71BTkUbdqE)
+- [Modern Frontend Project Organization Techniques - Monorepo Concepts](https://d2.naver.com/helloworld/0923884)
+- [FECONF 2022 [B2] Running a Hundred-Package Monorepo Elegantly](https://www.youtube.com/watch?v=Ix9gxqKOatY&t=638s)
