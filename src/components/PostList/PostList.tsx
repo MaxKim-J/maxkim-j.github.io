@@ -27,8 +27,8 @@ function PostList({ postList }: Props) {
   return (
     <ol className={orderedListStyle} aria-label={t(`포스트 목록`)}>
       {refinedPostList.length ? (
-        refinedPostList.map(({ id, frontmatter, slug }) => (
-          <PostLink lang={currentLang} key={id} id={id} slug={slug} frontmatter={frontmatter} />
+        refinedPostList.map(({ id, frontmatter }) => (
+          <PostLink lang={currentLang} key={id} id={id} frontmatter={frontmatter} />
         ))
       ) : (
         <div>No post</div>

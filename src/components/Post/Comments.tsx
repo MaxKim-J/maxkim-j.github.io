@@ -8,7 +8,7 @@ const attributes = {
   'data-repo-id': 'MDEwOlJlcG9zaXRvcnkyNDc2ODY5OTA=',
   'data-category': 'Announcements',
   'data-category-id': 'DIC_kwDODsNnTs4CcvsW',
-  'data-mapping': 'title',
+  'data-mapping': 'url',
   'data-strict': '0',
   'data-reactions-enabled': '1',
   'data-emit-metadata': '0',

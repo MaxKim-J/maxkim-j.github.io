@@ -5,7 +5,6 @@ import { listItemStyle, listItemTitleStyle, listItemDescriptionStyle } from './P
 
 interface Props {
   id: string;
-  slug: string;
   frontmatter: BlogPost['frontmatter'];
   lang: Lang;
 }
