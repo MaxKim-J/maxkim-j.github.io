@@ -5,7 +5,7 @@ const config: GatsbyConfig = {
     title: '김맥스 블로그',
     siteUrl: `https://maxkim-j.github.io`,
     twitterUsername: `@max_kim_dev`,
-    image: '/thumbnail.png',
+    image: '/thumbnail-new.png',
   },
   graphqlTypegen: true,
   plugins: [
