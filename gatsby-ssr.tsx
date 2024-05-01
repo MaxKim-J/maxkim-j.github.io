@@ -15,11 +15,16 @@ export const onRenderBody = ({ setPreBodyComponents }) => {
   `;
 
   setPreBodyComponents(<script dangerouslySetInnerHTML={{ __html: script }} />);
-  setPreBodyComponents(
+};
+
+export const onPreRenderHTML = ({ getHeadComponents, replaceHeadComponents }) => {
+  const headComponents = getHeadComponents();
+  headComponents.push(
     <script
-      async
+      async={true}
       src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5727170943665894"
-      crossorigin="anonymous"
+      crossOrigin="anonymous"
     ></script>
   );
+  replaceHeadComponents(headComponents);
 };

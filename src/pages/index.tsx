@@ -11,6 +11,7 @@ import MenuBar from '../components/MenuBar/MenuBar';
 import { PostCategories } from '../components/PostCategory';
 import { useLangStore } from '../store/langStore';
 import { initialize } from '../i18n/initialize';
+import { GoogleAdSense } from '../components/GoogleAdSense';
 
 const LANG = 'ko';
 
@@ -37,6 +38,7 @@ const IndexPage = ({ data }: Props) => {
       }
       footer={<Footer />}
     >
+      <GoogleAdSense />
       <PostList postList={data.allMdx.nodes} />
     </Layout>
   );
