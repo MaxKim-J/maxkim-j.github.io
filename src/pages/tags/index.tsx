@@ -57,6 +57,7 @@ export const query = graphql`
           description
           tags
           category
+          slug
         }
       }
     }
