@@ -44,7 +44,7 @@ const MetaHead = ({ title, description, thumbnail, lang }: Props) => {
   return (
     <>
       <title>{seo.title}</title>
-      <meta http-equiv="Content-Language" content={lang} />
+      <meta httpEquiv="Content-Language" content={lang} />
       <meta name="description" content={seo.description} />
       <meta name="image" content={thumbnail ?? seo.image} />
       <meta name="twitter:card" content="summary_large_image" />
