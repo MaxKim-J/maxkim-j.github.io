@@ -1,5 +1,7 @@
 # max-kim-blog
 
+not a tech blog
+
 V2  
 2022.08 ~
 
