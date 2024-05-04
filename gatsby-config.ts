@@ -8,7 +8,6 @@ const config: GatsbyConfig = {
     image: '/thumbnail-new.png',
   },
   graphqlTypegen: true,
-  trailingSlash: 'never',
   plugins: [
     'gatsby-plugin-sitemap',
     'gatsby-plugin-image',
