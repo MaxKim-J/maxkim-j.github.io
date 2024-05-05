@@ -53,7 +53,7 @@ export const query = graphql`
         id
         frontmatter {
           title
-          date(formatString: "YYYY년 MM월 DD일")
+          date(formatString: "DD.MM.YYYY")
           description
           tags
           lang
