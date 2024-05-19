@@ -5,6 +5,7 @@ import PostTitle from './PostTitle';
 import Comments from './Comments';
 import { GoogleAdSense } from '../GoogleAdSense';
 import type { BlogPost, PostSlugList } from '../../types';
+import { postSectionStyle } from './Post.css';
 
 interface Props {
   post: BlogPost;
@@ -22,9 +23,9 @@ function Post({ post, postSlugList }: Props) {
 
   return (
     <article>
-      <PostTitle title={title} date={date} description={description} tags={tags as string[]} />
       <GoogleAdSense />
-      <section className="mdx-post">
+      <PostTitle title={title} date={date} description={description} tags={tags as string[]} />
+      <section className={`mdx-post ${postSectionStyle}`}>
         <MDXRenderer>{body as string}</MDXRenderer>
       </section>
       <GoogleAdSense />

@@ -3,6 +3,7 @@ import { sVar } from '../../styles/variants';
 
 export const postTitleWrapperStyle = style({
   marginBottom: '60px',
+  marginTop: '24px',
 });
 
 export const postTitleHeadingStyle = style({

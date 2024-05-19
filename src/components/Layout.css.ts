@@ -27,6 +27,6 @@ export const navLayoutStyle = style({
 });
 
 export const mainLayoutStyle = style({
-  margin: '80px 0px 60px 0',
+  margin: '0px 0px 60px 0',
   minHeight: '700px',
 });
