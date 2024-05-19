@@ -1,9 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 const AD_CLIENT = 'ca-pub-5727170943665894';
 const AD_SLOT = '7028040177';
 
 export function GoogleAdSense() {
+  useEffect(() => {
+    const browserWindow = window as any;
+    (browserWindow.adsbygoogle = browserWindow.adsbygoogle || []).push({});
+  }, []);
+
   return (
     <>
       <ins
