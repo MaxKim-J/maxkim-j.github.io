@@ -23,7 +23,8 @@ export const headerLayoutStyle = style({
 });
 
 export const navLayoutStyle = style({
-  margin: '30px 0',
+  marginTop: '30px',
+  marginBottom: '60px',
 });
 
 export const mainLayoutStyle = style({

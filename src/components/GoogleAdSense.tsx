@@ -10,7 +10,7 @@ export function GoogleAdSense() {
   }, []);
 
   return (
-    <>
+    <div style={{ minHeight: '280px' }}>
       <ins
         className="adsbygoogle"
         style={{ display: 'block' }}
@@ -19,6 +19,6 @@ export function GoogleAdSense() {
         data-ad-format="auto"
         data-full-width-responsive="true"
       ></ins>
-    </>
+    </div>
   );
 }

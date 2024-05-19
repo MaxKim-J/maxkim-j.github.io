@@ -1,7 +1,7 @@
 import { style } from '@vanilla-extract/css';
 
 export const orderedListStyle = style({
-  marginTop: '30px',
+  marginTop: '60px',
 });
 
 export const orderedListItemStyle = style({

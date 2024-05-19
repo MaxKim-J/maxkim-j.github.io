@@ -23,8 +23,8 @@ function Post({ post, postSlugList }: Props) {
 
   return (
     <article>
-      <GoogleAdSense />
       <PostTitle title={title} date={date} description={description} tags={tags as string[]} />
+      <GoogleAdSense />
       <section className={`mdx-post ${postSectionStyle}`}>
         <MDXRenderer>{body as string}</MDXRenderer>
       </section>
