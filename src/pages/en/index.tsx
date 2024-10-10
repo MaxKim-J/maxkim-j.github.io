@@ -1,17 +1,16 @@
-import * as React from 'react';
 import { graphql } from 'gatsby';
+import * as React from 'react';
 
-import Layout from '../../components/Layout';
-import Header from '../../components/Header';
 import Footer from '../../components/Footer';
-import PostList from '../../components/PostList/PostList';
 import CustomHead from '../../components/Head';
-import { type BlogPosts } from '../../types';
+import Header from '../../components/Header';
+import Layout from '../../components/Layout';
 import MenuBar from '../../components/MenuBar/MenuBar';
-import { PostCategories } from '../../components/PostCategory';
+import PostList from '../../components/PostList/PostList';
+import { type BlogPosts } from '../../types';
 
-import { useLangStore } from '../../store/langStore';
 import { initialize } from '../../i18n/initialize';
+import { useLangStore } from '../../store/langStore';
 
 const LANG = 'en';
 
@@ -28,16 +27,7 @@ const IndexPage = ({ data }: Props) => {
   useLangStore((state) => state.setLang)(LANG);
 
   return (
-    <Layout
-      header={<Header />}
-      nav={
-        <>
-          <MenuBar />
-          <PostCategories postList={data.allMdx.nodes} />
-        </>
-      }
-      footer={<Footer />}
-    >
+    <Layout header={<Header />} nav={<MenuBar />} footer={<Footer />}>
       <PostList postList={data.allMdx.nodes} />
     </Layout>
   );
