@@ -1,0 +1,315 @@
+---
+title: 소프트웨어 모듈 간 결합(Coupling)의 종류
+description: <Reliable software through composite design> 에서 제시한
+date: 2024-10-22
+category: tech
+slug: coupling
+tags:
+  - code
+  - theory
+lang: ko
+---
+
+1975년에 나온 Glenford J. Myers의 ["Reliable software through composite design"](https://www.amazon.com/Reliable-software-through-composite-design/dp/0884052842) 이라는 책에서 제시한 소프트웨어 응집과 결합의 종류 구분이 흥미로웠습니다.
+
+머리로 알고 있었다기 보다는, 개발하다 보니 손에만 익은 결합도가 높은 코드의 종류들을 개념화하여 생각해볼 수 있었습니다.
+
+위키피디아와 최근에 읽은 책들에서 관련 내용들을 찾아, 제 분야인 웹 클라이언트 개발 관점의 예시와 함께 정리해 보았습니다.
+
+이 포스팅에서는 응집과 결합 중 결합만 다룹니다.
+
+# 결합 (Coupling)
+
+"결합도는 모듈 간 상호 의존성의 정도를 측정하는 것입니다. 좋은 소프트웨어는 낮은 결합도를 가집니다."
+
+> **결합도가 높은 순으로 정렬** : 데이터 결합 > 스탬프 결합 > 제어 결합 > 외부 결합 > 공통 결합 > 내용 결합
+
+## 데이터 결합 (Data Coupling)
+
+모듈 간의 의존성이 데이터만 전달되는 것을 기반으로 하는 경우, 이 모듈들은 데이터 결합되었다고 합니다. 데이터 결합에서는 구성 요소들이 서로 독립적이며 데이터를 통해 통신합니다.
+
+가장 강도가 낮은 결합입니다. 구성 요소들이 서로 독립적으로 작동할 수 있도록 필요한 최소한의 데이터만 주고받을 때를 말합니다.
+
+뾰족하게 정의된 불변 자료형을 props로 받는 React Component가 생각났습니다.
+
+```tsx
+// React 컴포넌트
+type UserProps = {
+  name: string;
+  age: number;
+};
+
+const UserProfile: React.FC<UserProps> = ({ name, age }) => {
+  return (
+    <div>
+      <h1>{name}</h1>
+      <p>Age: {age}</p>
+    </div>
+  );
+};
+
+// 사용 예시
+<UserProfile name="Alice" age={30} />;
+```
+
+## 스탬프 결합 (Stamp Coupling)
+
+스탬프 결합은 데이터 결합이긴 한데, 하나의 모듈에서 다른 모듈로 전체 데이터 구조가 전달되는 경우를 말합니다. 전송용 데이터(Tramp Data)가 포함됩니다. 데이터 구조 결합(Data-Structured Coupling)이라고도 합니다.
+
+API Response로 받은 특정 타입의 객체를 props로 받는 React Component가 생각났습니다.
+
+```ts
+// 데이터 구조
+type User = {
+  id: number;
+  name: string;
+  email: string;
+  age: number;
+};
+
+// React 컴포넌트
+const UserDetail: React.FC<{ user: User }> = ({ user }) => {
+  return (
+    <div>
+      <h1>{user.name}</h1>
+      <p>Email: {user.email}</p>
+      <p>Age: {user.age}</p>
+    </div>
+  );
+};
+
+// 사용 예시
+const user = { id: 1, name: 'Alice', email: 'alice@example.com', age: 30 };
+<UserDetail user={user} />;
+```
+
+이렇게 구현하면 특정 시점에서 불필요한 데이터가 컴포넌트로 전달될 수는 있지만, prop의 의미를 드러낼 수 있고 타입에 제약을 둘 수도 있게 됩니다.
+
+데이터 결합은 "데이터의 구조"를 사용하지 않기 때문에 스탬프 결합보다 낮은 수준의 결합도를 가지지만, 그렇다고 해서 데이터 결합이 반드시 더 나은 것은 아닙니다.
+
+## 제어 결합 (Control Coupling)
+
+모듈이 제어 정보를 전달함으로써 통신하는 경우, 이는 제어 결합되었다고 합니다.
+
+인자를 통해 분기를 제어하는 함수를 생각해볼 수 있습니다. 함수는 제어 정보인 플래그 성격의 인자를 받아 무엇을 할지 결정하게 됩니다.
+
+```ts
+// 제어 플래그를 사용하는 함수
+function processOrder(orderId: number, isExpress: boolean) {
+  if (isExpress) {
+    console.log(`Processing express order: ${orderId}`);
+  } else {
+    console.log(`Processing standard order: ${orderId}`);
+  }
+}
+
+// 사용 예시
+processOrder(123, true);
+```
+
+혹은 콜백함수를 받아 호출하는 함수를 생각해볼 수 있습니다. "무엇을 하라"는 제어 정보 자체를 외부에서 받는 것이죠.
+
+```ts
+// 콜백 함수를 받는 함수
+function fetchData(url: string, callback: (data: any) => void) {
+  // API 호출을 시뮬레이션
+  setTimeout(() => {
+    const data = { id: 1, name: 'Sample Data' };
+    callback(data);
+  }, 1000);
+}
+
+// 사용 예시
+fetchData('https://api.example.com/data', (data) => {
+  console.log('Received data:', data);
+});
+```
+
+제어 결합은 코드를 작성할때 기능 분리와 재사용 관점에서 불가피한 경우가 많습니다. 제어 결합이 얼마나 해로운지에 대한 정도는 모듈의 구현을 알아야만 하는지 여부에 따라 다릅니다.
+
+가령 코드가 이렇게 생겼으면 `control_flag`가 무엇인지 정확하게 알고 있어야 합니다. 호출처에서 구현을 제대로 알고 있어야 하므로 피해야 하는 제어 결합입니다.
+
+```ts
+// 모호한 제어 플래그를 사용하는 함수
+function executeTask(taskId: number, controlFlag: string) {
+  if (controlFlag === 'start') {
+    console.log(`Starting task: ${taskId}`);
+  } else if (controlFlag === 'stop') {
+    console.log(`Stopping task: ${taskId}`);
+  } else {
+    console.log(`Unknown action for task: ${taskId}`);
+  }
+}
+
+// 사용 예시
+executeTask(10, 'start');
+```
+
+반면 전략 패턴, 혹은 콜백 함수를 사용하는 패턴은 제어 흐름을 사용처에서 주입할 수 있게 만드니 호출할 모듈에 의 구현에 대한 정보가 적게 필요할 수 있습니다.
+
+이런 제어 결합은 앞의 예시보다는 덜 해로운 제어 결합이라고 볼 수 있겠습니다.
+
+```ts
+// 전략 패턴 예시
+interface PaymentStrategy {
+  pay(amount: number): void;
+}
+
+class CreditCardPayment implements PaymentStrategy {
+  pay(amount: number) {
+    console.log(`Paid ${amount} using credit card.`);
+  }
+}
+
+class PayPalPayment implements PaymentStrategy {
+  pay(amount: number) {
+    console.log(`Paid ${amount} using PayPal.`);
+  }
+}
+
+function processPayment(strategy: PaymentStrategy, amount: number) {
+  strategy.pay(amount);
+}
+
+// 사용 예시
+const paymentMethod = new CreditCardPayment();
+processPayment(paymentMethod, 100);
+```
+
+그러나 이런 식으로 제어 흐름을 외부에서 제공받는 방식도 결국, 모듈의 구현이 복잡해지면 모듈간 결합도를 높이는 요인이 됩니다. 이러한 결합은 필요한 곳, 제어 흐름을 받아서 호출하는 것이 명징하고 이를 충분히 활용할 수 있는 곳에서만 사용되야 합니다.
+
+## 외부 결합 (External Coupling)
+
+외부 결합에서는 모듈들이 개발 중인 소프트웨어 외부의 다른 모듈이나 특정 종류의 하드웨어에 의존합니다. 파일 시스템에 접근하는 함수를 생각해볼 수 있겠습니다.
+
+```ts
+import fs from 'fs';
+
+// 외부 파일 시스템에 접근하는 함수
+function readConfigFile(filePath: string) {
+  try {
+    const data = fs.readFileSync(filePath, 'utf8');
+    console.log('Config data:', data);
+  } catch (err) {
+    console.error('Error reading config file:', err);
+  }
+}
+
+// 사용 예시
+readConfigFile('./config.json');
+```
+
+외부 결합은 개발 중인 소프트웨어 밖 환경에 영향을 받을 여지를 열어놓으며, 이는 결합이 있는 모듈 뿐 아니라 다른 모듈에도 영향을 줄 가능성이 있습니다. 또한 외부 시스템은 모듈의 테스트를 어렵게 만들기도 하죠.
+
+모든 외부 결합이 구현하는 모듈 외 다른 모듈들에 영향을 미치는 것은 아닙니다.
+
+아래 설명할 공통 결합은 공유 데이터의 존재로 인해 외부 결합보다 한 모듈이 다른 모듈에 더 확정적으로 영향을 미칩니다.
+
+## 공통 결합 (Common Coupling)
+
+모듈들이 전역 상태를 공유하는 경우, 공통 결합되었다고 합니다. 하나의 전역 변수에 접근하는 여러 개의 함수들이 생각납니다.
+
+```ts
+// 전역 변수
+let globalCounter = 0;
+
+function incrementCounter() {
+  globalCounter++;
+  console.log('Counter incremented:', globalCounter);
+}
+
+function resetCounter() {
+  globalCounter = 0;
+  console.log('Counter reset');
+}
+
+// 사용 예시
+incrementCounter();
+incrementCounter();
+resetCounter();
+```
+
+전역 데이터의 변경이 이루어졌을 때, 이 데이터에 접근하는 모든 모듈의 동작을 살펴야만 왜 상태가 변경되었는지 알 수 있을 것입니다.
+
+앞서 제어 결합에서는 모듈을 호출하는 곳에서의 데이터가 하나의 모듈의 구현에 결합하지만, 공통 결합에서는 데이터가 여러개 모듈의 구현에 결합될 수 있어 상당히 복잡한 상황을 만들 수 있습니다.
+
+이로 인해 모듈 재사용이 어려워지고, 데이터 접근 제어 능력이 떨어지며, 유지보수 하기에도 당연히 좋지 않습니다.
+
+## 내용 결합 (Content Coupling)
+
+내용 결합(Content Coupling)은 한 모듈이 다른 모듈의 데이터를 수정하거나 제어 흐름이 한 모듈에서 다른 모듈로 전달되는 경우입니다.
+
+가장 나쁜 형태의 결합이며 피해야 합니다. 아래 예시를 보시면 여타 다른 결합들보다 훨씬 잘못된 상황이라는 것을 직관적으로 알 수 있습니다.
+
+특정 클래스가 다른 클래스의 공개된 멤버 변수를 직접 바꾸는 경우, 특정 데이터에 대한 제어 흐름이 한 클래스에서 다른 클래스로 넘어가게 됩니다. 이는 모듈의 작동을 쉽게 유추할 수 없게 하고 유지보수에 큰 악영향을 미칩니다.
+
+```ts
+// 클래스 A
+class ClassA {
+  public data: number;
+
+  constructor(data: number) {
+    this.data = data;
+  }
+
+  public displayData() {
+    console.log(`Data: ${this.data}`);
+  }
+}
+
+// 클래스 B
+class ClassB {
+  private classAInstance: ClassA;
+
+  constructor(classAInstance: ClassA) {
+    this.classAInstance = classAInstance;
+  }
+
+  public modifyData(newData: number) {
+    // ClassB가 ClassA의 공개된 멤버 변수에 직접 접근하여 수정
+    this.classAInstance.data = newData;
+    console.log(`Data modified to: ${this.classAInstance.data}`);
+  }
+}
+
+// 사용 예시
+const instanceA = new ClassA(10);
+const instanceB = new ClassB(instanceA);
+
+instanceA.displayData(); // "Data: 10"
+instanceB.modifyData(20); // "Data modified to: 20"
+instanceA.displayData(); // "Data: 20"
+```
+
+은닉이나 캡슐화의 의도를 무시하고 다른 모듈에 데이터에 직접 접근하는 경우에 내용 결합이 발생할 수 있습니다.
+
+```ts
+class MyClass {
+  private secret: string;
+  constructor(secret: string) {
+    this.secret = secret;
+  }
+  reveal() {
+    return this.secret;
+  }
+}
+
+const instance = new MyClass('mySecret');
+
+// TypeScript에서는 오류가 발생하지만, 타입 단언을 사용하여 우회 가능
+const secretValue = (instance as any).secret;
+
+console.log(secretValue); // "mySecret"
+```
+
+타입스크립트 클래스의 private 접근 제어자는 타입 검사 시에 유효하여 멤버 변수를 은닉할 수 있습니다. 하지만 자바스크립트로 트랜스파일링 된 런타임에서는 모든 멤버변수가 공개됩니다. 이를 이용하여 private으로 은닉한 멤버변수에 억지로 접근할 수 있습니다.
+
+굉장히 부조리하고 극단적인 예시를 든 것일 수 있습니다. 마이크로서비스 아키텍처 세계에서 내용 결합을 되세기면 조금 더 발생하기 쉬운 상황이 됩니다.
+
+> 내용 결합은 상위 서비스가 하위 서비스의 내부까지 도달해 서비스의 내부 상태를 변경하는 상황을 설명한다. 이 상황을 가장 빈번하게 발생시키는 것은 다른 마이크로서비스의 데이터베이스에 액세스해 직접 변경하는 외부 서비스다. - 샘 뉴먼, <마이크로서비스 아키텍처 구축>
+
+# References
+
+- [Wikipedia - Coupling(computer_programming)](<https://en.wikipedia.org/wiki/Coupling_(computer_programming)>)
+- [이시가와 무네토시, 2024, 읽기 쉽고 코드리뷰하기 좋은 코드 작성 가이드](https://m.yes24.com/Goods/Detail/125977771)
+- [샘 뉴먼, 2023, 마이크로서비스 아키텍처 구축](https://m.yes24.com/Goods/Detail/119319406)
