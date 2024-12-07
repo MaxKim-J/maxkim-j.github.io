@@ -1,0 +1,98 @@
+---
+title: Four Concerns About Development Platform Engineering
+description: Developer Experience, Ownership, Abstraction, Offense and Defense
+date: 2024-12-07
+category: tech
+slug: concerns-about-development-platform
+tags:
+  - platform
+lang: en
+---
+
+I've been working with the web frontend platform team at [Flex Team](https://flex.team) for nearly three years.
+
+Over time, I've developed some perspectives on development platform work that I would like to share. Naturally, these are based on my experiences. Since I've only worked in a very limited stage and team size of a startup, these insights may not apply to other teams. It's possible that my assumptions or conceptual explanations may not be easily understood by readers.
+
+"Development platform work," as I refer to it here, includes the following:
+
+1. Changes or migrations of common implementations or frameworks used across multiple deployment units
+2. Changes or migrations of tooling and scripts that affect the working methods and productivity of fellow developers
+3. Changes or migrations in the development infrastructure, such as application deployment, operation, and code management methods
+
+Now, at the beginning or during the course of work, I find myself contemplating the following:
+
+## Developer Experience
+
+> From what perspective should I approach my tasks to improve or at least prevent the deterioration of DX?
+
+> Among my responsibilities, how high a priority does DX hold?
+
+Good Developer Experience (DX) is a common virtue in open source projects. Many open source projects claim to be highly attentive to DX.
+
+However, it's difficult to prioritize DX in a startup development team's platform. Service stability, release schedules, and revenue are more important than developer inconvenience. Unless there's a significant issue with the lead time for delivering products, resources for investment won't materialize. Even if I were the CTO, I would be pessimistic. Colleagues often endure inefficiencies in the development process for quite a while. I consider this a normal situation.
+
+Tasks that can cause the product to "die standing" if not immediately addressed take precedence over DX in platform work. Tasks like resolving risk of outages or reducing operational issues due to design changes. I once mentioned in a previous writing that the DX level of the initial MFA framework developed at the company was maintained just slightly above "unbearable to develop." This was because any slight misstep could lead to immediate outages.
+
+Fellow developers tend to choose or are inevitably forced to endure if the inconvenience is bearable. The sheer number of features to be implemented in the squad makes it exhausting to raise issues and secure promises for improvement.
+
+Ultimately, a platform engineer should not promise DX improvements and secure resources, but should prevent DX deterioration and continuously maintain it with every change to the common platform. This is very difficult and requires high capability. I've struggled a lot with this.
+
+Nevertheless, some DX deterioration must be acknowledged as inevitable in the process of advancing the product. If a higher priority task creates room for DX deterioration, the reasons should be transparently communicated to fellow developers, and future improvement plans should be drafted and announced.
+
+## Ownership
+
+> Is it easier to proceed with work by deciding and acting alone rather than together?
+
+> Can I provide solutions and persuasion that my fellow developers can accept?
+
+In common platform change tasks, there are jobs that require contributions due to physical limitations. On the other hand, some tasks need to be resolved through the decisive decisions and actions of a single worker in a short time.
+
+For example, changing the foundational framework of all products may require changes to domain-related code. In such cases, involving someone familiar with the domain is more efficient. A ticket and task progress board should be created to manage the schedule, and responsible parties should be designated for each specific organizational goal.
+
+Incentives should also be designed to encourage the goal organization to quickly perform the task. This includes both carrots (the positive impact on the product and improved developer experience if the task is completed quickly) and sticks (the disadvantages if it is not completed quickly).
+
+Conversely, consider the task of changing the implementation of a specific common implementation and the dependencies and references of all products that use it. Even if there are over 10,000 usage locations for the implementation I'm working on, I can write an automation script to change them all at once and ensure there are no issues with the product. It's more efficient to proceed with work this way.
+
+You must know exactly what type of task it is. If you don't know or misjudge, resources will inevitably be wasted. Doing a task alone that should be done together wastes team communication costs, and doing a task together that should be done alone wastes my resources.
+
+There is a premise for "tasks that can be done alone." If I cannot propose a sufficiently good solution, it cannot be done alone. This is because I have to tell fellow developers, "We're going to make a very extensive change that affects the entire product, and it will proceed like this. You don't need to worry, and I can ensure the product's stability." This requires not only high capability but also established trust.
+
+## Abstraction
+
+> How much should fellow developers know about the common implementation?
+
+> Is it better for fellow developers to be able to contribute to a part of the platform than not?
+
+When creating a common implementation, the most important concern is what layer to abstract.
+
+If left too open, it becomes difficult to control use cases in the platform. The probability of unintended use in each individual product increases. It becomes very difficult to prevent the use of certain interfaces later. This issue is often found in Headless UI or composable React Components.
+
+If closed too much, it may not be chosen because customization is difficult at the usage site. It may become a way where each application implements it appropriately, increasing the possibility of feature fragmentation. Additionally, there will be frequent inquiries and complaints about whether it can be used in a certain way.
+
+In general, I prefer to keep it as closed as possible and gradually lower the level of abstraction by gathering opinions from fellow developers. However, some implementations should be managed with strong ownership by the platform team, declaring that they will not accept opinions from fellow developers.
+
+This is because some common implementations can only maintain their basic premises if used and expanded in a specific way. In large-scale applications, the closer an implementation is to the core of the framework, the more stability can be guaranteed by minimizing changes.
+
+Whether to open or close contributions to a common implementation is another issue. To receive contributions, the initial implementer must provide and continuously update various information, which requires resources. While there's no need to refuse contributions, in most cases, strong team ownership was the way to do the work better.
+
+I've never seen a contribution model work properly in the teams I've been in. Developers responsible for products are always too busy to have time to contribute. However, this is very normal and can be the right direction.
+
+## Offense and Defense
+
+> Should existing debts or incorrect use cases be prevented before making improvements?
+
+> Or can improvements be made quickly and in small parts, making such measures unnecessary?
+
+Sometimes, for clearing technical debt or improving the platform, common implementations need to be migrated to a specific method at the usage site. In such tasks, platform engineers sometimes change specific implementations to the correct use case while incorrect use cases continue to be reproduced elsewhere in the product.
+
+Improvement and deterioration occur simultaneously. In such cases, unless incorrect use cases are detected in the system—such as by breaking lint rules or CI before starting migration—they will continue to be reproduced, delaying the completion of the migration.
+
+If you consider performing migration tasks as a form of offense and preventing incorrect use cases from occurring in the development process as a form of defense, there are cases where you need to defend first and then attack. If missed, it becomes like pouring water into a broken pot.
+
+However, if the use case requiring migration is limited to a specific part and can be gradually progressed, or if it can be quickly and concisely migrated with atomic commits in a monorepo environment, it may be more efficient to attack first without taking time to defend. When anticipating a situation where improvement and deterioration occur simultaneously, if the speed of improvement can sufficiently surpass the speed of deterioration, defense is also unnecessary.
+
+Since defense itself can cause inconvenience in development, evaluating whether the defense being pursued is at a level acceptable to fellow developers or if they need to be asked for understanding and endure inconvenience is also a necessary process.
+
+I've thought a lot about what strategies to devise and how to approach offense and defense transitions, but there is no general rule. While it is partly a matter of experience or intuition, in most cases, the more information you have, the better decisions you can make. Valid information includes evaluating the difficulty of migration, the number of usage sites to be migrated, and fellow developers' thoughts on the inconvenience caused by defense.
+
+(The End)
