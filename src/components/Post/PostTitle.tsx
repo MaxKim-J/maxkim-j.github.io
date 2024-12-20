@@ -13,7 +13,7 @@ import { useTranslation } from 'react-i18next';
 
 type Props = Pick<BlogPost['frontmatter'], 'title' | 'description' | 'tags' | 'date'>;
 
-function PostTitle({ title, description, tags }: Props) {
+function PostTitle({ title, description, tags, date }: Props) {
   const { t } = useTranslation();
   const currentLang = useLangStore((state) => state.lang);
 
@@ -23,7 +23,7 @@ function PostTitle({ title, description, tags }: Props) {
         {title}
       </h1>
       <div className={postTitleDescriptionStyle} aria-label={t(`포스트 부제목`)}>
-        {description}
+        {description}, {date}
       </div>
       <div>
         {(tags ?? []).map((tag) => (
