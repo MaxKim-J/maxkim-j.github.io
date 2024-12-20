@@ -14,11 +14,12 @@ interface Props {
 function Post({ post, postSlugList }: Props) {
   const {
     body,
-    slug,
-    frontmatter: { title, date, description, tags },
+    frontmatter: { title, date, description, tags, slug },
   } = post;
 
-  const postSlugs = postSlugList.nodes.map((node) => node.slug);
+  const postSlugs = Array.from(
+    new Set(postSlugList.nodes.map((node) => node.frontmatter.slug).filter(Boolean))
+  );
 
   return (
     <article>

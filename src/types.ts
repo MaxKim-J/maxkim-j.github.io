@@ -26,7 +26,9 @@ export type BlogPosts = BlogPost[];
 
 export interface PostSlugList {
   nodes: {
-    slug: string;
+    frontmatter: {
+      slug: string;
+    };
   }[];
 }
 
