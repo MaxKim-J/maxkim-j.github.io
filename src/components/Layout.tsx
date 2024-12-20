@@ -2,7 +2,6 @@ import React, { ReactNode } from 'react';
 
 import {
   containerWrapperStyle,
-  headerLayoutStyle,
   navLayoutStyle,
   mainLayoutStyle,
   containerStyle,
@@ -16,11 +15,10 @@ interface Props {
   googleAd?: boolean;
 }
 
-function MainLayout({ children, nav, header, footer }: Props) {
+function MainLayout({ children, nav, footer }: Props) {
   return (
     <div className={containerWrapperStyle}>
       <div className={containerStyle}>
-        <header className={headerLayoutStyle}>{header}</header>
         <nav className={navLayoutStyle}>{nav}</nav>
         <main className={mainLayoutStyle}>{children}</main>
         <footer>{footer}</footer>

@@ -48,7 +48,7 @@ export const query = graphql`
       body
       frontmatter {
         title
-        date(formatString: "YYYY년 MM월 DD일")
+        date(formatString: "YYYY.MM.DD")
         description
         tags
         slug

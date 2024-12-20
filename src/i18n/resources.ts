@@ -45,6 +45,7 @@ export const resources = {
       '블로그의 언어를 바꿉니다': 'Change the language of the blog',
       '제가 누구인지 보실 수 있는 페이지로 이동해요':
         'Navigate to the page where you can see who I am',
+      '블로그 포스트 목록으로 이동해요.': 'Navigate to the blog post list',
       '제가 찍은 사진들이 있는 페이지로 이동해요': 'Navigate to the page where my photos are',
       'rss 페이지로 이동해요': 'Navigate to the RSS Page',
       '블로그의 색깔 테마를 바꿀 수 있어요': 'You can change the color theme of the blog',

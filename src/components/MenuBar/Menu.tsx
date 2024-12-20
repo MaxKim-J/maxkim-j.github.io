@@ -12,6 +12,13 @@ function MenuBar() {
     <>
       <Link
         className={menuLinkStyle}
+        to={currentLang === 'ko' ? '/' : `/${currentLang}`}
+        aria-label={t('블로그 포스트 목록으로 이동해요')}
+      >
+        posts
+      </Link>
+      <Link
+        className={menuLinkStyle}
         to={currentLang === 'ko' ? '/about' : `/${currentLang}/about`}
         aria-label={t('제가 누구인지 보실 수 있는 페이지로 이동해요')}
       >
