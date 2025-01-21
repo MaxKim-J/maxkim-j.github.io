@@ -1,0 +1,337 @@
+---
+title: Types of Cohesion Between Software Modules
+description: from Reliable software through composite design
+date: 2025-01-21
+category: tech
+slug: cohesion
+tags:
+  - code
+  - theory
+lang: en
+---
+
+1975 Glenford J. Myers' book ["Reliable software through composite design"](https://www.amazon.com/Reliable-software-through-composite-design/dp/0884052842) presented an intriguing classification of types of software cohesion and coupling.
+
+[Types of Coupling Between Software Modules](/en/posts/coupling) have been further explored and organized with examples from the perspective of web client development.
+
+# Cohesion
+
+“Cohesion is a measure of how functionally related the elements within a module are. It indicates how well all the elements are included in the module to perform a single task. Essentially, cohesion acts as an internal adhesive that binds a module together. Good software design exhibits high cohesion.”
+
+## Functional Cohesion
+
+Functional cohesion refers to when all elements within a module cooperate to perform a single, well-defined task or function. It is considered the most desirable and strongest form of cohesion.
+
+An example is when all tasks related to user authentication (login, logout, password management, etc.) are handled within a single module. A class that encapsulates both state and behavior can achieve functional cohesion very effectively.
+
+```ts
+// authService.ts
+class AuthService {
+  login(username: string, password: string): Promise<string> {
+    // Handle login
+    return fetch('/api/login', {
+      method: 'POST',
+      body: JSON.stringify({ username, password }),
+      headers: { 'Content-Type': 'application/json' },
+    }).then((response) => response.json());
+  }
+
+  logout(): void {
+    // Handle logout
+    console.log('User logged out');
+  }
+
+  resetPassword(email: string): Promise<void> {
+    // Handle password reset
+    return fetch('/api/reset-password', {
+      method: 'POST',
+      body: JSON.stringify({ email }),
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+}
+
+export default new AuthService();
+```
+
+## Sequential Cohesion
+
+Sequential cohesion refers to when the elements within a module are arranged in a specific order, with the output of one element serving as the input for the next. The elements share a defined interface.
+
+Functional cohesion focuses on a module achieving a single defined purpose, but sequential cohesion is based on organizing tasks in order, so it has lower cohesion.
+
+An example can be a series of pipelines processing specific raw data, formatting it, and validating it.
+
+```ts
+interface Data {
+  id: number;
+  value: string;
+}
+
+interface ProcessedData extends Data {
+  processed: boolean;
+}
+
+function fetchData(): Promise<Array<Data>> {
+  return fetch('/api/data').then((response) => response.json());
+}
+
+function processData(data: Array<Data>): Array<ProcessedData> {
+  // Process data
+  return data.map((item: Data) => ({ ...item, processed: true }));
+}
+
+function renderData(processedData: ProcessedData): void {
+  // Render data
+  console.log('Rendered Data:', processedData);
+}
+
+// Execute sequentially
+fetchData()
+  .then(processData)
+  .then(renderData)
+  .catch((error) => console.error('Error:', error));
+```
+
+## Communicational Cohesion
+
+Communicational cohesion refers to when elements within a module manipulate the same input data or share data through parameters. Since there is no dependency on order or the specific shape of the data, communicational cohesion is lower than sequential cohesion.
+
+An example might include various modules performing different operations based on a single form of data.
+
+```ts
+import nodemailer from 'nodemailer'; // Email sending module
+import axios from 'axios'; // HTTP request module
+
+type UserData = {
+  id: string;
+  name: string;
+  email: string;
+  age: number;
+};
+
+// Function to fetch user data
+async function fetchUserData(userId: string): Promise<UserData> {
+  const response = await axios.get(`/api/users/${userId}`);
+  return response.data;
+}
+
+// Function to send a welcome email to the user
+async function sendWelcomeEmail(user: UserData): Promise<void> {
+  const transporter = nodemailer.createTransport({
+    service: 'Gmail',
+    auth: {
+      user: 'your-email@gmail.com',
+      pass: 'your-email-password',
+    },
+  });
+
+  const mailOptions = {
+    from: 'your-email@gmail.com',
+    to: user.email,
+    subject: 'Welcome to Our Platform!',
+    text: `Hello ${user.name}, welcome to our platform! We're excited to have you.`,
+  };
+
+  await transporter.sendMail(mailOptions);
+  console.log(`Welcome email sent to ${user.email}`);
+}
+
+// Function to log user activity
+async function logUserActivity(user: UserData): Promise<void> {
+  await axios.post('/api/logs', {
+    userId: user.id,
+    activity: 'User login detected',
+    timestamp: new Date().toISOString(),
+  });
+  console.log(`Activity logged for user: ${user.name}`);
+}
+
+// Communicational cohesion: Using the same data (user) for different tasks
+async function processUser(userId: string): Promise<void> {
+  try {
+    const user = await fetchUserData(userId);
+    await Promise.all([sendWelcomeEmail(user), logUserActivity(user)]);
+    console.log(`User processing completed for: ${user.name}`);
+  } catch (error) {
+    console.error('Error processing user:', error);
+  }
+}
+
+// Execute
+processUser('12345');
+```
+
+In React Components, communication cohesion can occur when components like `UserDashboard` and `UserSummary` rely on the same `UserData`.
+
+```ts
+type UserData = {
+  id: string;
+  name: string;
+  balance: number;
+};
+
+const UserDashboard: React.FC<{ userId: string }> = ({ userId }) => {
+  const [user, setUser] = React.useState<UserData | null>(null);
+
+  React.useEffect(() => {
+    fetch(`/api/user/${userId}`)
+      .then((response) => response.json())
+      .then((data) => setUser(data));
+  }, [userId]);
+
+  return (
+    <div>
+      {user ? (
+        <>
+          <h1>{user.name}</h1>
+          <p>Account Balance: {user.balance}</p>
+        </>
+      ) : (
+        <p>Loading...</p>
+      )}
+    </div>
+  );
+};
+
+const UserSummary: React.FC<{ userId: string }> = ({ userId }) => {
+  const [user, setUser] = React.useState<UserData | null>(null);
+
+  React.useEffect(() => {
+    fetch(`/api/user/${userId}`)
+      .then((response) => response.json())
+      .then((data) => setUser(data));
+  }, [userId]);
+
+  return (
+    <div>
+      {user ? (
+        <div style={{ border: '1px solid gray', padding: '10px', borderRadius: '5px' }}>
+          <h2>{user.name}</h2>
+          <p>
+            💰 Current Balance: <strong>${user.balance.toFixed(2)}</strong>
+          </p>
+          <p>📈 Status: {user.balance > 0 ? 'In Good Standing' : 'Overdrawn'}</p>
+        </div>
+      ) : (
+        <p>Loading user summary...</p>
+      )}
+    </div>
+  );
+};
+
+export { UserDashboard, UserSummary };
+```
+
+## Procedural Cohesion
+
+Procedural cohesion occurs when the elements within a module are grouped according to specific task orders or steps. The tasks need to be executed in a certain sequence.
+
+This is a weaker form of cohesion than communicational cohesion. While tasks in procedural cohesion have some order-based relationships, they don’t share data formats or act on the same data.
+
+An example could be a form handler function that processes a series of sequential actions based on input values.
+
+```ts
+function handleFormSubmission(formData: FormData) {
+  validateInput(formData); // 1. Validate input
+  saveToDatabase(formData); // 2. Save data
+  showSuccessMessage(); // 3. Show success message
+}
+
+function validateInput(data: FormData) {
+  // Validation logic
+  console.log('Validating input...');
+}
+
+function saveToDatabase(data: FormData) {
+  // Data saving logic
+  console.log('Saving data to the database...');
+}
+
+function showSuccessMessage() {
+  // Display success message
+  console.log('Form submitted successfully!');
+}
+```
+
+## Temporal Cohesion
+
+Temporal cohesion refers to when elements within a module are executed within the same timeframe or during the same time frame. Tasks grouped in a module execute at specific points or events.
+
+Procedural cohesion had loose order-based relationships between tasks, but temporal cohesion only ties tasks by the time of their execution, with no direct relationships among them.
+
+```ts
+function initializeApplication() {
+  loadEnvironmentConfig(); // 1. Load environment configuration (e.g., .env file)
+  resetCache(); // 2. Initialize application cache
+  initializeLogger(); // 3. Initialize logging system
+  displayWelcomeScreen(); // 4. Display welcome screen
+}
+
+function loadEnvironmentConfig() {
+  // Load environment configuration logic
+  console.log('Loading environment configuration...');
+}
+
+function resetCache() {
+  // Reset cache logic
+  console.log('Resetting application cache...');
+}
+
+function initializeLogger() {
+  // Initialize logging system logic
+  console.log('Initializing logging system...');
+}
+
+function displayWelcomeScreen() {
+  // Display welcome screen to user
+  console.log('Displaying welcome screen...');
+}
+```
+
+## Logical Cohesion
+
+Logical cohesion occurs when elements within a module are logically related.
+
+The tasks within the module often don’t share a common goal or flow of data. Instead, they are grouped because they perform the same “type” of task. This is considered the weakest form of cohesion.
+
+```ts
+function handleUserAction(actionType: string) {
+  if (actionType === 'login') {
+    loginUser();
+  } else if (actionType === 'logout') {
+    logoutUser();
+  } else if (actionType === 'signup') {
+    registerUser();
+  } else {
+    console.error('Unknown action type');
+  }
+}
+
+function loginUser() {
+  // Login logic
+  console.log('Logging in...');
+}
+
+function logoutUser() {
+  // Logout logic
+  console.log('Logging out...');
+}
+
+function registerUser() {
+  // User registration logic
+  console.log('Registering user...');
+}
+```
+
+## Conclusion
+
+Having explored cohesion following the examination of coupling, it is clear that understanding these principles prevents us from writing poorly cohesive code. Future developers, including ourselves, may struggle to recall the intent behind such code. To avoid being the frustrated developer looking back, we must consistently consider cohesion in our designs.
+
+## References
+
+- [https://www.geeksforgeeks.org/software-engineering-coupling-and-cohesion/](https://www.geeksforgeeks.org/software-engineering-coupling-and-cohesion/)
+- [https://www.engati.com/glossary/cohesion-and-coupling](https://www.engati.com/glossary/cohesion-and-coupling)
+- [https://bcalabs.org/subject/cohesion-and-coupling-in-software-design](https://bcalabs.org/subject/cohesion-and-coupling-in-software-design)
+
+(End)

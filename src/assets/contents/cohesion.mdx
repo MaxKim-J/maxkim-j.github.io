@@ -1,0 +1,340 @@
+---
+title: 소프트웨어 모듈간 응집(Cohesion)의 종류
+description: Reliable software through composite design 에서 제시한
+date: 2025-01-21
+category: tech
+slug: cohesion
+tags:
+  - code
+  - theory
+lang: ko
+---
+
+1975년에 나온 Glenford J. Myers의 ["Reliable software through composite design"](https://www.amazon.com/Reliable-software-through-composite-design/dp/0884052842)이라는 책에서 제시한 소프트웨어 응집과 결합의 종류 구분이 흥미로웠다.
+
+[소프트웨어 모듈 간 결합(Coupling)의 종류](/posts/coupling)에 이어 관련 내용들을 찾아, 웹 클라이언트 개발 관점의 예시와 함께 정리해 보았다.
+
+# 응집 (Cohesion)
+
+“응집도(cohesion)는 모듈의 요소들이 기능적으로 얼마나 밀접하게 관련되어 있는지를 측정하는 척도입니다. 이는 단일 작업을 수행하기 위해 모든 요소가 얼마나 모듈 내에 포함되어 있는지를 나타냅니다. 기본적으로 응집도는 모듈을 하나로 결속시키는 내부적인 접착제 역할을 합니다. 좋은 소프트웨어 설계는 높은 응집도를 가지고 있습니다.”
+
+## 기능 응집 (Functional Cohesion)
+
+기능 응집은 모듈 내의 모든 요소가 단일의 잘 정의된 작업이나 기능을 수행하기 위해 협력하는 경우를 말한다. 이는 가장 바람직하고 강력한 형태의 응집도로 간주된다.
+
+예시는 사용자 인증과 관련된 모든 작업(로그인, 로그아웃, 비밀번호 관리 등)을 하나의 모듈에서 처리하는 경우다. 상태와 동작을 모두 가질 수 있는 클래스는 기능 응집을 아주 잘 달성할 수 있다.
+
+```ts
+// authService.ts
+class AuthService {
+  login(username: string, password: string): Promise<string> {
+    // 로그인 처리
+    return fetch('/api/login', {
+      method: 'POST',
+      body: JSON.stringify({ username, password }),
+      headers: { 'Content-Type': 'application/json' },
+    }).then((response) => response.json());
+  }
+
+  logout(): void {
+    // 로그아웃 처리
+    console.log('User logged out');
+  }
+
+  resetPassword(email: string): Promise<void> {
+    // 비밀번호 재설정 처리
+    return fetch('/api/reset-password', {
+      method: 'POST',
+      body: JSON.stringify({ email }),
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+}
+
+export default new AuthService();
+```
+
+## 순차 응집 (Sequential Cohesion)
+
+순차 응집은 모듈 내의 요소들이 특정 순서로 배열되어 있으며, 한 요소의 출력이 다음 요소의 입력으로 사용되는 경우를 말한다. 기능을 이루는 각 요소들은 정의된 인터페이스를 공유한다.
+
+기능 응집은 모듈이 단일하게 정의된 목적을 수행하는데 초점을 맞추지만, 순차 응집은 단순히 작업들의 순서에 기반하여 구성되므로 응집도가 더 낮다.
+
+데이터를 처리하는 일련의 파이프라인을 생각해볼 수 있다. 특정 원본 데이터를 포맷하고, 검증하는 일련의 단계들이 이에 해당한다.
+
+```ts
+interface Data {
+  id: number;
+  value: string;
+}
+
+interface ProcessedData extends Data {
+  processed: boolean;
+}
+
+function fetchData(): Promise<Array<Data>> {
+  return fetch('/api/data').then((response) => response.json());
+}
+
+function processData(data: Array<Data>): Array<ProcessedData> {
+  // 데이터 처리
+  return data.map((item: Data) => ({ ...item, processed: true }));
+}
+
+function renderData(processedData: ProcessedData): void {
+  // 데이터 렌더링
+  console.log('Rendered Data:', processedData);
+}
+
+// 순차적으로 실행
+fetchData()
+  .then(processData)
+  .then(renderData)
+  .catch((error) => console.error('Error:', error));
+```
+
+## 통신 응집 (Communicational Cohesion)
+
+통신 응집은 모듈 내의 요소들이 동일한 입력 데이터를 조작하거나 매개변수를 통해 데이터를 공유하는 경우를 말한다. 작업들 간의 순서나 직접적인 데이터의 형태와 관련된 의존성은 없으므로, 순차 응집보다도 응집도가 떨어진다.
+
+단일한 형태의 데이터를 기반으로 다양한 동작을 수행하는 여러 모듈들을 생각해볼 수 있겠다.
+
+```ts
+import nodemailer from 'nodemailer'; // 이메일 전송 모듈
+import axios from 'axios'; // HTTP 요청 모듈
+
+type UserData = {
+  id: string;
+  name: string;
+  email: string;
+  age: number;
+};
+
+// 사용자 데이터를 가져오는 함수
+async function fetchUserData(userId: string): Promise<UserData> {
+  const response = await axios.get(`/api/users/${userId}`);
+  return response.data;
+}
+
+// 사용자에게 환영 이메일을 보내는 함수
+async function sendWelcomeEmail(user: UserData): Promise<void> {
+  const transporter = nodemailer.createTransport({
+    service: 'Gmail',
+    auth: {
+      user: 'your-email@gmail.com',
+      pass: 'your-email-password',
+    },
+  });
+
+  const mailOptions = {
+    from: 'your-email@gmail.com',
+    to: user.email,
+    subject: 'Welcome to Our Platform!',
+    text: `Hello ${user.name}, welcome to our platform! We're excited to have you.`,
+  };
+
+  await transporter.sendMail(mailOptions);
+  console.log(`Welcome email sent to ${user.email}`);
+}
+
+// 사용자 활동을 로깅하는 함수
+async function logUserActivity(user: UserData): Promise<void> {
+  await axios.post('/api/logs', {
+    userId: user.id,
+    activity: 'User login detected',
+    timestamp: new Date().toISOString(),
+  });
+  console.log(`Activity logged for user: ${user.name}`);
+}
+
+// 통신 응집: 동일한 데이터(user)를 다양한 작업에 사용
+async function processUser(userId: string): Promise<void> {
+  try {
+    const user = await fetchUserData(userId);
+    await Promise.all([sendWelcomeEmail(user), logUserActivity(user)]);
+    console.log(`User processing completed for: ${user.name}`);
+  } catch (error) {
+    console.error('Error processing user:', error);
+  }
+}
+
+// 실행
+processUser('12345');
+```
+
+하나의 데이터를 바탕으로 여러 방식으로 표현하는 React Component들 사이에서는 통신 응집이 존재한다고 말할 수 있다. 얼추 뜻이 맞다. 아래 코드는 `UserData` 라는 데이터를 이용한 React Component 들인 `UserDashboard` 와 `UserSummary` 이다.
+
+```ts
+type UserData = {
+  id: string;
+  name: string;
+  balance: number;
+};
+
+const UserDashboard: React.FC<{ userId: string }> = ({ userId }) => {
+  const [user, setUser] = React.useState<UserData | null>(null);
+
+  React.useEffect(() => {
+    fetch(`/api/user/${userId}`)
+      .then((response) => response.json())
+      .then((data) => setUser(data));
+  }, [userId]);
+
+  return (
+    <div>
+      {user ? (
+        <>
+          <h1>{user.name}</h1>
+          <p>Account Balance: {user.balance}</p>
+        </>
+      ) : (
+        <p>Loading...</p>
+      )}
+    </div>
+  );
+};
+
+const UserSummary: React.FC<{ userId: string }> = ({ userId }) => {
+  const [user, setUser] = React.useState<UserData | null>(null);
+
+  React.useEffect(() => {
+    // 사용자 데이터를 가져옴
+    fetch(`/api/user/${userId}`)
+      .then((response) => response.json())
+      .then((data) => setUser(data));
+  }, [userId]);
+
+  return (
+    <div>
+      {user ? (
+        <div style={{ border: '1px solid gray', padding: '10px', borderRadius: '5px' }}>
+          <h2>{user.name}</h2>
+          <p>
+            💰 Current Balance: <strong>${user.balance.toFixed(2)}</strong>
+          </p>
+          <p>📈 Status: {user.balance > 0 ? 'In Good Standing' : 'Overdrawn'}</p>
+        </div>
+      ) : (
+        <p>Loading user summary...</p>
+      )}
+    </div>
+  );
+};
+
+export { UserDashboard, UserSummary };
+```
+
+## 절차 응집 (Procedural Cohesion)
+
+절차적 응집은 모듈 내의 요소들이 특정 작업 순서나 단계에 따라 그룹화된 경우를 말한다. 특정 순서로 실행되어야 하는 작업들이 하나의 모듈에 포함된다.
+
+이는 통신적 응집보다 약한 형태의 응집도이다. 작업들이 특정한 순서로 실행되어야 한다는 점에서 작업들이 연관성을 가질 뿐 데이터 형식을 공유하거나 같은 데이터를 기반으로 작동하지 않기 때문에 응집도는 통신 응집보다 떨어진다.
+
+입력값을 받아 일련의 동작을 연달아 실행하는 form handler 함수를 생각해볼 수 있다.
+
+```ts
+function handleFormSubmission(formData: FormData) {
+  validateInput(formData); // 1. 입력 값 검증
+  saveToDatabase(formData); // 2. 데이터 저장
+  showSuccessMessage(); // 3. 성공 메시지 표시
+}
+
+function validateInput(data: FormData) {
+  // 유효성 검증 로직
+  console.log('Validating input...');
+}
+
+function saveToDatabase(data: FormData) {
+  // 데이터 저장 로직
+  console.log('Saving data to the database...');
+}
+
+function showSuccessMessage() {
+  // 성공 메시지 표시
+  console.log('Form submitted successfully!');
+}
+```
+
+## 시간 응집 (Temporal Cohesion)
+
+시간적 응집은 모듈 내의 요소들이 동일한 시간대나 같은 시간 프레임 내에 실행되는 경우를 말한다. 특정 시점이나 이벤트에 실행되는 작업들이 하나의 모듈에 포함된다.
+
+절차 응집은 작업간의 순서 면에서 느슨한 연관이 있었지만 시간 응집에서는 비슷한 시점에 실행된다는 것 빼고는 연관성이 없다. 작업 간에는 직접적인 연관성이 없다고 볼 수도 있다.
+
+```ts
+function initializeApplication() {
+  loadEnvironmentConfig(); // 1. 환경 설정 로드 (ex: .env 파일)
+  resetCache(); // 2. 애플리케이션 캐시 초기화
+  initializeLogger(); // 3. 로깅 시스템 초기화
+  displayWelcomeScreen(); // 4. 환영 화면 표시
+}
+
+function loadEnvironmentConfig() {
+  // 환경 설정 로드 로직
+  console.log('Loading environment configuration...');
+}
+
+function resetCache() {
+  // 캐시 초기화 로직
+  console.log('Resetting application cache...');
+}
+
+function initializeLogger() {
+  // 로깅 시스템 초기화 로직
+  console.log('Initializing logging system...');
+}
+
+function displayWelcomeScreen() {
+  // 사용자에게 환영 화면을 표시
+  console.log('Displaying welcome screen...');
+}
+```
+
+## 논리 응집 (Logical Cohesion)
+
+논리적 응집은 모듈 내의 요소들이 논리적으로 관련되어 있는 경우를 말한다.
+
+모듈 내 각 작업 간에 공통된 목표나 데이터의 흐름이 없고. 단순히 “같은 종류의 작업”이라는 이유로 모듈에 포함되는 경우가 많다. 가장 낮은 수준의 응집이다.
+
+```ts
+function handleUserAction(actionType: string) {
+  if (actionType === 'login') {
+    loginUser();
+  } else if (actionType === 'logout') {
+    logoutUser();
+  } else if (actionType === 'signup') {
+    registerUser();
+  } else {
+    console.error('Unknown action type');
+  }
+}
+
+function loginUser() {
+  // 로그인 처리 로직
+  console.log('Logging in...');
+}
+
+function logoutUser() {
+  // 로그아웃 처리 로직
+  console.log('Logging out...');
+}
+
+function registerUser() {
+  // 사용자 등록 처리 로직
+  console.log('Registering user...');
+}
+```
+
+## 맺는 말
+
+이렇게 결합에 이어 응집의 종류까지 살펴보았다.
+
+설계의 당위가 부족하기 때문에 과거에 응집도가 낮은 코드를 작성했다면 미래의 내가 왜 이렇게 짰는지 기억 못할 확률이 높아 보인다. 과거의 나를 비난하는 못난 내가 되지 않기 위해서는 응집에 대해 생각해야만 하겠다.
+
+## References
+
+- https://www.geeksforgeeks.org/software-engineering-coupling-and-cohesion/
+- https://www.engati.com/glossary/cohesion-and-coupling
+- https://bcalabs.org/subject/cohesion-and-coupling-in-software-design
+
+(끝)
