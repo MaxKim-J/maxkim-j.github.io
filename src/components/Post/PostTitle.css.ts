@@ -2,7 +2,7 @@ import { style } from '@vanilla-extract/css';
 import { sVar } from '../../styles/variants';
 
 export const postTitleWrapperStyle = style({
-  marginBottom: '60px',
+  marginBottom: '80px',
   marginTop: '24px',
 });
 
@@ -14,7 +14,7 @@ export const postTitleHeadingStyle = style({
   marginBottom: '20px',
   '@media': {
     [sVar.media.mobile]: {
-      fontSize: '30px',
+      fontSize: sVar.fontSize.$2,
     },
   },
 });
@@ -30,7 +30,18 @@ export const postTitleDescriptionStyle = style({
 });
 
 export const postTitleTagsStyle = style({
-  fontSize: sVar.fontSize.$7,
-  marginRight: '12px',
+  fontSize: sVar.fontSize.$6,
+  marginLeft: '12px',
   textDecoration: 'underline',
+});
+
+export const tagAndDateContainerStyle = style({
+  display: 'flex',
+  alignItems: 'center',
+  opacity: 0.6,
+});
+
+export const dateStyle = style({
+  fontSize: sVar.fontSize.$6,
+  marginTop: '2px',
 });

@@ -1,24 +1,27 @@
 .mdx-post h1 {
-  font-size: 30px;
-  font-weight: 600;
-  margin: 50px 0;
+  font-size: 24px;
+  font-weight: 550;
+  margin-top: 44px;
+  margin-bottom: 32px;
   @media (max-width: 750px) {
     font-size: 28px;
   }
 }
 
 .mdx-post h2 {
-  font-size: 26px;
-  font-weight: 600;
-  margin: 46px 0;
+  font-size: 20px;
+  font-weight: 550;
+  margin-top: 40px;
+  margin-bottom: 28px;
   @media (max-width: 750px) {
     font-size: 24px;
   }
 }
 .mdx-post h3 {
   font-size: 22px;
-  font-weight: 600;
-  margin: 42px 0;
+  font-weight: 550;
+  margin-top: 36px;
+  margin-bottom: 24px;
   @media (max-width: 750px) {
     font-size: 20px;
   }
@@ -26,8 +29,9 @@
 
 .mdx-post h4 {
   font-size: 18px;
-  font-weight: 600;
-  margin: 38px 0;
+  font-weight: 500;
+  margin-top: 32px;
+  margin-bottom: 20px;
   @media (max-width: 750px) {
     font-size: 18px;
   }
@@ -36,27 +40,34 @@
 .mdx-post h5 {
   font-size: 18px;
   font-weight: 500;
-  margin: 34px 0;
+  margin: 24px 0;
   @media (max-width: 750px) {
     font-size: 17px;
   }
 }
 
 .mdx-post p {
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 400;
-  margin: 26px 0;
-  line-height: 1.9;
+  margin: 28px 0;
+  line-height: 1.7;
   word-break: 'break-word';
   letter-spacing: 0.3px;
   @media (max-width: 750px) {
-    font-size: 17px;
+    font-size: 15px;
   }
 }
 
 .mdx-post a {
   text-decoration: underline;
-  text-underline-offset: 4px;
+  text-underline-offset: 4.5px;
+  text-decoration-color: var(--anchor-underline-color);
+}
+
+.mdx-post a:hover {
+  text-decoration: underline;
+  text-underline-offset: 4.5px;
+  text-decoration-thickness: 2px;
 }
 
 .mdx-post img {
@@ -65,27 +76,27 @@
 }
 
 .mdx-post strong {
-  font-weight: 600;
+  font-weight: 550;
 }
 
 .mdx-post ul {
-  padding: 12px;
   list-style: inside;
-  font-size: 18px;
+  font-size: 16px;
   line-height: 1.8;
+  padding-left: 4px;
   @media (max-width: 750px) {
-    font-size: 17px;
+    font-size: 15px;
   }
 }
 
 .mdx-post ol {
-  padding: 12px;
   list-style: inside;
   list-style-type: decimal;
-  font-size: 18px;
+  font-size: 16px;
   line-height: 1.8;
+  padding-left: 4px;
   @media (max-width: 750px) {
-    font-size: 17px;
+    font-size: 15px;
   }
 }
 
@@ -102,19 +113,17 @@ ul ol {
 
 .mdx-post li {
   margin: 6px 0;
-  @media (max-width: 750px) {
-    font-size: 17px;
-  }
 }
 
 .mdx-post li code,
 p code {
+  font-style: italic;
   background-color: var(--code-quote-background-color);
   border-radius: 5px;
   font-size: 16px;
   padding: 2px 6px;
   font-weight: 350;
-  letter-spacing: 1.3px;
+  letter-spacing: 1.5px;
   word-break: break-all;
 }
 
@@ -129,18 +138,18 @@ p code {
 
 .mdx-post blockquote p {
   padding: 12px 0px;
-  font-size: 17px;
+  font-size: 16px;
   @media (max-width: 750px) {
-    font-size: 16px;
+    font-size: 15px;
   }
 }
 
 .mdx-post blockquote code {
   font-style: normal;
   background-color: var(--blockquote-code-background-color);
-  font-size: 14px;
+  font-size: 15px;
   @media (max-width: 750px) {
-    font-size: 13px;
+    font-size: 14px;
   }
 }
 

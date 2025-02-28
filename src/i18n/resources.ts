@@ -32,7 +32,8 @@ export const resources = {
       '김맥스 블로그': 'Max Kim Blog',
       '김맥스의 블로그입니다': "Max Kim's Blog",
       '태그 모아보기': 'Posts By Tag',
-      '김맥스 블로그ⓒ김종혁, 2024': 'Max Kim BlogⓒMax kim, 2024',
+      'Copyright © 2025 Jonghyuk Max Kim. All Right Reserved':
+        'Copyright © 2025 Jonghyuk Max Kim.  All Right Reserved',
       'Written by 김맥스': 'Written by Max Kim',
       '트위터에 공유하기': 'Share on Twitter',
       '링크 복사하기': 'Copy link',

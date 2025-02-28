@@ -1,37 +1,38 @@
 * {
-  font-family: Pretendard;
+  font-family: 'Pretendard', monospace;
 }
 
 body[data-theme='light'] {
-  --font-color: #000000;
-  --line-color: #000000;
+  --font-color: #222222;
+  --line-color: #222222;
   --background-color: #ffffff;
   --blockquote-background-color: #f9f9f9;
   --blockquote-code-background-color: #efefef;
   --code-quote-background-color: #f2f2f2;
   --code-quote-blockquote-border-color: #000000;
+  --anchor-underline-color: #6a6a6a;
+  --anchor-underline-color-stress: #000000;
 }
 
 body[data-theme='dark'] {
-  --font-color: #ffffff;
-  --line-color: #ffffff;
-  --background-color: #232323;
+  --font-color: #dfdfdf;
+  --line-color: #dfdfdf;
+  --background-color: #343434;
   --blockquote-background-color: #383838;
   --blockquote-code-background-color: #444444;
-  --code-quote-background-color: #6b6b6b;
+  --code-quote-background-color: #525252;
   --code-quote-blockquote-border-color: #ffffff;
+  --anchor-underline-color: #9e9e9e;
+  --anchor-underline-color-stress: #727272;
 }
 
 deckgo-highlight-code {
   --deckgo-highlight-code-white-space: pre;
-
-  font-size: 16px;
+  margin: 50px 0;
+  font-size: 15px;
   line-height: 1.5;
   white-space: nowrap;
   letter-spacing: 0.5px;
-  @media (max-width: 750px) {
-    font-size: 15px;
-  }
 }
 
 body[data-theme='light'] deckgo-highlight-code {
@@ -49,7 +50,7 @@ body[data-theme='light'] deckgo-highlight-code {
 }
 
 body[data-theme='dark'] deckgo-highlight-code {
-  --deckgo-highlight-code-carbon-background: #2b2b2b;
+  --deckgo-highlight-code-carbon-background: #272727;
   --deckgo-highlight-code-carbon-color: #f8f8f2;
   --deckgo-highlight-code-token-atrule: #ffa07a;
   --deckgo-highlight-code-token-comment: #d4d0ab;

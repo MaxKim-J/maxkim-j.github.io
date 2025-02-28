@@ -7,7 +7,9 @@ function Footer() {
 
   return (
     <div className={footerSectionStyle}>
-      <div className={footerContentStyle}>{t('김맥스 블로그ⓒ김종혁, 2024')}</div>
+      <div className={footerContentStyle}>
+        {t('Copyright © 2025 Jonghyuk Max Kim. All Right Reserved')}
+      </div>
       <div className={footerContentStyle}>
         Powered By{' '}
         <a className={footerAnchorStyle} href="https://www.gatsbyjs.com/">

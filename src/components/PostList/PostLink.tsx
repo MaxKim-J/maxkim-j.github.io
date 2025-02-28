@@ -23,9 +23,11 @@ function PostLink({ id, frontmatter, lang }: Props) {
     <li className={listItemStyle}>
       <Link to={lang === 'ko' ? `/posts/${slug}` : `/${lang}/posts/${slug}`} key={id}>
         <div className={listItemWrapperStyle}>
+          <div className={listItemTitleStyle}>
+            {title}
+            <span className={listItemCategoryStyle}>{category}</span>
+          </div>
           <div className={listItemDateStyle}>{date}</div>
-          <div className={listItemTitleStyle}>{title}</div>
-          <div className={listItemCategoryStyle}>{category}</div>
         </div>
       </Link>
     </li>

@@ -9,10 +9,8 @@ export const containerWrapperStyle = style({
 });
 
 export const containerStyle = style({
-  width: '50%',
+  width: '720px',
   '@media': {
-    [sVar.media.pcNarrow]: { width: '65%' },
-    [sVar.media.tablet]: { width: '80%' },
     [sVar.media.mobile]: { width: '100%' },
   },
   // TODO:theme
@@ -23,6 +21,7 @@ export const headerLayoutStyle = style({
 });
 
 export const navLayoutStyle = style({
+  padding: '0px 4px',
   marginTop: '30px',
   marginBottom: '60px',
 });

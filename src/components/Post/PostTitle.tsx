@@ -7,6 +7,8 @@ import {
   postTitleHeadingStyle,
   postTitleDescriptionStyle,
   postTitleTagsStyle,
+  tagAndDateContainerStyle,
+  dateStyle,
 } from './PostTitle.css';
 import { useLangStore } from '../../store/langStore';
 import { useTranslation } from 'react-i18next';
@@ -23,9 +25,10 @@ function PostTitle({ title, description, tags, date }: Props) {
         {title}
       </h1>
       <div className={postTitleDescriptionStyle} aria-label={t(`포스트 부제목`)}>
-        {description}, {date}
+        {description}
       </div>
-      <div>
+      <div className={tagAndDateContainerStyle}>
+        <div className={dateStyle}>{date} /</div>
         {(tags ?? []).map((tag) => (
           <Link
             className={postTitleTagsStyle}
