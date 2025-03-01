@@ -7,6 +7,8 @@ import {
   infoStyle,
   infoAnchorStyle,
   infoTitleStyle,
+  infoAnchorCompanyNameStyle,
+  infoDetailSectionStyle,
 } from './About.css';
 import { MDXRenderer } from 'gatsby-plugin-mdx';
 import { useTranslation } from 'react-i18next';
@@ -24,43 +26,37 @@ export function About({ body }: Props) {
       <section className="mdx-post">
         <MDXRenderer>{body}</MDXRenderer>
       </section>
-
-      <div className={infoSectionStyle}>
-        <div className={infoStyle}>
-          <div className={infoTitleStyle}>Location</div>
-          <div>Seoul, South Korea(UTC+09:00)</div>
-        </div>
-        <div className={infoStyle}>
-          <div className={infoTitleStyle}>Working at</div>
-          <Link className={infoAnchorStyle} to="https://flex.team">
-            <span className={infoTitleStyle}>flex.team</span> Product Engineer(FE)
+      <div>
+        <div className={infoDetailSectionStyle}>
+          <span>Currently Working at </span>
+          <Link className={infoAnchorCompanyNameStyle} to="https://flex.team">
+            flex.team
           </Link>
+          <span> as a Software Engineer</span>
+          <span> in Seoul, South Korea(UTC+09:00)</span>
         </div>
-        <div className={infoStyle}>
-          <div className={infoTitleStyle}>Find Me On</div>
-          <div>
-            <Link className={infoAnchorStyle} to="https://twitter.com/max_kim_dev">
-              twitter
-            </Link>
-            <Link className={infoAnchorStyle} to="https://github.com/MaxKim-J">
-              github
-            </Link>
-            <Link
-              className={infoAnchorStyle}
-              to="https://www.linkedin.com/in/%EC%A2%85%ED%98%81-%EA%B9%80-903967177/"
-            >
-              linkedin
-            </Link>
-            <Link className={infoAnchorStyle} to="https://github.com/MaxKim-J/RESUME">
-              resume
-            </Link>
-          </div>
-        </div>
-        <div className={infoStyle}>
-          <div className={infoTitleStyle}>Contact</div>
-          <Link className={infoAnchorStyle} to="mailto:hwaseen@gmail.com">
-            hwaseen@gmail.com
+        <div className={infoDetailSectionStyle}>
+          <Link className={infoAnchorStyle} to="https://twitter.com/max_kim_dev">
+            X
           </Link>
+          <Link className={infoAnchorStyle} to="https://github.com/MaxKim-J">
+            github
+          </Link>
+          <Link
+            className={infoAnchorStyle}
+            to="https://www.linkedin.com/in/%EC%A2%85%ED%98%81-%EA%B9%80-903967177/"
+          >
+            linkedin
+          </Link>
+          <Link className={infoAnchorStyle} to="https://github.com/MaxKim-J/RESUME">
+            resume
+          </Link>
+          <span>
+            contact:{' '}
+            <Link className={infoAnchorStyle} to="mailto:hwaseen@gmail.com">
+              hwaseen@gmail.com
+            </Link>
+          </span>
         </div>
       </div>
     </>

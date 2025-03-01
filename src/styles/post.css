@@ -3,9 +3,6 @@
   font-weight: 550;
   margin-top: 44px;
   margin-bottom: 32px;
-  @media (max-width: 750px) {
-    font-size: 28px;
-  }
 }
 
 .mdx-post h2 {
@@ -13,18 +10,12 @@
   font-weight: 550;
   margin-top: 40px;
   margin-bottom: 28px;
-  @media (max-width: 750px) {
-    font-size: 24px;
-  }
 }
 .mdx-post h3 {
   font-size: 22px;
   font-weight: 550;
   margin-top: 36px;
   margin-bottom: 24px;
-  @media (max-width: 750px) {
-    font-size: 20px;
-  }
 }
 
 .mdx-post h4 {
@@ -32,18 +23,12 @@
   font-weight: 500;
   margin-top: 32px;
   margin-bottom: 20px;
-  @media (max-width: 750px) {
-    font-size: 18px;
-  }
 }
 
 .mdx-post h5 {
   font-size: 18px;
   font-weight: 500;
   margin: 24px 0;
-  @media (max-width: 750px) {
-    font-size: 17px;
-  }
 }
 
 .mdx-post p {

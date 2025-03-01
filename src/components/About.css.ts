@@ -28,11 +28,15 @@ export const infoTitleStyle = style({
   fontWeight: sVar.fontWeight.semiBold,
 });
 
+export const infoDetailSectionStyle = style({
+  marginTop: '16px',
+});
+
+export const infoAnchorCompanyNameStyle = style({
+  textDecoration: 'underline',
+});
+
 export const infoAnchorStyle = style({
-  marginLeft: '16px',
-  selectors: {
-    '&:hover': {
-      textDecoration: 'underline',
-    },
-  },
+  marginRight: '16px',
+  textDecoration: 'underline',
 });

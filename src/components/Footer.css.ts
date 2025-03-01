@@ -13,6 +13,7 @@ export const footerSectionStyle = style({
 
 export const footerContentStyle = style({
   fontSize: '10px',
+  opacity: 0.5,
 });
 
 export const footerAnchorStyle = style({

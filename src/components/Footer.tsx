@@ -1,5 +1,5 @@
 import React from 'react';
-import { footerSectionStyle, footerContentStyle, footerAnchorStyle } from './Footer.css';
+import { footerSectionStyle, footerContentStyle } from './Footer.css';
 import { useTranslation } from 'react-i18next';
 
 function Footer() {
@@ -9,16 +9,6 @@ function Footer() {
     <div className={footerSectionStyle}>
       <div className={footerContentStyle}>
         {t('Copyright © 2025 Jonghyuk Max Kim. All Right Reserved')}
-      </div>
-      <div className={footerContentStyle}>
-        Powered By{' '}
-        <a className={footerAnchorStyle} href="https://www.gatsbyjs.com/">
-          gatsby
-        </a>
-        /
-        <a className={footerAnchorStyle} href="https://pages.github.com/">
-          gh-pages
-        </a>
       </div>
     </div>
   );

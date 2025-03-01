@@ -7,14 +7,14 @@ export const postTitleWrapperStyle = style({
 });
 
 export const postTitleHeadingStyle = style({
-  fontSize: sVar.fontSize.$1,
+  fontSize: sVar.fontSize.$0,
   fontWeight: sVar.fontWeight.semiBold,
   lineHeight: '1.3',
   wordBreak: 'keep-all',
   marginBottom: '20px',
   '@media': {
     [sVar.media.mobile]: {
-      fontSize: sVar.fontSize.$2,
+      fontSize: sVar.fontSize.$1,
     },
   },
 });
