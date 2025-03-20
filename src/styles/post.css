@@ -65,7 +65,7 @@
 }
 
 .mdx-post ul {
-  list-style: initial;
+  list-style: inside;
   font-size: 16px;
   line-height: 1.8;
   padding-left: 4px;
@@ -75,7 +75,7 @@
 }
 
 .mdx-post ol {
-  list-style: initial;
+  list-style: inside;
   list-style-type: decimal;
   font-size: 16px;
   line-height: 1.8;
