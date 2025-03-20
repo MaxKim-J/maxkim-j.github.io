@@ -1,0 +1,72 @@
+---
+title: Dependency Protocol in Node Package Managers
+description: You don't have to stick with semver alone when specifying dependencies.
+date: 2025-03-20
+category: tech
+slug: dependency-protocol
+tags:
+  - yarn
+  - pnpm
+lang: en
+---
+
+A **Dependency Protocol** is the method used by package managers to specify the source of dependencies.
+
+By default, package managers reference versions available on the npm registry. However, depending on the project's context, there might be cases where packages from local files, Git repositories, or even aliases need to be used. In these scenarios, dependency sources can be explicitly set using protocols such as `file:`, `git:`, or `npm:`.
+
+```json
+{
+  "dependencies": {
+    "local-lib": "file:../libs/local-lib",
+    "my-utils": "link:../../shared/my-utils",
+    "external-pkg": "portal:../../other-repo/packages/external-pkg",
+    "lodash-old": "npm:lodash@^4.17.21",
+    "my-tool": "git+https://github.com/user/my-tool.git#commit=abcdef1234"
+  }
+}
+```
+
+Because package managers allow these dependency notations, developers can flexibly manage various engineering situations.
+
+For instance, using the `npm:` protocol enables dependency swapping without altering import paths within a package's internal files. This can be beneficial for migrating dependencies in large codebases.
+
+```json
+{
+  "dependencies": {
+    "@team/packageA": "npm:@team/packageB@1.2.4"
+  }
+}
+```
+
+```ts
+// Actually imports implementation from packageB
+import { impl } from '@team/packageA';
+```
+
+However, discrepancies between dependency names and actual downloaded dependencies might cause confusion among developers. Thus, such usage is effective primarily as a temporary solution.
+
+Typically, developers expect explicitness when using commands like `yarn add`. If running `yarn add @team/packageA` results in ambiguity—sometimes downloading `@team/packageB`, other times not—it can lead to considerable confusion. It's definitely not a practice a platform would recommend.
+
+[Yarn Berry's supported protocols](https://yarnpkg.com/protocols), such as `file:`, `link:`, and `portal:`, allow packages from one repository to be seamlessly connected to another for development purposes. For example, if repository A is a monorepo with multiple packages, and repository B is an application, you can attach packages under development as follows:
+
+```json
+{
+  "dependencies": {
+    "@team/packageA": "portal:../../other-repo/packages/a"
+  }
+}
+```
+
+These three protocols (`file:`, `link:`, `portal:`) serve similar purposes, but their installation mechanisms slightly differ:
+
+- **`file:`** Copies the contents of the specified path into the dependency folder (such as `.yarn/cache` or `node_modules`). Because of this copy behavior, updates to the original source won't immediately reflect in dependencies. Too many `file:` dependencies might lead to Out-Of-Memory (OOM) issues, as observed from experience.
+
+- **`link:`** Establishes a symbolic link to the dependency's path. This method doesn't resolve the linked folder's `package.json` or its dependencies.
+
+- **`portal:`** Treats the specified path as a Node package. It resolves the `package.json` and dependencies within the linked directory, enabling direct linking of Node packages across different repositories. [It doesn't allow multiple versions of the same dependency](https://github.com/yarnpkg/berry/discussions/6655).
+
+Implementation and support for these dependency protocols vary among package managers, potentially causing compatibility issues during migrations. For instance, Yarn Berry's `portal:` protocol isn't supported by pnpm or npm. Indeed, pnpm doesn't support `portal:` or `link:` and instead [guides users toward alternative methods for similar scenarios](https://pnpm.io/cli/link#whats-the-difference-between-pnpm-link-and-using-the-file-protocol).
+
+Browsing GitHub issues of various projects often reveals demands like ["why does this package manager support a feature but the other doesn't?"](https://github.com/pnpm/pnpm/pull/3915). Interestingly, nowadays, leading package managers such as [`yarn` and `pnpm` support each other's `node_linker`.](https://pnpm.io/npmrc#node-linker) pnpm's maintainer has pointed out that behaviors unsupported by npm are considered [feature requests rather than compatibility requirements.](https://github.com/pnpm/pnpm/issues/7461) Observations like these help us understand the philosophical differences across open-source projects and demonstrate community-driven development.
+
+Nevertheless, compatibility should be approached carefully, as migration problems can arise easily. Package managers can introduce widespread coupling and implicit knowledge into codebases. Protocol compatibility is crucial, as are differences in [default environment variables injected into scripts during execution.](https://github.com/yarnpkg/berry/issues/5750)

@@ -65,7 +65,7 @@
 }
 
 .mdx-post ul {
-  list-style: inside;
+  list-style: initial;
   font-size: 16px;
   line-height: 1.8;
   padding-left: 4px;
@@ -75,7 +75,7 @@
 }
 
 .mdx-post ol {
-  list-style: inside;
+  list-style: initial;
   list-style-type: decimal;
   font-size: 16px;
   line-height: 1.8;
@@ -96,6 +96,10 @@ ul ol {
   border: none !important;
 }
 
+li::marker {
+  margin-right: 3px;
+}
+
 .mdx-post li {
   margin: 6px 0;
 }
@@ -105,8 +109,8 @@ p code {
   font-style: italic;
   background-color: var(--code-quote-background-color);
   border-radius: 5px;
-  font-size: 16px;
-  padding: 2px 6px;
+  font-size: 15px;
+  padding: 1px 3px;
   font-weight: 350;
   letter-spacing: 1.5px;
   word-break: break-all;

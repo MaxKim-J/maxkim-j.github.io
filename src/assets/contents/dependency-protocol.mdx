@@ -1,0 +1,70 @@
+---
+title: node 패키지 매니저의 dependency protocol
+description: semver로만 의존성을 표기할 수 있는 것은 아니다
+date: 2025-03-20
+category: tech
+slug: dependency-protocol
+tags:
+  - yarn
+  - pnpm
+lang: ko
+---
+
+Dependency Protocol이란 패키지 매니저에서 의존성(dependency)의 출처를 지정하는 방식이다.
+
+기본적으로 패키지 매니저는 npm 레지스트리의 버전을 따르지만, 프로젝트 상황에 따라 로컬 파일, Git 저장소, 별칭(alias) 등 다양한 출처의 패키지를 사용해야 할 때가 있고 이때 `file:`, `git:`, `npm:` 등의 프로토콜을 통해 의존성의 소스를 명시할 수 있다.
+
+```json
+{
+  "dependencies": {
+    "local-lib": "file:../libs/local-lib",
+    "my-utils": "link:../../shared/my-utils",
+    "external-pkg": "portal:../../other-repo/packages/external-pkg",
+    "lodash-old": "npm:lodash@^4.17.21",
+    "my-tool": "git+https://github.com/user/my-tool.git#commit=abcdef1234"
+  }
+}
+```
+
+패키지 매니저에서 이러한 의존성 표기가 가능하기 때문에, 다양한 엔지니어링 상황에서 대응이 가능하다.
+
+가령 아래와 같이 `npm:` 프로토콜을 활용하면 특정 패키지 내부 파일의 import source를 바꾸지 않아도 의존성을 원하는 패키지로 갈아끼울 수 있다. 대규모 코드베이스에서의 의존성 마이그레이션에 활용할 수 있을 것이다.
+
+```json
+{
+  "dependencies": {
+    "@team/packageA": "npm:@team/pacakgeB@1.2.4"
+  }
+}
+```
+
+```ts
+// 사실은 packageB에서 구현체를 가져오게 된다
+import { impl } from '@team/packageA';
+```
+
+물론 액면으로 기록된 의존성의 이름과 실제로 다운로드되는 의존성이 다른 경우는 개발하는 사람 입장에서는 혼란을 야기할 수 있기 때문에, 임시적인 솔루션으로서만 유효하게 기능한다.
+
+`yarn add` 같은 명령어는 개발자들이 자신이 사용할 의존성의 이름과 실체를 명확하게 알고 사용하기 마련이다. `yarn add @team/pacakgeA` 라고 커맨드를 실행했는데 어떤 파일의 `@team/packageA` 는 `@team/pacakgeB` 이고 어떤 곳에서는 아니라면 뇌정지가 씨게 온다. 플랫폼 입장에서 권장할 수 있는 방법이 절대 아니다.
+
+[yarn berry에서 지원](https://yarnpkg.com/protocols)하는 `file:` , `link:`, `portal:` 프로토콜을 사용하면 다른 레포지토리에 있는 패키지를 또 다른 레포지토리에 붙여서 개발할 수 있다. 레포지토리 A가 패키지들이 모여있는 모노레포고 B 레포지토리에 애플리케이션이 있을 경우, 다음과 같이 붙여서 쓰면 개발 중인 패키지를 애플리케이션에 붙여서 테스트해볼 수 있다.
+
+```json
+{
+  "dependencies": {
+    "@team/packageA": "portal:../../other-repo/pacakges/a"
+  }
+}
+```
+
+저 3개의 프로토콜은 비슷한 역할을 하지만 어떻게 의존성을 가져와 설치하냐는 매커니즘이 약간 다르다.
+
+- `file:` 명시된 의존성 경로의 내용을 복사하는 방식으로 의존성을 설치한다. 해당 디렉토리의 내용을 복사해서 의존성 폴더(`.yarn/cache` 나 `node_modules`)에 집어넣기 때문에 원본 폴더를 수정해도 바로 반영되지 않는다. 너무 많은 패키지를 `file:` 프로토콜로 연결할 경우 OOM이 나는 경우를 본 경험이 있다.
+- `link:` 명시된 의존성 경로를 심볼릭 링크로 연결한다. 해당 폴더의 package.json이나 의존성은 리졸브가 되지 않는다.
+- `portal:` 명시된 의존성 경로를 node 패키지로 간주하여 연결한다. 해당 폴더의 package.json과 의존성을 리졸브한다. 특정 레포지토리의 node 패키지를 다른 레포지토리의 node 패키지에 붙이는게 가능하다. [같은 의존성의 다른 버전은 허용하지 않는다.](https://github.com/yarnpkg/berry/discussions/6655)
+
+Dependency Protocol의 구현과 지원은 패키지 매니저마다 상이하기 때문에, 다른 패키지 매니저로 마이그레이션할 때 호환성 문제가 발생할 수 있다. Yarn Berry가 제공하는 `portal:` 프로토콜은 pnpm이나 npm에서는 지원하지 않는다. pnpm에서는 `portal:`, `link:` 를 지원하지 않고 [비슷한 요구사항이 있을 때 다른 접근방법을 가이드한다.](https://pnpm.io/cli/link#whats-the-difference-between-pnpm-link-and-using-the-file-protocol)
+
+각 프로젝트의 깃헙 이슈를 살펴보면, [왜 얘는 이걸 해주는데 이건 안되냐](https://github.com/pnpm/pnpm/pull/3915)는 요구사항이 꽤 있다. 요새 패키지 매니저의 양대산맥이라고 할 수 있는 [`yarn` 과 `pnpm` 은 서로의 `node_linker`을 지원하고 있다.](https://pnpm.io/ko/npmrc#node-linker) `pnpm` 의 메인테이너는 패키지 매니저 `npm` 에서 기본으로 지원하지 않는 동작은 [호환성 요구가 아니라 기능 추가 요청임을 말하기도 했다.](https://github.com/pnpm/pnpm/issues/7461) 이런 부분들이 각 오픈소스들의 철학을 더 잘 알게 하는 부분도 있고, 오픈소스들의 커뮤니티 드리븐 발전이 이루어지고 있다는 생각도 들게 한다.
+
+그러나 호환성은 조심해야 할 것이다. 마이그레이션에 발목을 잡을 수 있고 패키지 매너지는 코드베이스에 너무 광범위한 결합과 암묵지를 추가하기 쉽다. 프로토콜 호환 여부 뿐 아니라, 스크립트 실행시 기본으로 주입되는 [환경변수](https://github.com/yarnpkg/berry/issues/5750)도 다를 수 있다.
