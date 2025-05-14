@@ -1,0 +1,252 @@
+---
+title: Evolution of Module Federation (1.0, 1.5, 2.0)
+description: 5 Years of Community-Driven Progress in Module Federation
+date: 2025-05-13
+category: tech
+slug: module-federation-versions
+tags:
+  - micro-frontends
+lang: en
+---
+
+It’s been quite a while since Micro Frontends and Module Federation entered the web development scene. It’s also been over two years since the flex web product fully transitioned to a Micro Frontend architecture.
+
+During that time, Module Federation has evolved, driven entirely by the community. When I first encountered the concept and tried to apply it to our product, only the Webpack implementation was even remotely usable. There were no real case studies. Most of the existing implementations were weak, barely embodying the core ideas. Now, though, there’s reasonably good documentation and usable interfaces—not just in Webpack, but also in Vite, Rspack, and other bundlers. Of course, it’s still far from perfect.
+
+In this post, I want to trace the major version shifts in Module Federation—1.0, 1.5, and 2.0—which represent its most significant evolutionary steps. These version definitions follow the conventions proposed by the [Module Federation Community](https://github.com/module-federation), but keep in mind: different bundlers may implement these versions differently, and even when the version numbers match, the depth of implementation can vary.
+
+## Module Federation 1.0
+
+Module Federation 1.0 was introduced in Webpack 5. That was [back in October 2020.](https://webpack.js.org/blog/2020-10-10-webpack-5-release/#module-federation)
+
+```js
+new ModuleFederationPlugin({
+  name: 'host',
+  filename: 'remoteEntry.js',
+  remotes: {
+    remote: 'remote@http://localhost:3002/remoteEntry.js',
+  },
+  exposes: {
+    './App': './src/App.tsx',
+  },
+  shared: {
+    react: { singleton: true, version: '18.2.0' },
+    'react-dom': { singleton: true, version: '18.2.0' },
+  },
+});
+```
+
+This version defined the core concepts: Containers, Container References, Omnidirectional Hosts, and Shared Dependencies.
+
+I’ve written about these in a previous post, so if those terms don’t ring a bell, I recommend checking out the links below—they’ll help make the rest of this article easier to follow.
+
+- [Understanding Module Federation Concepts and How It Works](https://maxkim-j.github.io/posts/module-federation-concepts/): Covers Container, Container References, Omnidirectional Host
+- [How Shared Dependencies Work in Module Federation](https://maxkim-j.github.io/posts/module-federation-shared): Covers Shared Dependencies
+
+These concepts continue to apply in 1.5 and 2.0, and both versions build upon the 1.0 plugin interface in a backward-compatible way. [This compatibility is guaranteed.](https://rspack.dev/guide/features/module-federation#how-to-use)
+
+With 1.0, the recommended usage pattern is to declare all module relationships upfront in the build config. “Recommended” doesn’t mean anyone officially said “you must do it this way!!”—it’s just that dynamic integration at runtime requires [hacky tricks that manipulate Webpack’s runtime chunks](https://dev.to/w3nda/dynamic-remotes-with-modulefederation-67f), which feels a bit too sketchy for comfort.
+
+If you go that route, you’re essentially tying every Container and Container Reference to a Webpack-based implementation. In short, **Module Federation 1.0 is tightly coupled to Webpack.**
+
+There are no more iterations happening on 1.0. [You're encouraged to use 1.5 or 2.0 instead.](https://rspack.dev/guide/features/module-federation#how-to-use)
+
+## Module Federation 1.5
+
+Module Federation 1.5 became available in January 2024 with [Rspack 0.5.0](https://rspack.dev/blog/module-federation-added-to-rspack), where it’s now supported as a built-in plugin. Looking at the [plugin options](https://github.com/web-infra-dev/rspack/blob/c451c4773f113ba840bb65a4b5fa3c63cbca2aa0/packages/rspack/src/container/ModuleFederationPlugin.ts#L9), we can see it introduces three key extensions to 1.0:
+
+```ts
+export interface ModuleFederationPluginOptions
+  extends Omit<ModuleFederationPluginV1Options, 'enhanced'> {
+  runtimePlugins?: RuntimePlugins;
+  implementation?: string;
+  shareStrategy?: 'version-first' | 'loaded-first';
+}
+```
+
+Two of these are especially worth looking at: `runtimePlugin` and `shareStrategy`.
+
+`runtimePlugin` lets you hook into and control lifecycle events within the runtime module. You just point to a file that exports the following structure:
+
+```js
+export default function () {
+  return {
+    name: 'logger',
+    beforeInit(args) {
+      console.log('beforeInit: ', args);
+      return args;
+    },
+    beforeLoadShare(args) {
+      console.log('beforeLoadShare: ', args);
+      return args;
+    },
+  };
+}
+```
+
+These appear to be the supported hooks (based on [community guesses](https://module-federation.io/plugin/dev/index.html#plugin-example)), though Rspack doesn’t provide type definitions. There's [an example here](https://github.com/rspack-contrib/rstack-examples/blob/main/rspack/module-federation-interop/rspack-mf-v1.5/src/runtimePlugins/logger.js), but figuring out the exact hook timing requires experimentation.
+
+If you’ve ever operated a large app on 1.0, you’ll know how often you want to customize the remote app entry bundle (aka `remoteEntry.js`). That usually means spelunking into source code or writing borderline black-magic Webpack plugins. If `runtimePlugin` works reliably, it could really help.
+
+The `shareStrategy` field lets you [specify the strategy](https://rspack.dev/plugins/webpack/module-federation-plugin#sharestrategy) for handling shared dependencies. You can choose between `version-first` and `loaded-first`, with [version-first as the default.](https://github.com/module-federation/core/blob/main/packages/runtime-core/src/utils/share.ts#L19)
+
+There's a community example that shows Rspack and Webpack containers coexisting: [Host Webpack, Remote Rspack](https://github.com/module-federation/module-federation-examples/pull/3490). So it looks like incremental migration from 1.0 to 1.5 is possible—even across micro-apps.
+
+## Module Federation 2.0
+
+Module Federation 2.0 is supported by the plugins in the [`@module-federation/enhanced`](https://github.com/module-federation/core/tree/main/packages/enhanced) package (for Rspack and Webpack), and the [`@module-federation/vite`](https://github.com/module-federation/vite) package (for Vite). The Vite plugin is [missing a few features](https://module-federation.io/guide/basic/vite.html#vite-plugin) compared to `enhanced`. The [official 2.0 announcement](https://module-federation.io/blog/announcement.html) came out in April 2024.
+
+The key innovation is the [`Federation Runtime`](https://module-federation.io/guide/basic/runtime.html). As mentioned earlier, [dynamic integration was technically possible before](https://dev.to/w3nda/dynamic-remotes-with-modulefederation-67f), but 1.0 and 1.5 relied heavily on bundler build-time behavior. Starting in 2.0, you can import and use a dedicated runtime implementation.
+
+Here’s the difference:
+
+```ts
+// 1.0 / 1.5 Host
+
+import { lazy, Suspense } from 'react';
+
+const Component = lazy(() => import('remoteA/Component'));
+const Component2 = lazy(() => import('remoteB/Component'));
+const Component3 = lazy(() => import('remoteB/Component2'));
+
+const App = () => (
+  <Suspense fallback={<div>Loading...</div>}>
+    <Component />
+    <Component2 />
+    <Component3 />
+  </Suspense>
+);
+
+export default App;
+```
+
+```ts
+// 2.0 Host
+
+import { lazy, Suspense } from 'react';
+import { init, loadRemote } from '@module-federation/enhanced/runtime';
+
+init({
+  name: 'host',
+  remotes: [
+    {
+      name: 'remoteA',
+      entry: '/remotes/remoteA/mf-manifest.json',
+    },
+    {
+      name: 'remoteB',
+      entry: '/remotes/remoteB/mf-manifest.json',
+    },
+  ],
+});
+
+const Component = lazy(() => loadRemote<any>('remoteA/Component'));
+const Component2 = lazy(() => loadRemote<any>('remoteB/Component'));
+const Component3 = lazy(() => loadRemote<any>('remoteB/Component2'));
+
+const App = () => (
+  <Suspense fallback={<div>Loading...</div>}>
+    <Component />
+    <Component2 />
+    <Component3 />
+  </Suspense>
+);
+
+export default App;
+```
+
+The [community docs](https://module-federation.io/guide/basic/runtime.html#why-runtime) explain the tradeoffs and goals behind Federation Runtime. Shifting integration logic from build config to runtime adds flexibility—but it also requires runtime implementations that support the bundler, which can reduce flexibility again.
+
+There’s even [an example](https://github.com/module-federation/vite/tree/main/examples/vite-webpack-rspack) where different bundlers (Vite, Webpack, Rspack) are used for different micro-apps. The `@module-federation/runtime` seems to support runtime integration across these bundlers. Unlike 1.0, where you were locked into Webpack runtime chunks, 2.0 lets you imagine a unified runtime experience—regardless of the bundler.
+
+In a sense, the bundler dependency has moved from build time to runtime. But some coupling is inevitable. Just like network peers using different protocols need a gateway, somewhere, there has to be a point of integration.
+
+Another key piece of 2.0 is the Manifest Protocol. You can now generate an `mf-manifests.json` file alongside the remote entry point during builds. As shown in the 2.0 example above, you can register runtime modules by pointing to either the manifest file or a traditional `remoteEntry.js`.
+
+A generated `mf-manifests.json` might look like this:
+
+```json
+{
+  "id": "remoteA",
+  "name": "remoteA",
+  "metaData": {
+    "name": "remoteA",
+    "type": "app",
+    "buildInfo": {
+      "buildVersion": "1.0.0",
+      "buildName": "@shine-muscat-example/remote-1"
+    },
+    "remoteEntry": {
+      "name": "remoteEntry.js",
+      "path": "",
+      "type": "global"
+    },
+    "types": {
+      "path": "",
+      "name": "",
+      "zip": "@mf-types.zip",
+      "api": "@mf-types.d.ts"
+    },
+    "globalName": "remoteA",
+    "pluginVersion": "0.12.0",
+    "prefetchInterface": false,
+    "publicPath": "/remotes/remoteA/"
+  },
+  "shared": [
+    {
+      "id": "remoteA:react",
+      "name": "react",
+      "version": "19.1.0",
+      "singleton": true,
+      "requiredVersion": "*",
+      "assets": {
+        "js": {
+          "async": [],
+          "sync": [
+            "vendors-_yarn_cache_react-npm-19_1_0-9804a7da5b-d018068982_zip_node_modules_react_index_js.js"
+          ]
+        },
+        "css": {
+          "async": [],
+          "sync": []
+        }
+      }
+    }
+  ],
+  "remotes": [],
+  "exposes": [
+    {
+      "id": "remoteA:Component",
+      "name": "Component",
+      "assets": {
+        "js": {
+          "sync": [
+            "vendors-_yarn_cache_react-npm-19_1_0-9804a7da5b-d018068982_zip_node_modules_react_jsx-dev-run-7cacbe.js",
+            "__federation_expose_Component.js"
+          ],
+          "async": []
+        },
+        "css": {
+          "sync": [],
+          "async": []
+        }
+      },
+      "path": "./Component"
+    }
+  ]
+}
+```
+
+Among the metadata, the `assets` field is especially helpful. When all you have is `remoteEntry.js`, it’s hard to know which chunks expose which modules—making fine-grained control nearly impossible.
+
+Being able to reference build config details at runtime is a huge win. The [feature announcement](https://module-federation.io/blog/announcement.html#manifest-protocol) also mentions this as a gateway to richer functionality. One such feature is [real-time type support](https://module-federation.io/blog/announcement.html#type-hints), which uses the `types` field to locate each micro-app’s generated `.d.ts` files.
+
+Overall, 2.0 feels **very high-level**. [There are even defined error codes.](https://module-federation.io/guide/troubleshooting/runtime/RUNTIME-001.html) That said, some parts still aren’t intuitive—using the docs alone didn’t cut it, and I had to poke around the code or try things firsthand.
+
+## Personal Thoughts
+
+Across 1.0, 1.5, and 2.0, Module Federation has steadily removed many blockers that once limited architectural growth. It's moved away from rigid bundler coupling, started supporting types, and made remote module metadata more accessible.
+
+But if you're building a micro frontend platform where stability matters most, and where Module Federation is used only in tightly scoped ways, these updates can be hard to adopt. A more conservative platform might require a single bundler across all teams, or might enforce static rather than real-time type integration. At some point, you stop needing community-driven devtools and start needing tools tailored to your team’s constraints.
+
+So for now, what feels most useful for our product are the manifests—and the fact that other bundlers besides Webpack are finally in the game. Of course, given that all this is still driven by the community, it’s worth keeping an eye on how things evolve, exploring the implementations, and contributing wherever I can.
