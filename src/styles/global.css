@@ -33,6 +33,10 @@ deckgo-highlight-code {
   line-height: 1.5;
   white-space: nowrap;
   letter-spacing: 0.5px;
+
+  @media screen and (max-width: 750px) {
+    font-size: 13px;
+  }
 }
 
 body[data-theme='light'] deckgo-highlight-code {

@@ -6,6 +6,10 @@ export const nameStyle = style({
   fontWeight: sVar.fontWeight.semiBold,
 });
 
+export const SectionStyle = style({
+  minHeight: '100vh',
+});
+
 export const infoSectionStyle = style({
   marginTop: '42px',
   marginBottom: '250px',

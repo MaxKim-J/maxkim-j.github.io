@@ -28,7 +28,7 @@ export const resources = {
   },
   en: {
     translation: {
-      김종혁: 'Max Jonghyuk Kim',
+      김종혁: 'Jonghyuk Max Kim',
       '김맥스 블로그': 'Max Kim Blog',
       '김맥스의 블로그입니다': "Max Kim's Blog",
       '태그 모아보기': 'Posts By Tag',
