@@ -1,0 +1,71 @@
+---
+title: How Will AI Change Software UI? Generative UI
+description: The Era of Generative UI is Coming
+date: 2025-07-29
+category: tech
+slug: generative-ui
+tags:
+  - ai
+  - software
+lang: en
+---
+
+In the days when the only way to interact with a computer was through a terminal, humans typed commands. The computer responded with long lines of text. This method was powerful and flexible for those who could use the terminal, but for many, the blinking cursor on a black screen was bewildering. It left them not knowing what to do.
+
+> "These are the good days back when computers were terminals You could type to them and they would type back in this long scrolling list of characters and it was amazing because it was so powerful and it was so flexible and you could do anything as long as you knew what to do which most people didn't know what to do" <sup>1</sup>
+
+Interacting with AI through chat resembles using a terminal. Some people happily use it as a fantastic all-purpose tool, while others curse the model for not getting the desired results. Chat and terminals are a rehash of existing UI; the AI contained within this vessel may be novel, but it brings no innovation to the UI itself.
+
+The true UI innovation that AI will bring begins when it is naturally integrated into the user's workflow, fundamentally changing the way we interact with software. AI first understands the user's intent and context and then presents a solution. This resolves the bewilderment mentioned earlier, allowing users to fully enjoy the productivity gains from AI, regardless of their proficiency.
+
+This type of user experience is already being implemented on top of existing applications. Examples include Github Copilot, which suggests the next line of code as you write; Figma's feature that instantly generates layer names based on content properties (Rename Layers); and Linear's experience of creating a ticket directly from Slack, where it grasps the context of the thread to suggest a ticket title. When using these features, the sensation of "using AI" is almost non-existent, nor does it matter.
+
+The most advanced form of natural AI integration will be the Generative UI. In a Generative UI, AI goes beyond simply assisting with functions; it responds to the user's goals by building and reconfiguring the entire work environment in real-time.
+
+The biggest problem with current software UI is its rigidity. As pointed out by Ink & Switch, an independent research group exploring the future of "tools for thought," each app is a silo that tightly bundles its own data, views, and computations. We still constantly switch between airline, hotel, restaurant, and map apps to plan a trip, often forgetting what we've already done.
+
+> "A root cause of these problems is that applications tightly bundle together three things: data, computations, and views." <sup>2</sup>
+
+Within this rigid structure, AI is powerless. It cannot save us from the hell of dozens of browser tabs. As UCSD HCI researcher Haijun Xia points out, human information activities are a very dynamic and messy process.
+
+> "I think the human information activity or some people also have this thought is that the human information activity is very dynamic. It's actually a very chaotic process." <sup>3</sup>
+
+In malleable software, the UI is generated and changed in real-time to fit the user's needs.
+
+Ink & Switch demonstrates this potential through their prototypes 'Embark'<sup>4</sup> and 'Potluck'<sup>5</sup>. Users start with a freeform text document and gradually add structure and computational features to create their own software (Gradual Enrichment). By typing`@Aachen` and `@Friday` in a travel planning document, weather information is automatically inserted via a formula like Weather(in: `@Aachen`, on: `@Friday`), and adding a map view displays all planned locations on a map.
+
+Haijun Xia argues that instead of just generating a sequence of actions, we should change the approach to have AI generate the working environment itself. The 'Jelly' system developed by his research team is an example.
+
+> "What we were trying to think is would it be possible to actually generate a good environment and then have actions running on top of it? ... when a user gave a prompt... it will first generate what kind of organization you may need for organizing a dinner party. And then it will map those things to a UI. And then the UI will be rendered as this environment." <sup>6</sup>
+
+When a user types, 'I want to prepare for a dinner party,' Jelly first infers an 'activity specification' to define the necessary information structure (guests, menu, dietary restrictions, etc.). It then instantly generates a custom dashboard based on this structure. This environment is not static. For example, if you add 'nut allergy' to a specific guest's dietary restrictions, Jelly automatically detects and flags menu items that don't meet this constraint. If the user changes their destination city from 'San Francisco' to 'New York,' all related information is automatically updated to match New York. This shows the environment itself dynamically evolving according to the nature and context of the task, rather than just performing predefined functions.
+
+Taking this a step further, another HCI researcher, Geoffrey Litt, proposes the 'EUP-L (End-User Programming via Language models)' paradigm, where even general users can create software through natural language conversations with an LLM. In this world, the source code of a program is no longer a complex programming language.
+
+> "What is the source code of a program built in this way? I think the best answer is: the conversation is the source code." <sup>7</sup>
+
+These prototypes and models completely redefine the nature of software and the role of the developer. An app is no longer a finished product created and distributed by a developer, but a living organism that the user continuously shapes to fit their own needs. Data is no longer tied to a specific app, and functions are freely combined according to the user's intent, rather than being fixed in a menu.
+
+In his 1960 paper "Man-Computer Symbiosis," J.C.R. Licklider dreamed of a partnership between humans and computers, writing:
+
+> "The hope is that, in not too many years, human brains and computing machines will be coupled together very tightly, and that the resulting partnership will think as no human brain has ever thought" <sup>8</sup>
+
+Two years later, in his 1962 report to the Stanford Research Institute (SRI), "Augmenting Human Intellect: A Conceptual Framework," Douglas Engelbart elaborated on that vision.
+
+> "By 'augmenting human intellect' we mean increasing the capability of a man to approach a complex problem situation, to gain comprehension to suit his particular needs, and to derive solutions to problems." <sup>9</sup>
+
+I believe we are finally at the dawn of a truly personalized computing era, enabled by AI, where computers become true partners in augmenting human intellect, moving past the age of rigid apps to one where software is perfectly tailored to each individual. We are standing at the starting point of the vision of HCI pioneers.
+
+As I participate in AI-related initiatives at my company, I've been deeply contemplating the future of IT products that AI will change. I plan to occasionally write on my blog about topics related to AI, Generative UI, LLMs, and knowledge creation. A new chapter of my career has begun. I'm fortunate and excited, yet I feel incredibly ignorant and vulnerable at present.
+
+## References
+
+1. [Post-Chat AI Interfaces (Alan Pike, Forestwalk Labs)](https://allenpike.com/2025/post-chat-llm-ui)
+2. [Embark: Dynamic documents for making plans (Ink & Switch)](https://www.inkandswitch.com/embark/)
+3. [Generative, Malleable, and Personal User Interface (Haijun Xia, UCSD)](https://www.youtube.com/watch?v=MbWgRuM-7X8&t=1198s)
+4. [Embark: Dynamic documents for making plans (Ink & Switch)](https://www.inkandswitch.com/embark/)
+5. [Potluck: Dynamic documents as personal software (Ink & Switch)](https://www.inkandswitch.com/potluck/)
+6. [Generative, Malleable, and Personal User Interface (Haijun Xia, UCSD)](https://www.youtube.com/watch?v=MbWgRuM-7X8&t=1198s)
+7. [Malleable software in the age of LLMs (Geoffrey Litt)](https://www.geoffreylitt.com/2023/03/25/llm-end-user-programming.html)
+8. [Man-Computer Symbiosis (J.C.R. Licklider)](https://www.google.com/search?q=http://worrydream.com/refs/Licklider-ManComputerSymbiosis.pdf&authuser=1)
+9. [Augmenting Human Intellect: A Conceptual Framework (Douglas Engelbart)](https://www.dougengelbart.org/content/view/138/)

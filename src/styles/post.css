@@ -64,6 +64,16 @@
   font-weight: 550;
 }
 
+.mdx-post sup {
+  font-size: 0.8em;
+  vertical-align: super;
+  line-height: 0;
+}
+
+.mdx-post sup a {
+  text-decoration: none;
+}
+
 .mdx-post ul {
   list-style: inside;
   font-size: 16px;
