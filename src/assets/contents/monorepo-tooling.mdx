@@ -4,6 +4,7 @@ description: 모노레포에는 반드시 걸맞는 툴링이 필요합니다
 date: 2022-12-23
 category: tech
 slug: monorepo-tooling
+thumbnail: ../images/monorepo-tooling/th-monorepo-2.png
 tags:
   - platform
   - DX
@@ -122,8 +123,6 @@ nodejs 기반 모노레포에서는 어떻게 해야하는지는 아직 잘 모�
 
 패키지 의존성간의 관계를 시각적으로 보여줄 수 있는 툴이 있다면 유용합니다. `turborepo`에도 관련 기능이 존재하고 `dependency cruiser`와 같은 써드파티를 사용해서도 의존성 그림을 그릴 수 있습니다.
 `turborepo`는 아직 사용성이 좋지 못하고, 개인적으로 제일 만족감이 높았던 시각화는 `Nx`에서 제공하는 것이었는데요, 현재는 [Nx로 프로젝트를 빌딩하지 않아도](https://twitter.com/victorsavkin/status/1534909897976041474) Nx 커맨드를 사용하면 모노레포의 의존성을 시각화된 그래프로 표현해줍니다.
-
-![nx](https://nx.dev/documentation/shared/angular-tutorial/initial-project-graph.png)
 
 ### 단점 3) 특정 애플리케이션과 관련된 태스크를 수행할 때, 어떤 패키지의 태스크를 수행해야할지 판단하기 힘들다
 
