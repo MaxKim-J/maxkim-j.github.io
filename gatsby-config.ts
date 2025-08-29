@@ -12,10 +12,21 @@ const config: GatsbyConfig = {
     'gatsby-plugin-sitemap',
     'gatsby-plugin-image',
     'gatsby-plugin-pnpm',
-    'gatsby-plugin-sharp',
     'gatsby-plugin-sass',
     'gatsby-transformer-sharp',
     `gatsby-plugin-vanilla-extract`,
+    {
+      resolve: 'gatsby-plugin-sharp',
+      options: {
+        defaults: {
+          formats: ['auto', 'webp'],
+          placeholder: 'none',
+          quality: 90,
+          breakpoints: [360, 640, 960, 1200, 1600, 1920],
+          backgroundColor: 'transparent',
+        },
+      },
+    },
     {
       resolve: `gatsby-plugin-feed`,
       options: {
