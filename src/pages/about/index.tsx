@@ -41,5 +41,13 @@ export const query = graphql`
 `;
 
 export const Head = () => {
-  return <MetaHead lang={LANG} title="about" description="안녕하세요 김종혁입니다." />;
+  return (
+    <MetaHead
+      lang={LANG}
+      slug="/about"
+      type="website"
+      title="about"
+      description="안녕하세요 김종혁입니다."
+    />
+  );
 };

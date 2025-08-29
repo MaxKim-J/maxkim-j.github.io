@@ -34,7 +34,15 @@ export default function GalleryPage({ data }: Props) {
 }
 
 export const Head = () => {
-  return <MetaHead lang={LANG} title="gallery" description="찍은 사진들" />;
+  return (
+    <MetaHead
+      lang={LANG}
+      slug="/gallery"
+      type="website"
+      title="gallery"
+      description="찍은 사진들"
+    />
+  );
 };
 
 export const query = graphql`
