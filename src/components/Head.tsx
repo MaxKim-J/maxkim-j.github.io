@@ -37,7 +37,7 @@ const MetaHead = ({ title, description, thumbnail, lang }: Props) => {
   const seo = {
     title: title || defaultTitle,
     description: description || defaultDescription,
-    image: `${siteUrl}${image}`,
+    image: `${siteUrl}${thumbnail ?? image}`,
     twitterUsername,
   };
 
@@ -48,12 +48,12 @@ const MetaHead = ({ title, description, thumbnail, lang }: Props) => {
       <meta httpEquiv="Content-Language" content={lang} />
       <meta name="og:description" content={seo.description} />
       <meta name="og:title" content={seo.title} />
-      <meta name="og:image" content={thumbnail ?? seo.image} />
+      <meta name="og:image" content={seo.image} />
       <meta name="og:type" content="article" />
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content={seo.title} />
       <meta name="twitter:description" content={seo.description} />
-      <meta name="twitter:image" content={thumbnail ?? seo.image} />
+      <meta name="twitter:image" content={seo.image} />
       <meta name="twitter:creator" content={seo.twitterUsername} />
     </>
   );
