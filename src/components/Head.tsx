@@ -44,9 +44,12 @@ const MetaHead = ({ title, description, thumbnail, lang }: Props) => {
   return (
     <>
       <title>{seo.title}</title>
-      <meta httpEquiv="Content-Language" content={lang} />
       <meta name="description" content={seo.description} />
-      <meta name="image" content={thumbnail ?? seo.image} />
+      <meta httpEquiv="Content-Language" content={lang} />
+      <meta name="og:description" content={seo.description} />
+      <meta name="og:title" content={seo.title} />
+      <meta name="og:image" content={thumbnail ?? seo.image} />
+      <meta name="og:type" content="article" />
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content={seo.title} />
       <meta name="twitter:description" content={seo.description} />
