@@ -37,7 +37,6 @@ export default function PostPage({ data: { post, postSlugList } }: Props) {
 export const Head = (data: Props) => {
   const { title, description } = data.data.post.frontmatter;
   const thumbnail = data.data.post.frontmatter?.thumbnail?.childImageSharp.fluid.src ?? undefined;
-  console.info(data.data.post.frontmatter);
 
   return <MetaHead lang={LANG} title={title} description={description} thumbnail={thumbnail} />;
 };
@@ -54,7 +53,7 @@ export const query = graphql`
         tags
         thumbnail {
           childImageSharp {
-            fluid(maxWidth: 400) {
+            fluid(maxWidth: 1600) {
               src
             }
           }
