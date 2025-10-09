@@ -1,0 +1,580 @@
+---
+
+title: Agent2Agent Protocol
+description: This post explores the core concepts of the Agent2Agent (A2A) protocol, an open standard for inter-agent communication in multi-agent environments, and examines how it works through practical communication examples.
+date: 2025-10-09
+category: tech
+slug: agent-to-agent-protocol
+thumbnail: ../images/a2a-protocol/thumbnail-a2a.png
+tags:
+
+- ai
+- software
+  lang: en
+
+---
+
+\<div
+class="embed-container"
+style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%;"
+\>
+\<iframe
+style="position: absolute; top: 0; left: 0; width: 100%; height: 100%"
+src="[https://www.youtube.com/embed/Fbr_Solax1w](https://www.youtube.com/embed/Fbr_Solax1w)"
+frameborder="0"
+allowfullscreen
+\>\</iframe\>
+\</div\>
+
+The Agent2Agent (A2A) Protocol, developed by Google and donated to the Linux Foundation, is an open standard that acts as a "common language," enabling AI agents from different backgrounds to communicate and collaborate seamlessly.
+
+This article will explore the core concepts of the A2A protocol and demonstrate how it works through practical communication examples.
+
+## Core Concepts
+
+The A2A protocol was created to ensure **Interoperability**\<sup\>1\</sup\> among agents. It is used in complex multi-agent application environments where agents with different specializations delegate tasks, exchange information, and coordinate actions.
+
+The main problems A2A aims to solve are:
+
+1.  **Breaking Platform Dependency**: It enables collaboration between agents regardless of the technology they were built with, avoiding dependency on specific frameworks or vendors.
+2.  **Supporting Complex Workflows**: It supports intricate and close collaboration, such as multiple agents dividing sub-tasks to achieve a single larger goal.
+3.  **Opaque Execution**: Agents can interact without needing to expose their internal logic, memory, or proprietary technology.\<sup\>2\</sup\> This is a key principle that protects each agent's security and intellectual property.
+4.  **Asynchronous Communication Support**: It naturally supports scenarios that require a long time, like report generation, or tasks that need human intervention.\<sup\>3\</sup\>
+
+To achieve these goals, A2A defines several key components.\<sup\>4\</sup\>
+
+- **Agent Card**: An agent's identity card. It is a JSON document containing the agent's ID, capabilities, communication address (URL), skills, and authentication requirements. It helps a client discover an agent and understand how to interact with it.
+  ```json
+  {
+    "a2aVersion": "0.3.0",
+    "agentId": "travel-planner-agent",
+    "displayName": "Travel Planner",
+    "url": "https://example.com/a2a",
+    "capabilities": { "streaming": true },
+    "authentication": { "type": "oauth2" }
+  }
+  ```
+- **Task**: A stateful unit of work. It has a unique ID and a lifecycle from start to completion. It is used to track long-running jobs and manage interactions that involve multiple back-and-forth communications.
+  ```json
+  {
+    "kind": "task",
+    "id": "task-flight-booking-456",
+    "contextId": "ctx-travel-fghij-67890",
+    "status": { "state": "input-required" }
+  }
+  ```
+- **Message**: A single exchange between an agent and a client. It has a role of "user" or "agent" and contains Parts, which are explained below.
+  ```json
+  {
+    "messageId": "msg-user-001",
+    "role": "user",
+    "parts": [{ "kind": "text", "text": "Please book a flight to Jeju Island." }]
+  }
+  ```
+- **Part**: The basic unit of content within a Message or Artifact. Examples include TextPart, FilePart, and DataPart (structured data).
+  ```json
+  {
+    "kind": "text",
+    "text": "Where will you be departing from?"
+  }
+  ```
+- **Artifact**: A concrete result produced by an agent during task execution. This can be a document, image, chart, etc., and serves as a container for the final output of the agent's work.
+  ```json
+  {
+    "artifactId": "artifact-flight-ticket-123",
+    "name": "flight_details",
+    "parts": [{ "kind": "data", "data": { "flight": "KE123", "seat": "15A" } }]
+  }
+  ```
+- **Context**: An ID that logically groups multiple Tasks, which can be used as a conversation session ID, for example. It is utilized via the `contextId` property in requests and responses.
+
+## Difference from MCP
+
+When discussing A2A, the Model Context Protocol (MCP) is often mentioned. The two are not competitors but rather have a complementary relationship.\<sup\>5\</sup\>
+
+- **MCP (Agent-to-Tool)**: Defines how an agent communicates with its **tools**. Here, a tool is a functional element with clear inputs and outputs, like a database, API, or calculator.
+- **A2A (Agent-to-Agent)**: Defines how an agent communicates with its **fellow agents**. It deals with how agents, each with independent reasoning (inference, planning) and state, collaborate towards a common goal.
+
+Here's an analogy using a car repair shop:
+
+1.  **Customer → Manager Agent (A2A Communication)**: A customer tells the car shop's manager agent, "There's a rattling noise in my car," using the A2A protocol.
+2.  **Manager Agent → Mechanic Agent (A2A Communication)**: The manager agent delegates the diagnosis task to a mechanic agent. This is also done via A2A.
+3.  **Mechanic Agent → Diagnostic Scanner (MCP Communication)**: The mechanic agent uses a tool called a vehicle diagnostic scanner to identify the problem. This involves calling the scanner's API via MCP.
+4.  **Mechanic → Parts Supplier Agent (A2A Communication)**: After the diagnosis reveals a specific part is needed, the mechanic agent orders the necessary part from a parts supplier agent. This is another collaboration via A2A.
+
+## A2A Protocol's Main Operations (Methods)
+
+A2A communication uses JSON-RPC 2.0 over HTTP(S) as its default payload format.\<sup\>6\</sup\> A client sends a request in the following basic format. REST and gRPC are also supported.
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "message/send",
+  "params": { // params appropriate for the method }
+}
+```
+
+The client can call defined methods to perform specific actions. The main methods are as follows:\<sup\>7\</sup\>
+
+1.  `message/send`: Used to send a message to an agent to start a new interaction or continue an existing one.
+2.  `message/stream`: Sends a message to an agent to start a task and subscribes to real-time updates for that task via Server-Sent Events (SSE).
+3.  `tasks/get`: Retrieves the current state (status, artifacts, etc.) of a previously started task. It can be used for polling the progress of an asynchronous task initiated with `message/send`.
+4.  `tasks/cancel`: Requests the cancellation of a task currently in progress.
+5.  `tasks/resubscribe`: Used to reconnect and continue receiving updates if a previously subscribed SSE stream connection is lost.
+6.  `tasks/pushNotificationConfig/*`: Manages (set, get, list, delete) the push notification (webhook) configuration for a specified task. It is used to register a webhook URL with the server so the client can receive updates even when offline.
+
+## A2A Communication Example 1 - Agent Discovery, Starting a Conversation
+
+Now, let's look at how A2A works through a practical communication example.
+
+This example focuses on Agent Discovery, Task, and Context to see how a conversation is initiated and continued.
+
+### Agent Discovery
+
+Just as people exchange business cards when they first meet, agents get to know each other through Agent Cards. When a client agent needs to find a partner to collaborate with, it can discover an Agent Card in the following ways:\<sup\>8\</sup\>
+
+- **Well-Known URI**: For publicly known agents, the Agent Card is published at a standardized address like `https://{domain}/.well-known/agent-card.json`.
+- **Curated Registries**: In an enterprise environment, a central registry (catalog) can be operated to manage Agent Cards. A client can search for a suitable agent based on required capabilities, such as "an agent with image generation skills."
+- **Direct Configuration**: When the information of the agent to collaborate with is already known, the client can communicate by directly configuring the agent's Agent Card URL.
+
+### Communication Example - Verifying an Agent and Starting a Conversation
+
+A client wants to talk to an image generation agent with the domain `creative-agent.com`. The client first sends a GET request to the standard address (`.well-known/agent-card.json`) to request the agent's 'business card'.
+
+```shell
+GET /.well-known/agent-card.json HTTP/1.1
+Host: creative-agent.com
+```
+
+The server responds with its Agent Card in JSON format. The key here is the `url` field, which will be used for actual communication.
+
+```json
+// HTTP 200 OK
+{
+  "a2aVersion": "0.3.0",
+  "agentId": "creative-cloud-agent-prod",
+  "displayName": "Creative Agent",
+  "url": "https://api.creative-agent.com/a2a/v1",
+  "authentication": { "type": "oauth2" },
+  "capabilities": {
+    "methods": ["message/send", "message/stream", "tasks/get", "tasks/cancel"]
+  }
+}
+```
+
+The client uses the `url` obtained from the Agent Card (`https://api.creative-agent.com/a2a/v1`) as the actual endpoint to send a `message/send` request.
+
+```json
+// HTTP POST -> https://api.creative-agent.com/a2a/v1
+{
+  "jsonrpc": "2.0",
+  "id": "req-001",
+  "method": "message/send",
+  "params": {
+    "message": {
+      "role": "user",
+      "parts": [{ "kind": "text", "text": "Draw a blue dragon flying in the night sky." }]
+    }
+  }
+}
+```
+
+The 'Creative Agent' now receives the request, processes the job, and responds by creating a Task.
+
+```json
+// HTTP 200 OK
+{
+  "jsonrpc": "2.0",
+  "id": "req-001",
+  "result": {
+    "kind": "task",
+    "id": "task-dragon-drawing-987",
+    "contextId": "ctx-creative-xyz-123",
+    "status": { "state": "completed" },
+    "artifacts": [
+      {
+        "artifactId": "artifact-dragon-image-456",
+        "parts": [
+          {
+            "kind": "file",
+            "file": {
+              "mimeType": "image/png",
+              "url": "https://cdn.creative-agent.com/images/dragon-456.png"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+Through these two steps, the client can find the actual communication endpoint using only the agent's public address and successfully start a conversation.
+
+### Communication Example - Responding Immediately Without Creating a Task
+
+Not every request needs to create a Task. When an agent can process a client's request immediately as a one-off response that doesn't require state storage, it can respond with `kind: "message"`. \<sup\>9\</sup\>
+
+A user asks the agent for a simple joke.
+
+```json
+// HTTP POST -> message/send
+{
+  "jsonrpc": "2.0",
+  "id": "req-joke-001",
+  "method": "message/send",
+  "params": {
+    "message": { "role": "user", "parts": [{ "kind": "text", "text": "Tell me a joke." }] }
+  }
+}
+```
+
+The agent determines this request is a simple Q\&A that doesn't require separate state tracking and responds directly with a Message object instead of creating a Task. The joke was generated by Gemini.
+
+```json
+// HTTP 200 OK
+{
+  "jsonrpc": "2.0",
+  "id": "req-joke-001",
+  "result": {
+    "kind": "message",
+    "messageId": "msg-agent-joke-123",
+    "contextId": "ctx-conv-abcde-12345",
+    "role": "agent",
+    "parts": [
+      {
+        "kind": "text",
+        "text": "Why don't scientists trust atoms? Because they make up everything!"
+      }
+    ]
+  }
+}
+```
+
+In this case, a Task is not created. The response message is identified only by its `messageId`, and no separate lifecycle is tracked.
+
+## A2A Communication Example 2 - A Purposeful Conversation
+
+In this example, we will focus on the lifecycle and status updates of a Task to see how an agent completes a complex job by exchanging information with a user, complete with JSON requests/responses.
+
+### Task Status
+
+An A2A Task has a clear status that represents its processing stage.\<sup\>10\</sup\>
+
+- `submitted`: The request has been received and is waiting to be executed.
+- `working`: The task is being actively processed.
+- `input-required`: The task is paused because it needs additional information from the user (client) to proceed.
+- `auth-required`: Waiting for authentication.
+- `completed`: The final state indicating the task was successfully completed.
+- `canceled`: The final state indicating the task was canceled mid-process.
+- `failed`: The final state indicating the task failed due to an error.
+- `rejected`: The final state indicating the agent decided not to perform the task.
+
+### Communication Example - Booking a Flight
+
+A user requests a flight booking from a 'Travel Planner' agent with a vague question, providing only the destination.
+
+```json
+// HTTP POST -> message/send
+{
+  "jsonrpc": "2.0",
+  "id": "req-003",
+  "method": "message/send",
+  "params": {
+    "message": {
+      "role": "user",
+      "parts": [{ "kind": "text", "text": "Please book a flight to Jeju Island." }]
+    }
+  }
+}
+```
+
+The agent cannot proceed with the booking with only the destination. Therefore, it changes the Task's status to `input-required` and sends a message back asking for the necessary information.
+
+```json
+// HTTP 200 OK
+{
+  "jsonrpc": "2.0",
+  "id": "req-003",
+  "result": {
+    "kind": "task",
+    "id": "task-flight-booking-456",
+    "status": {
+      "state": "input-required",
+      "message": {
+        "role": "agent",
+        "parts": [
+          {
+            "kind": "text",
+            "text": "Of course, I can help with that! Where will you be departing from? And could you please tell me your desired travel dates?"
+          }
+        ]
+      }
+    }
+  }
+}
+```
+
+The user replies to the agent's question. They include the previous `contextId` and `taskId` to clarify which task the response is for.
+
+```json
+// HTTP POST -> message/send
+{
+  "jsonrpc": "2.0",
+  "id": "req-004",
+  "method": "message/send",
+  "params": {
+    "message": {
+      "role": "user",
+      "contextId": "ctx-travel-fghij-67890",
+      "parts": [
+        { "kind": "text", "text": "I'll be departing from Gimpo, and I want to go next Monday." }
+      ]
+    },
+    "taskId": "task-flight-booking-456"
+  }
+}
+```
+
+Now that the agent has all the necessary information, it searches for flights and completes the booking. The Task's status is changed to `completed`, and the final booking information is delivered as an Artifact containing structured data.
+
+```json
+// HTTP 200 OK
+{
+  "jsonrpc": "2.0",
+  "id": "req-004",
+  "result": {
+    "kind": "task",
+    "id": "task-flight-booking-456",
+    "status": { "state": "completed" },
+    "artifacts": [
+      {
+        "artifactId": "artifact-flight-ticket-123",
+        "parts": [
+          {
+            "kind": "data",
+            "data": { "from": "GMP", "to": "CJU", "date": "2025-10-13", "flight": "KE123" }
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+## A2A Communication Example 3 - Exchanging Metadata
+
+The A2A protocol allows core objects like Task, Message, and Artifact to include a `metadata` field. This field is not defined in the protocol standard but is used to freely exchange additional information required for a specific application.\<sup\>11\</sup\>
+
+### Communication Example - Billing for Content Generation Costs
+
+A user requests a 'Marketing Copywriter' agent to generate a blog post. After processing the request, the agent can respond with the resulting blog post and include cost information related to the task in the `metadata`.
+
+When the task is complete, the agent returns a Task with a `completed` status. At this time, it includes billing-related information, such as token usage and credits consumed, in the `metadata` field to help the client perform subsequent actions like billing the user.
+
+```json
+// HTTP 200 OK
+{
+  "jsonrpc": "2.0",
+  "id": "req-blog-post-001",
+  "result": {
+    "kind": "task",
+    "id": "task-blog-gen-789",
+    "status": { "state": "completed" },
+    "artifacts": [
+      {
+        "artifactId": "artifact-blog-post-456",
+        "name": "a2a_protocol_intro.md",
+        "parts": [
+          {
+            "kind": "text",
+            "text": "The A2A protocol is a cornerstone of the AI agent ecosystem..."
+          }
+        ]
+      }
+    ],
+    "metadata": {
+      "usage": {
+        "input_tokens": 120,
+        "output_tokens": 1500,
+        "credits_consumed": 15
+      },
+      "internal_tracking_id": "client-project-alpha"
+    }
+  }
+}
+```
+
+By utilizing the `metadata` field in this way, services can flexibly exchange data necessary for their unique business logic while still adhering to the A2A standard.
+
+## A2A Communication Example 4 - Push Notification
+
+A2A supports asynchronous Push Notifications. Polling with `tasks/get` is inefficient, and `message/stream` has the disadvantage of requiring the client to maintain a constant connection. Push notifications overcome these limitations.\<sup\>12\</sup\>
+
+When a task takes a long time or requires human intervention, the server agent actively pushes updates to a webhook URL specified by the client.
+
+### Communication Example - Expense Claim Workflow Requiring Manager Approval
+
+An employee requests an expense approval of 1.5 million won from an 'Expense Processing Agent'. The request includes a webhook URL in the `pushNotificationConfig` to receive notifications when the task is updated.
+
+```json
+// HTTP POST -> message/send
+{
+  "jsonrpc": "2.0",
+  "id": "req-006",
+  "method": "message/send",
+  "params": {
+    "message": {
+      "role": "user",
+      "parts": [
+        { "kind": "data", "data": { "amount": 1500000, "reason": "Client meeting dinner" } }
+      ]
+    },
+    "configuration": {
+      "pushNotificationConfig": {
+        "url": "https://my-app.com/a2a-webhook",
+        "token": "secure-client-token-for-validation"
+      }
+    }
+  }
+}
+```
+
+The agent receives the request, creates a Task, and immediately responds with a `submitted` status. The client can now perform other tasks without waiting.
+
+```json
+// HTTP 200 OK
+{
+  "jsonrpc": "2.0",
+  "id": "req-006",
+  "result": {
+    "kind": "task",
+    "id": "task-expense-approval-789",
+    "status": { "state": "submitted" }
+  }
+}
+```
+
+A short time later, the agent determines that manager approval is required because the amount exceeds 1 million won. It changes the Task status to `input-required` and sends an HTTP POST request to the webhook URL received in step 1 (`https://my-app.com/a2a-webhook`).
+
+```json
+POST /a2a-webhook HTTP/1.1
+Host: my-app.com
+Content-Type: application/json
+X-A2A-Notification-Token: secure-client-token-for-validation
+
+{
+  "kind": "task",
+  "id": "task-expense-approval-789",
+  "status": {
+	"state": "input-required",
+	"message": { "role": "agent", "parts": [{ "kind": "text", "text": "This amount requires manager approval. Do you approve?" }] }
+  }
+}
+```
+
+The client's webhook server receives this push notification, validates the token, and sends a notification with approve/deny buttons to the manager via Slack or email.
+
+When the manager clicks the 'Approve' button, the client app sends another `message/send` to the agent with the approval information. This process resumes the suspended Task, and the expense claim is finally processed.
+
+## A2A Communication Example 5 - Streaming
+
+Below is an example of a streaming message that can be used in situations like showing a real-time response to a user on a web client. So far, we've only sent requests with `message/send`, but using the `message/stream` method allows you to receive a streaming response.
+
+### Communication Example - Writing a Long Report in Real-Time
+
+The client requests the agent to analyze attached images and write a detailed report. Instead of the usual `message/send`, it uses the `message/stream` method to indicate its intention to receive the results in real-time.\<sup\>13\</sup\>
+
+```json
+// HTTP POST -> message/stream
+{
+  "jsonrpc": "2.0",
+  "id": "req-005",
+  "method": "message/stream",
+  "params": {
+    "message": {
+      "role": "user",
+      "parts": [
+        {
+          "kind": "text",
+          "text": "Please analyze the attached photos and write a detailed report."
+        },
+        { "kind": "file", "file": { "mimeType": "image/png", "data": "<base64...>" } }
+      ]
+    }
+  }
+}
+```
+
+The server starts the response with a `Content-Type: text/event-stream` header and continuously sends data in Server-Sent Events (SSE) format.
+
+Since various types of information can be sent in an SSE stream, each response object includes a `kind` field. The client must check this `kind` field to identify the type of data it just received and process it accordingly.
+
+First, a Task object with `kind: "task"` is sent to indicate that the job has been accepted. The state at this point is `submitted`.
+
+```
+data: {"jsonrpc":"2.0","id":"req-005","result":{"kind":"task","id":"task-report-gen-789","status":{"state":"submitted"},...}}
+```
+
+As the report is being written, chunks of text are continuously sent via `kind: "artifact-update"` events. `append: true` signifies that the client should append this content to the existing result.
+
+```
+data: {"jsonrpc":"2.0","id":"req-005","result":{"kind":"artifact-update","taskId":"task-report-gen-789","artifact":{"parts":[{"kind":"text","text":"This is the first section of the report..."}]},"append":true,...}}
+```
+
+```
+data: {"jsonrpc":"2.0","id":"req-005","result":{"kind":"artifact-update","taskId":"task-report-gen-789","artifact":{"parts":[{"kind":"text","text":"Continuing with the second section..."}]},"append":true,...}}
+```
+
+Once the report is fully written, a final `kind: "status-update"` event is sent to signal the `completed` status. The `final` property indicates that the stream has ended.
+
+```
+data: {"jsonrpc":"2.0","id":"req-005","result":{"kind":"status-update","taskId":"task-report-gen-789","status":{"state":"completed"},"final":true}}
+```
+
+## A2A Compliance
+
+For an application to be considered "A2A-supported" or "A2A-compliant," it must adhere to certain requirements.
+
+The specification document defines separate requirements for the agent receiving requests (the server) and the client sending them.\<sup\>14\</sup\>
+
+### A2A-Compliant Agent (Server) Requirements
+
+- **Transport Protocol Support**: All communication must be over HTTPS, and at least one core transport protocol must be implemented (JSON-RPC 2.0, gRPC, HTTP+JSON/REST).
+- **Provide Agent Card**: Must provide a valid AgentCard containing its identity, capabilities, and all supported transport protocols.
+- **Implement Core Methods**: The three core methods—`message/send`, `tasks/get`, and `tasks/cancel`—must be implemented.
+- **Adhere to Data Formats**: All data objects in requests and responses (Task, Message, etc.) must follow the format defined in the specification, and standard error codes must be used in case of errors.
+
+### A2A-Compliant Client Requirements
+
+- **Process Agent Card**: Must be able to parse and interpret the AgentCard provided by the server to understand its capabilities and communication methods.
+- **Select Transport Protocol**: Must be able to select a transport protocol for communication from the intersection of protocols it supports and those supported by the server, as listed in the AgentCard.
+- **Use Core Methods**: Must be able to correctly generate and send requests for at least the `message/send` and `tasks/get` methods.
+- **Handle Errors**: Must be able to correctly handle the standard error codes defined in the A2A specification.
+
+## Impressions
+
+Although A2A is said to "complement" MCP, and it might be possible to integrate an A2A-compliant agent's endpoint in a peer similar to how MCP is integrated, my feeling is that MCP is more of a local, peer-centric solution, whereas A2A seems better suited for enterprise-level application developers/providers implementing multi-agent applications.
+
+While both are open protocols, it seems that MCP will likely be the primary solution used for actually opening up resources to app users, while A2A could be explored by enterprises for implementing multi-agent applications. This impression is likely related to the stated reasons for creating the A2A protocol and its connection to enterprise customers, as mentioned in this article.
+
+> Drawing on Google's internal expertise in scaling agentic systems, we designed the A2A protocol to address the challenges we identified in deploying large-scale, multi-agent systems for our customers. A2A empowers developers to build agents capable of connecting with any other agent built using the protocol and offers users the flexibility to combine agents from various providers. \<sup\>15\</sup\>
+
+## References
+
+1.  [Agent2Agent (A2A) Protocol Official Specification, 1. Introduction](https://a2a-protocol.org/latest/specification/#1-introduction)
+2.  [Agent2Agent (A2A) Protocol Official Specification, 1.2. Guiding Principles](https://a2a-protocol.org/latest/specification/#12-guiding-principles)
+3.  [Agent2Agent (A2A) Protocol Official Specification, 1.1. Key Goals of A2A](https://a2a-protocol.org/latest/specification/#11-key-goals-of-a2a)
+4.  [Agent2Agent (A2A) Protocol Official Specification, 2. Core Concepts Summary](https://a2a-protocol.org/latest/specification/#2-core-concepts-summary)
+5.  [Agent2Agent (A2A) Protocol Official Specification, 10.1. Relationship to MCP (Model Context Protocol)](https://a2a-protocol.org/latest/specification/#101-relationship-to-mcp-model-context-protocol)
+6.  [Agent2Agent (A2A) Protocol Official Specification, 3. Transport and Format](https://a2a-protocol.org/latest/specification/#3-transport-and-format)
+7.  [Agent2Agent (A2A) Protocol Official Specification, 7. Protocol RPC Methods](https://a2a-protocol.org/latest/specification/#7-protocol-rpc-methods)
+8.  [Agent2Agent (A2A) Protocol Official Specification, 5. Agent Discovery: The Agent Card](https://a2a-protocol.org/latest/specification/#5-agent-discovery-the-agent-card)
+9.  [Agent2Agent (A2A) Protocol Official Specification, 9.2. Basic Execution (Synchronous / Polling Style)](https://a2a-protocol.org/latest/specification/#92-basic-execution-synchronous-polling-style)
+10. [Agent2Agent (A2A) Protocol Official Specification, 6.3. TaskState Enum](https://a2a-protocol.org/latest/specification/#63-taskstate-enum)
+11. [Agent2Agent (A2A) Protocol Official Specification, 6.1. Task Object](https://a2a-protocol.org/latest/specification/#61-task-object)
+12. [Agent2Agent (A2A) Protocol Official Specification, 2. Core Concepts Summary](https://a2a-protocol.org/latest/specification/#2-core-concepts-summary)
+13. [Agent2Agent (A2A) Protocol Official Specification, 7.2. message/stream](https://a2a-protocol.org/latest/specification/#72-messagestream)
+14. [Agent2Agent (A2A) Protocol Official Specification, 11. A2A Compliance Requirements](https://a2a-protocol.org/latest/specification/#11-a2a-compliance-requirements)
+15. [Announcing the Agent2Agent Protocol (A2A)](https://developers.googleblog.com/en/a2a-a-new-era-of-agent-interoperability/)

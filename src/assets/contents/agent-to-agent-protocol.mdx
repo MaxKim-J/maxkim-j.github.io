@@ -1,0 +1,565 @@
+---
+title: Agent2Agent Protocol
+description: 멀티 에이전트 환경에서 에이전트간 통신을 위한 개방 프로토콜인 Agent2Agent 핵심 개념과 실제 통신 예시를 구성하여 어떻게 동작하는지 살펴본다.
+date: 2025-10-09
+category: tech
+slug: agent-to-agent-protocol
+thumbnail: ../images/a2a-protocol/thumbnail-a2a.png
+tags:
+  - ai
+  - software
+lang: ko
+---
+
+<div
+  class="embed-container"
+  style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%;"
+>
+  <iframe
+    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%"
+    src="https://www.youtube.com/embed/Fbr_Solax1w"
+    frameborder="0"
+    allowfullscreen
+  ></iframe>
+</div>
+
+Agent2Agent Protocol은 구글이 개발하고 리눅스 재단에 기증한 공개 표준으로, 서로 다른 배경을 가진 AI 에이전트들이 원활하게 소통하고 협업할 수 있도록 만들어진 '공용어'에 가까운 개념이다.
+
+이 글에서는 A2A 프로토콜 핵심 개념과 실제 통신 예시를 구성하여 어떻게 동작하는지 살펴본다.
+
+## 핵심 컨셉
+
+A2A 프로토콜은 에이전트간 **상호 운용성(Interoperability)**<sup>1</sup> 을 확보하기 위해 만들어졌다. 각자 다른 전문 분야를 가진 에이전트들이 서로 작업을 위임하고, 정보를 교환하며, 행동을 조율하는 복잡한 멀티 에이전트를 활용한 애플리케이션 환경에서 사용된다.
+
+A2A가 해결하고자 하는 주요 문제는 다음과 같다.
+
+1. **플랫폼 종속성 탈피**: 특정 프레임워크나 벤더에 종속되지 않고, 어떤 기술로 만들어졌든 상관없이 에이전트 간의 협업을 가능하게 한다.
+2. **복잡한 워크플로우 지원**: 하나의 거대한 목표를 위해 여러 에이전트가 하위 작업을 나누어 처리하는 등 복잡하고 긴밀한 협업을 지원한다.
+3. **불투명성(Opaque Execution)**: 에이전트들은 서로의 내부 로직, 메모리, 독점 기술을 공개할 필요 없이 상호작용할 수 있다.<sup>2</sup> 이는 각 에이전트의 보안과 지적 재산권을 보호하는 핵심 원칙으로 작용한다.
+4. **비동기 통신 지원**: 보고서 생성처럼 오랜 시간이 걸리는 작업이나 중간에 사람의 개입이 필요한 시나리오를 자연스럽게 지원한다.<sup>3</sup>
+
+이러한 목표를 달성하기 위해 A2A는 몇 가지 핵심적인 구성 요소를 정의한다.<sup>4</sup>
+
+- **Agent Card**: 에이전트의 신분증이다. ID, 기능, 통신 주소(URL), 보유 기술, 인증 요구사항 등이 담긴 JSON 문서로, 클라이언트가 특정 에이전트를 발견하고 그 에이전트와 어떻게 상호작용해야 할지 이해하도록 돕는다.
+  ```json
+  {
+    "a2aVersion": "0.3.0",
+    "agentId": "travel-planner-agent",
+    "displayName": "Travel Planner",
+    "url": "https://example.com/a2a",
+    "capabilities": { "streaming": true },
+    "authentication": { "type": "oauth2" }
+  }
+  ```
+- **Task**: 상태를 가지는 작업 단위다. 고유 ID를 가지며, 시작부터 완료될때까지의 생명주기를 가집니다. 오랜 시간이 걸리는 작업을 추적하고, 여러 번의 소통이 오가는 상호작용을 관리하는 역할을 한다.
+  ```json
+  {
+    "kind": "task",
+    "id": "task-flight-booking-456",
+    "contextId": "ctx-travel-fghij-67890",
+    "status": { "state": "input-required" }
+  }
+  ```
+- **Message**: 에이전트와 클라이언트 간에 한 번 오가는 대화다. "user" 또는 "agent" 역할을 가지며, 밑에 설명할 Part를 포함한다.
+  ```json
+  {
+    "messageId": "msg-user-001",
+    "role": "user",
+    "parts": [{ "kind": "text", "text": "제주도 가는 비행기 표 좀 예약해줘." }]
+  }
+  ```
+- **Part**: 메시지와 아티팩트 내부에 담기는 콘텐츠의 기본 단위이다.. 텍스트(TextPart), 파일(FilePart), 구조화된 데이터(DataPart) 등이 있다.
+  ```json
+  {
+    "kind": "text",
+    "text": "어디서 출발하시나요?"
+  }
+  ```
+- **Artifact**: 작업 수행 중 에이전트가 만들어내는 구체적인 결과물이다. 문서, 이미지, 차트 등이 여기에 해당하며, 에이전트가 수행한 작업의 최종 산출물을 전달하는 컨테이너 역할을 한다.
+  ```json
+  {
+    "artifactId": "artifact-flight-ticket-123",
+    "name": "flight_details",
+    "parts": [{ "kind": "data", "data": { "flight": "KE123", "seat": "15A" } }]
+  }
+  ```
+- **Context**: 여러 Task를 논리적으로 묶어주는 id로 대화 세션 id등으로 활용할 수 있다. 요청-응답간 `contextId` 속성을 통해 활용한다.
+
+## MCP와의 차이점
+
+A2A를 이야기할 때 자주 함께 언급되는 것이 Model Context Protocol(MCP)다. 둘은 경쟁 관계가 아닌, 서로를 보완하는 상호 보완적인 관계다.<sup>5</sup>
+
+- **MCP (Agent-to-Tool)**: 에이전트가 자신의 **도구**와 소통하는 방법을 정의한다.. 여기서 도구란 데이터베이스, API, 계산기처럼 명확한 입출력을 가진 기능적인 요소다.
+- **A2A (Agent-to-Agent)**: 에이전트가 자신의 **동료 에이전트**와 소통하는 방법을 정의한다. 각자 독립적인 생각(추론, 계획)과 상태를 가진 에이전트들이 공동의 목표를 위해 협업하는 방법을 다룬다.
+
+카센터로 비교하면 이렇다.
+
+1. **고객 → 매니저 에이전트(A2A 통신)**: 고객이 "차에서 덜컹거리는 소리가 나요"라고 카센터의 매니저 에이전트에게 A2A 프로토콜로 말을 건다.
+2. **매니저 에이전트 → 정비사 에이전트 (A2A 통신)**: 매니저 에이전트는 진단을 위해 정비사 에이전트에게 작업을 위임한다. 이 역시 A2A를 통해 이루어진다.
+3. **정비사 에이전트 → 진단 스캐너 (MCP 통신)**: 정비사 에이전트는 문제 원인을 파악하기 위해 차량 진단 스캐너라는 도구를 사용한다. 이때는 MCP를 통해 스캐너 API를 호출한다.
+4. **정비사 → 부품 공급사 에이전트 (A2A 통신)**: 진단 결과 특정 부품이 필요하다는 것을 알게 된 정비사 에이전트는 부품 공급사 에이전트에게 필요한 부품을 주문한다. 이것 또한 A2A를 통한 협업이다
+
+## A2A 프로토콜의 주요 동작 (Methods)
+
+A2A 통신은 HTTP(S) 기반의 JSON-RPC 2.0을 기본 페이로드 형식으로 사용한다.<sup>6</sup> 클라이언트에서 요청을 다음과 같은 형태로 보내는 것이 기본이다. REST나 grpc도 지원한다.
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "message/send",
+  "params": {method에 적합한 param}
+}
+```
+
+클라이언트는 특정 동작을 수행하기 위해 정의된 메서드를 호출할 수 있다. 주요 메서드는 다음과 같다.<sup>7</sup>
+
+1. `message/send`: 에이전트에게 메시지를 보내 새로운 상호작용을 시작하거나 기존 상호작용을 이어갈 때 사용한다.
+2. `message/stream`: 에이전트에게 메시지를 보내 작업을 시작하고, Server-Sent Events (SSE)를 통해 해당 작업에 대한 실시간 업데이트를 구독한다.
+3. `tasks/get`: 이전에 시작된 작업의 현재 상태(상태, 아티팩트 등)를 조회한다. `message/send`로 시작된 비동기 작업의 진행 상황을 폴링(polling)하는 데 사용될 수 있다.
+4. `tasks/cancel`: 현재 진행 중인 작업을 취소하도록 요청한다.
+5. `tasks/resubscribe`: 이전에 구독했던 SSE 스트림 연결이 끊어졌을 경우, 다시 연결하여 업데이트를 계속 받기 위해 사용한다.
+6. `tasks/pushNotificationConfig/*`: 지정된 작업에 대한 푸시 알림(웹훅) 구성을 관리(set, get, list, delete)한다. 클라이언트가 오프라인 상태여도 업데이트를 받을 수 있도록 서버에 알림을 받을 주소를 등록할 때 사용된다.
+
+## A2A 통신 예시 1 - Agent Discovery, 대화 시작하기
+
+이제 실제 통신 예시를 통해 A2A가 어떻게 동작하는지 살펴보겠다.
+
+본 예시에서는 Agent Discovery(에이전트 발견)와 Task, Context를 중심으로 대화가 어떻게 시작되고 이어지는지 알아본다.
+
+### Agent Discovery
+
+사람들이 처음 만나면 명함을 교환하듯, 에이전트들은 Agent Card를 통해 서로를 알아간다. 클라이언트 에이전트는 협업할 상대를 찾아야 할 때 다음과 같은 방법으로 Agent Card를 발견할 수 있다.<sup>8</sup>
+
+- **Well-Known URI**: 공개적으로 알려진 에이전트의 경우, `https://{도메인}/.well-known/agent-card.json` 과 같은 표준화된 주소로 Agent Card를 게시한다.
+- **Curated Registries (중앙 레지스트리)**: 기업 환경에서는 에이전트 카드를 중앙에서 관리하는 레지스트리(카탈로그)를 운영할 수 있다. 클라이언트는 "이미지 생성 스킬을 가진 에이전트"와 같이 필요한 역량을 기준으로 검색하여 적합한 에이전트를 찾을 수 있다.
+- **Direct Configuration (직접 설정)**: 이미 협업할 에이전트의 정보를 알고 있을 때, 해당 에이전트의 Agent Card URL을 직접 설정하여 통신한다.
+
+### 통신 예시 - Agent 확인과 대화 시작
+
+클라이언트가 `creative-agent.com`이라는 도메인을 가진 이미지 생성 에이전트와 대화하고 싶어하는 상황이다. 클라이언트는 먼저 표준 주소(`.well-known/agent-card.json`)로 GET 요청을 보내 에이전트의 '명함'을 요청한다.
+
+```shell
+GET /.well-known/agent-card.json HTTP/1.1
+Host: creative-agent.com
+```
+
+서버는 자신의 정보가 담긴 Agent Card를 JSON 형태로 응답한다. 여기서 핵심은 실제 통신에 사용될 `url` 필드이다.
+
+```json
+// HTTP 200 OK
+{
+  "a2aVersion": "0.3.0",
+  "agentId": "creative-cloud-agent-prod",
+  "displayName": "Creative Agent",
+  "url": "https://api.creative-agent.com/a2a/v1",
+  "authentication": { "type": "oauth2" },
+  "capabilities": {
+    "methods": ["message/send", "message/stream", "tasks/get", "tasks/cancel"]
+  }
+}
+```
+
+클라이언트는 Agent Card에서 얻은 url (`https://api.creative-agent.com/a2a/v1`)을 실제 엔드포인트로 사용하여 message/send 요청을 보낸다.
+
+```json
+// HTTP POST -> https://api.creative-agent.com/a2a/v1
+{
+  "jsonrpc": "2.0",
+  "id": "req-001",
+  "method": "message/send",
+  "params": {
+    "message": {
+      "role": "user",
+      "parts": [{ "kind": "text", "text": "밤하늘을 나는 푸른 용을 그려줘." }]
+    }
+  }
+}
+```
+
+이제 'Creative Agent'는 요청을 받아 작업을 처리하고, Task를 생성하여 응답한다.
+
+```json
+// HTTP 200 OK
+{
+  "jsonrpc": "2.0",
+  "id": "req-001",
+  "result": {
+    "kind": "task",
+    "id": "task-dragon-drawing-987",
+    "contextId": "ctx-creative-xyz-123",
+    "status": { "state": "completed" },
+    "artifacts": [
+      {
+        "artifactId": "artifact-dragon-image-456",
+        "parts": [
+          {
+            "kind": "file",
+            "file": {
+              "mimeType": "image/png",
+              "url": "https://cdn.creative-agent.com/images/dragon-456.png"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+이 두 단계를 통해 클라이언트는 에이전트의 공개된 주소만으로 실제 통신 엔드포인트를 찾아 성공적으로 대화를 시작할 수 있다.
+
+### 통신 예시 - Task 생성 없이 즉시 응답하기
+
+모든 요청이 Task를 생성해야 하는 것은 아니다. 에이전트가 클라이언트의 요청을 상태 저장이 필요 없는 일회성 응답으로 즉시 처리할 수 있을 때는 `kind: "message"`로 응답할 수 있다. <sup>9</sup>
+
+사용자가 에이전트에게 간단한 농담을 요청한다.
+
+```json
+// HTTP POST -> message/send
+{
+  "jsonrpc": "2.0",
+  "id": "req-joke-001",
+  "method": "message/send",
+  "params": {
+    "message": { "role": "user", "parts": [{ "kind": "text", "text": "농담 하나 해줘." }] }
+  }
+}
+```
+
+에이전트는 이 요청을 별도의 상태 추적이 필요 없는 간단한 질의응답으로 판단하고, Task를 생성하는 대신 Message 객체로 바로 응답한다. 농담 내용은 gemini한테 만들라고 시켰다.
+
+```json
+// HTTP 200 OK
+{
+  "jsonrpc": "2.0",
+  "id": "req-joke-001",
+  "result": {
+    "kind": "message",
+    "messageId": "msg-agent-joke-123",
+    "contextId": "ctx-conv-abcde-12345",
+    "role": "agent",
+    "parts": [
+      {
+        "kind": "text",
+        "text": "과학자들이 원자를 믿지 않는 이유가 뭔지 알아? 원자가 모든 걸 지어내기(make up) 때문이야!"
+      }
+    ]
+  }
+}
+```
+
+이 경우에는 Task를 생성하지 않는다. `messageId`로 해당 응답 메시지만을 식별하며, 별도의 생명주기를 추적하지 않게 된다.
+
+## A2A 통신 예시 2 - 목적을 가진 대화
+
+이번 예시에서는 Task의 생명주기와 상태 업데이트를 중심으로, 에이전트가 사용자와 정보를 주고받으며 복잡한 작업을 완료하는 과정을 JSON 요청/응답과 함께 살펴보겠다.
+
+### Task Status
+
+A2A의 Task는 일 처리 과정을 나타내는 명확한 상태(Status)를 가진다.<sup>10</sup>
+
+- `submitted`: 요청이 접수되었고, 실행을 대기 중인 상태
+- `working`: 작업이 활발하게 처리되고 있는 상태
+- `input-required`: 작업 진행을 위해 사용자(클라이언트)의 추가 정보가 필요하여 일시 중지된 상태
+- `auth-required`: 인증이 필요하여 대기 중인 상태
+- `completed`: 작업이 성공적으로 완료된 최종 상태
+- `canceled`: 작업이 중간에 취소된 최종 상태
+- `failed`: 오류로 인해 작업이 실패한 최종 상태
+- `rejected`: 에이전트가 작업을 수행하지 않기로 결정한 최종 상태
+
+### 통신 예시 - 항공권 예약하기
+
+사용자가 '여행 플래너' 에이전트에게 목적지만 알려주며 모호한 질문으로 항공권 예약을 요청한다.
+
+```json
+// HTTP POST -> message/send
+{
+  "jsonrpc": "2.0",
+  "id": "req-003",
+  "method": "message/send",
+  "params": {
+    "message": {
+      "role": "user",
+      "parts": [{ "kind": "text", "text": "제주도 가는 비행기 표 좀 예약해줘." }]
+    }
+  }
+}
+```
+
+에이전트는 목적지만으로는 예약을 진행할 수 없다. 따라서 Task의 상태를 `input-required`로 변경하고, 사용자에게 필요한 정보를 되묻는 메시지를 보낸다.
+
+```json
+// HTTP 200 OK
+{
+  "jsonrpc": "2.0",
+  "id": "req-003",
+  "result": {
+    "kind": "task",
+    "id": "task-flight-booking-456",
+    "status": {
+      "state": "input-required",
+      "message": {
+        "role": "agent",
+        "parts": [
+          {
+            "kind": "text",
+            "text": "네, 도와드릴게요! 어디서 출발하시나요? 그리고 원하시는 여행 날짜를 알려주시겠어요?"
+          }
+        ]
+      }
+    }
+  }
+}
+```
+
+사용자가 에이전트의 질문에 답변한다. 이전 `contextId`와 `taskId`를 포함하여 어떤 작업에 대한 응답인지 명확히 한다.
+
+```json
+// HTTP POST -> message/send
+{
+  "jsonrpc": "2.0",
+  "id": "req-004",
+  "method": "message/send",
+  "params": {
+    "message": {
+      "role": "user",
+      "contextId": "ctx-travel-fghij-67890",
+      "parts": [{ "kind": "text", "text": "김포에서 출발하고, 다음 주 월요일에 가고 싶어." }]
+    },
+    "taskId": "task-flight-booking-456"
+  }
+}
+```
+
+에이전트는 필요한 정보를 모두 받았으므로 항공편을 검색하고 예약을 완료한다. Task의 상태는 `completed`로 변경되고, 최종 예약 정보는 구조화된 데이터를 포함한 Artifact로 전달된다.
+
+```json
+// HTTP 200 OK
+{
+  "jsonrpc": "2.0",
+  "id": "req-004",
+  "result": {
+    "kind": "task",
+    "id": "task-flight-booking-456",
+    "status": { "state": "completed" },
+    "artifacts": [
+      {
+        "artifactId": "artifact-flight-ticket-123",
+        "parts": [
+          {
+            "kind": "data",
+            "data": { "from": "GMP", "to": "CJU", "date": "2025-10-13", "flight": "KE123" }
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+## A2A 통신 예시 3 - 메타데이터 교환하기 (부가 정보 전달)
+
+A2A 프로토콜은 Task, Message, Artifact 등 핵심 객체에 `metadata`라는 필드를 포함할 수 있도록 허용한다. 이 필드는 프로토콜 표준에는 정의되지 않았지만, 특정 애플리케이션에 필요한 부가 정보를 자유롭게 교환하는 데 사용된다.<sup>11</sup>
+
+### 통신 예시 - 콘텐츠 생성 비용 정산
+
+사용자가 '마케팅 카피라이터' 에이전트에게 블로그 포스트 생성을 요청한다. 에이전트는 요청을 처리한 후, 결과물인 블로그 포스트와 함께 해당 작업에 소요된 비용 정보를 `metadata`에 담아 응답할 수 있다
+
+작업이 완료되면 에이전트는 `completed` 상태의 Task를 반환한다. 이때 `metadata` 필드에 토큰 사용량, 소모된 크레딧과 같은 과금 관련 정보를 포함하여 클라이언트가 후속 처리로 사용자에게 비용 청구를 할 수 있도록 돕는다.
+
+```json
+// HTTP 200 OK
+{
+  "jsonrpc": "2.0",
+  "id": "req-blog-post-001",
+  "result": {
+    "kind": "task",
+    "id": "task-blog-gen-789",
+    "status": { "state": "completed" },
+    "artifacts": [
+      {
+        "artifactId": "artifact-blog-post-456",
+        "name": "a2a_protocol_intro.md",
+        "parts": [{ "kind": "text", "text": "A2A 프로토콜은 AI 에이전트 생태계의..." }]
+      }
+    ],
+    "metadata": {
+      "usage": {
+        "input_tokens": 120,
+        "output_tokens": 1500,
+        "credits_consumed": 15
+      },
+      "internal_tracking_id": "client-project-alpha"
+    }
+  }
+}
+```
+
+이처럼 `metadata` 필드를 활용하면 A2A 표준을 따르면서 각 서비스의 고유한 비즈니스 로직에 필요한 데이터를 유연하게 주고받을 수 있다.
+
+## A2A 통신 예시 4 - Push Notification
+
+A2A는 비동기 Push Notification을 지원한다. `tasks/get`으로 계속 상태를 확인하는 폴링(polling)은 비효율적이고, `message/stream`은 클라이언트가 계속 연결을 유지해야 한다는 단점이 있다. 푸시 알림은 이러한 한계를 극복한다.<sup>12</sup>
+
+작업이 오래 걸리거나 중간에 사람의 개입이 필요할 때, 서버 에이전트가 능동적으로 클라이언트가 지정한 웹훅 주소로 업데이트를 push하는 방식으로 동작한다.
+
+### 통신 예시 - 관리자 승인이 필요한 비용 청구 워크플로우
+
+직원이 '경비 처리 에이전트'에게 150만 원의 경비 승인을 요청한다. 이때 요청에는 작업이 업데이트될 때 알림을 받을 웹훅 URL을 `pushNotificationConfig`에 담아 보낸다.
+
+```json
+// HTTP POST -> message/send
+{
+  "jsonrpc": "2.0",
+  "id": "req-006",
+  "method": "message/send",
+  "params": {
+    "message": {
+      "role": "user",
+      "parts": [{ "kind": "data", "data": { "amount": 1500000, "reason": "고객사 미팅 식대" } }]
+    },
+    "configuration": {
+      "pushNotificationConfig": {
+        "url": "https://my-app.com/a2a-webhook",
+        "token": "secure-client-token-for-validation"
+      }
+    }
+  }
+}
+```
+
+에이전트는 요청을 접수하고, Task를 생성한 뒤 즉시 `submitted` 상태로 응답한다. 클라이언트는 이제 더 이상 기다리지 않고 다른 작업을 수행할 수 있다.
+
+```json
+// HTTP 200 OK
+{
+  "jsonrpc": "2.0",
+  "id": "req-006",
+  "result": {
+    "kind": "task",
+    "id": "task-expense-approval-789",
+    "status": { "state": "submitted" }
+  }
+}
+```
+
+잠시 후, 에이전트는 금액이 100만 원을 초과하여 관리자 승인이 필요하다고 판단한다. Task 상태를 `input-required`로 변경하고, 1단계에서 받은 웹훅 URL(`https://my-app.com/a2a-webhook`)로 HTTP POST 요청을 보낸다.
+
+```json
+POST /a2a-webhook HTTP/1.1
+Host: my-app.com
+Content-Type: application/json
+X-A2A-Notification-Token: secure-client-token-for-validation
+
+{
+  "kind": "task",
+  "id": "task-expense-approval-789",
+  "status": {
+	"state": "input-required",
+	"message": { "role": "agent", "parts": [{ "kind": "text", "text": "관리자 승인이 필요한 금액입니다. 승인하시겠습니까?" }] }
+  }
+}
+```
+
+클라이언트의 웹훅 서버는 이 푸시 알림을 받고 토큰을 검증한 뒤, 관리자에게 슬랙이나 이메일로 승인/반려 버튼이 포함된 알림을 보낸다.
+
+관리자가 '승인' 버튼을 누르면, 클라이언트 앱은 다시 에이전트에게 승인 정보를 담아 `message/send`를 보낸다. 이 과정을 통해 중단되었던 Task가 재개되고 최종적으로 경비 처리가 완료된다.
+
+## A2A 통신 예시 5 - 스트리밍
+
+아래는 웹 클라이언트 등에서 유저에게 실시간성 응답을 보여주는 상황 등에서 사용할 수 있는 스트리밍 메시지 예시다. 그동안 `message/send` 로만 요청을 보냈는데 `message/stream` 메소드를 사용하면 스트리밍으로 응답을 받을 수 있다.
+
+### 통신 예시 - 긴 보고서 실시간으로 작성하기
+
+클라이언트는 첨부된 이미지를 분석하여 긴 보고서를 작성해달라고 요청한다. 이때 일반적인 `message/send`가 아닌 `message/stream` 메서드를 사용하여, 결과물을 실시간으로 받겠다는 의사를 전달한다.<sup>13</sup>
+
+```json
+// HTTP POST -> message/stream
+{
+  "jsonrpc": "2.0",
+  "id": "req-005",
+  "method": "message/stream",
+  "params": {
+    "message": {
+      "role": "user",
+      "parts": [
+        { "kind": "text", "text": "첨부된 사진들을 분석해서 상세한 보고서를 작성해줘." },
+        { "kind": "file", "file": { "mimeType": "image/png", "data": "<base64...>" } }
+      ]
+    }
+  }
+}
+```
+
+서버는 `Content-Type: text/event-stream` 헤더와 함께 응답을 시작하고, Server-Sent Events (SSE) 형식으로 데이터를 계속해서 보내준다.
+
+SSE 스트림에서는 다양한 종류의 정보가 전달될 수 있기 때문에, 각 응답 객체에는 `kind` 필드가 포함된다. 클라이언트는 이 `kind` 필드를 보고 지금 받은 데이터가 어떤 종류의 정보인지 식별하고 그에 맞게 처리해야 한다.
+
+먼저 작업이 접수되었다는 의미로 `kind: "task"` 인 Task 객체를 보낸다. 이때 state는 `submitted`이다.
+
+```
+data: {"jsonrpc":"2.0","id":"req-005","result":{"kind":"task","id":"task-report-gen-789","status":{"state":"submitted"},...}}
+```
+
+보고서가 작성되는 대로, `kind: "artifact-update"` 이벤트를 통해 텍스트의 일부(chunk)를 계속해서 보낸다. `append: true`는 클라이언트가 이 내용을 기존 결과물에 이어 붙여야 함을 의미한다.
+
+```
+data: {"jsonrpc":"2.0","id":"req-005","result":{"kind":"artifact-update","taskId":"task-report-gen-789","artifact":{"parts":[{"kind":"text","text":"보고서의 첫 번째 섹션입니다..."}]},"append":true,...}}
+```
+
+```
+data: {"jsonrpc":"2.0","id":"req-005","result":{"kind":"artifact-update","taskId":"task-report-gen-789","artifact":{"parts":[{"kind":"text","text":"이어서 두 번째 섹션의 내용입니다..."}]},"append":true,...}}
+```
+
+보고서 작성이 모두 끝나면, 최종적으로 `kind: "status-update"` 이벤트를 통해 `completed` 상태를 알린 다. `final` 속성으로 스트림이 종료되었음을 같이 알린다.
+
+```
+data: {"jsonrpc":"2.0","id":"req-005","result":{"kind":"status-update","taskId":"task-report-gen-789","status":{"state":"completed"},"final":true}}
+```
+
+## A2A 호환 애플리케이션 (Compliance)
+
+어떤 애플리케이션이 "A2A를 지원한다" 또는 "A2A-compliant하다"고 말하기 위해서는 특정 요구사항들을 반드시 준수해야 한다.
+
+스펙 문서에서는 크게 요청을 받는 에이전트(서버)와 요청을 보내는 클라이언트의 요구사항을 나누어 정의하고 있다.<sup>14</sup>
+
+### A2A 호환 에이전트(서버) 요구사항
+
+- **전송 프로토콜 지원**: 모든 통신은 HTTPS 를 통해 이루어져야 하며, 최소 1개의 핵심 전송 프로토콜을 반드시 구현해야 한다.(JSON-RPC 2.0, gRPC, HTTP+JSON/REST)
+- **Agent Card 제공**: 자신의 신원, 기능, 그리고 지원하는 모든 전송 프로토콜 정보를 담은 유효한 AgentCard를 반드시 제공해야 한다.
+- **핵심 메서드 구현**: `message/send`, `tasks/get`, `tasks/cancel` 이 3가지 핵심 메서드는 반드시 구현해야 한다.
+- **데이터 형식 준수**: 요청과 응답의 모든 데이터 객체(Task, Message 등)는 스펙에 정의된 형식을 따라야 하며, 에러 발생 시 표준 에러 코드를 사용해야 한다.
+
+### A2A 호환 클라이언트 요구사항
+
+- **Agent Card 처리**: 서버가 제공하는 AgentCard를 파싱하고 해석하여 서버의 기능과 통신 방법을 이해할 수 있어야 한다.
+- **전송 프로토콜 선택**: 서버의 AgentCard를 보고, 자신이 지원하는 전송 프로토콜과 서버가 지원하는 프로토콜의 교집합 중에서 하나를 선택하여 통신할 수 있어야 한다.
+- **핵심 메서드 사용**: 최소한 `message/send`와 `tasks/get` 메서드에 대한 요청을 올바르게 생성하고 보낼 수 있어야 한다.
+- **에러 처리**: A2A 스펙에 정의된 표준 에러 코드를 올바르게 처리할 수 있어야 한다.
+
+## 감상
+
+MCP를 "보완"하기 위해 나왔다고는 하고 특정 peer에서 MCP를 연동하듯 A2A Compilant한 Agent의 엔드포인트를 연동할 수는 있겠으나, MCP가 조금더 로컬, peer 중심의 솔루션이라면 A2A는 엔터프라이즈 관점의 앱 개발/제공자가 멀티 에이전트 형식의 애플리케이션을 구현할 때 사용하기 좋게 만들어진 솔루션이라는 느낌이다.
+
+둘 다 개방형 프로토콜인 것은 맞지만, 실제로 자원을 앱 사용자에게 개방하기 위해서 쓰이는 솔루션은 주로 MCP 쪽일것 같고, A2A는 엔터프라이즈에서 멀티 에이전트 애플리케이션을 구현할 때 사용해볼 수 있을 것 같다. 아마도 이런 감상은 요 글에서 말하는 A2A 프로토콜을 만든 이유와 엔터프라이즈 고객사와 연관을 밝히는 부분과 관련이 있을 것이다.
+
+> Drawing on Google's internal expertise in scaling agentic systems, we designed the A2A protocol to address the challenges we identified in deploying large-scale, multi-agent systems for our customers. A2A empowers developers to build agents capable of connecting with any other agent built using the protocol and offers users the flexibility to combine agents from various providers. <sup>15</sup>
+
+## References
+
+1. [Agent2Agent (A2A) Protocol Official Specification, 1. Introduction](https://a2a-protocol.org/latest/specification/#1-introduction)
+2. [Agent2Agent (A2A) Protocol Official Specification, 1.2. Guiding Principles](https://a2a-protocol.org/latest/specification/#12-guiding-principles)
+3. [Agent2Agent (A2A) Protocol Official Specification, 1.1. Key Goals of A2A](https://a2a-protocol.org/latest/specification/#11-key-goals-of-a2a)
+4. [Agent2Agent (A2A) Protocol Official Specification, 2. Core Concepts Summary](https://a2a-protocol.org/latest/specification/#2-core-concepts-summary)
+5. [Agent2Agent (A2A) Protocol Official Specification, 10.1. Relationship to MCP (Model Context Protocol)](https://a2a-protocol.org/latest/specification/#101-relationship-to-mcp-model-context-protocol)
+6. [Agent2Agent (A2A) Protocol Official Specification, 3. Transport and Format](https://a2a-protocol.org/latest/specification/#3-transport-and-format)
+7. [Agent2Agent (A2A) Protocol Official Specification, 7. Protocol RPC Methods](https://a2a-protocol.org/latest/specification/#7-protocol-rpc-methods)
+8. [Agent2Agent (A2A) Protocol Official Specification, 5. Agent Discovery: The Agent Card](https://a2a-protocol.org/latest/specification/#5-agent-discovery-the-agent-card)
+9. [Agent2Agent (A2A) Protocol Official Specification, 9.2. Basic Execution (Synchronous / Polling Style)](https://a2a-protocol.org/latest/specification/#92-basic-execution-synchronous-polling-style)
+10. [Agent2Agent (A2A) Protocol Official Specification, 6.3. TaskState Enum](https://a2a-protocol.org/latest/specification/#63-taskstate-enum)
+11. [Agent2Agent (A2A) Protocol Official Specification, 6.1. Task Object](https://a2a-protocol.org/latest/specification/#61-task-object)
+12. [Agent2Agent (A2A) Protocol Official Specification, 2. Core Concepts Summary](https://a2a-protocol.org/latest/specification/#2-core-concepts-summary)
+13. [Agent2Agent (A2A) Protocol Official Specification, 7.2. message/stream](https://a2a-protocol.org/latest/specification/#72-messagestream)
+14. [Agent2Agent (A2A) Protocol Official Specification, 11. A2A Compliance Requirements](https://a2a-protocol.org/latest/specification/#11-a2a-compliance-requirements)
+15. [Announcing the Agent2Agent Protocol (A2A)](https://developers.googleblog.com/en/a2a-a-new-era-of-agent-interoperability/)

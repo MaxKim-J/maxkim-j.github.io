@@ -22,6 +22,7 @@ export const postTitleHeadingStyle = style({
 export const postTitleDescriptionStyle = style({
   fontSize: sVar.fontSize.$4,
   marginBottom: '8px',
+  lineHeight: '1.5',
   '@media': {
     [sVar.media.mobile]: {
       fontSize: sVar.fontSize.$5,
