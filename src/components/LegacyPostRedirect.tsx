@@ -2,9 +2,30 @@ import React from 'react';
 
 const NEW_SITE_URL = 'https://jonghyuk.kim';
 
+const KNOWLEDGE_SLUGS = new Set([
+  'js-map',
+  'js-pure-function',
+  'git-start',
+  'react-component-this',
+  'cra-webpack-config',
+  'dom-pos-scroll',
+  'protect-var-against-undefined',
+  'async-console-log',
+  'nuxt-ssr',
+  'keyboard-input',
+  'packet-travel',
+  'tanstack-query-v4-preview',
+  'nodejs-server-monitoring',
+  'coupling',
+  'local-dev-server',
+  'cohesion',
+  'dependency-protocol',
+]);
+
 export function postUrl(lang: 'ko' | 'en', slug: string) {
   const prefix = lang === 'en' ? '/en' : '';
-  return `${NEW_SITE_URL}${prefix}/articles/${encodeURIComponent(slug)}`;
+  const kind = KNOWLEDGE_SLUGS.has(slug) ? 'knowledges' : 'articles';
+  return `${NEW_SITE_URL}${prefix}/${kind}/${encodeURIComponent(slug)}`;
 }
 
 interface Props {
