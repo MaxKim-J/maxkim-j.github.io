@@ -29,7 +29,6 @@
     "gatsby": "^4.7.0",
     "gatsby-plugin-feed": "^5.9.0",
     "gatsby-plugin-feed-mdx": "^1.1.0",
-    "gatsby-plugin-google-analytics": "^4.19.0",
     "gatsby-plugin-image": "^2.19.0",
     "gatsby-plugin-mdx": "^3.19.0",
     "gatsby-plugin-pnpm": "^1.2.10",

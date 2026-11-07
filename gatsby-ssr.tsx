@@ -15,13 +15,6 @@ export const onRenderBody = ({ setPreBodyComponents }) => {
   `;
 
   setPreBodyComponents(<script dangerouslySetInnerHTML={{ __html: script }} />);
-  setPreBodyComponents(
-    <script
-      async={true}
-      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5727170943665894"
-      crossOrigin="anonymous"
-    ></script>
-  );
 };
 
 export const onPreRenderHTML = ({ getHeadComponents, replaceHeadComponents }) => {
